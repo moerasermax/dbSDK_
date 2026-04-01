@@ -52,3 +52,21 @@
 - [ ] **Thread-Safe Singleton**: 移除手寫 Singleton 模式，改用 DI Container 單例注入。
 - [ ] **Dead Code Cleanup**: 清理 `Program.cs` 殘留死碼與未使用的命名空間。
 - [ ] **Development Sandboxing**: 將 `#region` 內的測試邏輯轉化為正式的單元測試 (Unit Tests)。
+
+
+## 🚀 快速開始 (Quick Start)
+
+```csharp
+// 1. 配置資料庫連接資訊 (建議由配置檔注入)
+var dbInfo = new dbInfo("Your_Connection_String");
+
+// 2. 初始化引擎 (建議透過實踐 DI 注入)
+// 目前架構正從繼承轉向組合 (Composition)
+var engine = new dbSDKEngine<Order>(new MongoRepository<Order>(...));
+
+// 3. 執行業務操作並接收結果
+var result = await engine.Read("filter-condition");
+
+if(result.IsSuccess) {
+    Console.WriteLine(result.Message);
+}
