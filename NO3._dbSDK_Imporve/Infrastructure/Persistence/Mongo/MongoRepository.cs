@@ -20,10 +20,10 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             _Collection = db.GetCollection<T>(collectionName);
         }
 
-        async Task<IResult> IRepository<T>.getData(string ConditionData)
+        async Task<IResult> IRepository<T>.getData(string ConditionData_Json)
         {
            
-            BsonDocument filter = BsonDocument.Parse(ConditionData);
+            BsonDocument filter = BsonDocument.Parse(ConditionData_Json);
 
             try
             {
@@ -53,12 +53,12 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
         }
 
-        async Task<IResult> IRepository<T>.removeData(string ConditionData)
+        async Task<IResult> IRepository<T>.removeData(string ConditionData_Json)
         {
             try
             {
 
-                BsonDocument filter = BsonDocument.Parse(ConditionData);
+                BsonDocument filter = BsonDocument.Parse(ConditionData_Json);
 
                  await _Collection.DeleteOneAsync(filter);
                 return Result.setResult("[MongoDBSDK]刪除資料成功。");
@@ -69,11 +69,11 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
         }
 
-        async Task<IResult> IRepository<T>.updateData(string ConditionData, T UpdateData)
+        async Task<IResult> IRepository<T>.updateData(string ConditionData_Json, T UpdateData)
         {
             try
             {
-                BsonDocument filter = BsonDocument.Parse(ConditionData);
+                BsonDocument filter = BsonDocument.Parse(ConditionData_Json);
 
                 BsonDocument _updateData = MongoMap.getInstance().ToBsonDocument(UpdateData);
 

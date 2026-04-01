@@ -33,11 +33,11 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
             }
         }
 
-        public async Task<IResult> getData(string ConditionData)
+        public async Task<IResult> getData(string ConditionData_Json)
         {
             try
             {
-                RedisValue result = await _db.StringGetAsync(ConditionData);
+                RedisValue result = await _db.StringGetAsync(ConditionData_Json);
                 return Result.setResult("[RedisSDK]查詢資料成功。", result);
             }
             catch (Exception ex)
@@ -45,11 +45,11 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
                 return Result.setErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
             }
         }
-        public async Task<IResult> removeData(string ConditionData)
+        public async Task<IResult> removeData(string ConditionData_Json)
         {
             try
             {
-                var response = await _db.KeyDeleteAsync(ConditionData);
+                var response = await _db.KeyDeleteAsync(ConditionData_Json);
                 return Result.setResult("[RedisSDK]刪除資料成功。");
             }
             catch (Exception ex)
@@ -80,7 +80,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
         }
 
 
-        public async Task<IResult> updateData(string ConditionData, T UpdateData)
+        public async Task<IResult> updateData(string ConditionData_Json, T UpdateData)
         {
             return Result.setErrorResult(MethodBase.GetCurrentMethod()?.Name, "[Redis]因Redis本身機制，再新增資料時若有相同的Key變會直接覆蓋，因此不需進行此實作。");
         }

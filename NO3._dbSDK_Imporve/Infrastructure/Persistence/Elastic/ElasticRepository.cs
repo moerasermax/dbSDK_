@@ -27,9 +27,9 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
             return Result.setResult("[ElasticSDK]已設置 indexName。");
         }
 
-        public async Task<IResult> getData(string ConditionData)
+        public async Task<IResult> getData(string ConditionData_Json)
         {
-            ElasticFilter filter = _map.toFilter(ConditionData);
+            ElasticFilter filter = _map.toFilter(ConditionData_Json);
 
             try
             {
@@ -63,11 +63,11 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
             }
         }
 
-        public async Task<IResult> removeData(string ConditionData)
+        public async Task<IResult> removeData(string ConditionData_Json)
         {
             try
             {
-                ElasticFilter filter = _map.toFilter(ConditionData);
+                ElasticFilter filter = _map.toFilter(ConditionData_Json);
 
                 var response = await _client.DeleteByQueryAsync<object>(s => s
                 .Query(q => q
@@ -85,12 +85,12 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
             }
         }
 
-        public async Task<IResult> updateData(string ConditionData, T UpdateData)
+        public async Task<IResult> updateData(string ConditionData_Json, T UpdateData)
         {
             var json = JsonSerializer.Serialize(UpdateData);
             var map = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
 
-            ElasticFilter filter = new ElasticFilter().Eq("Name", ConditionData);
+            ElasticFilter filter = _map.toFilter(ConditionData_Json);
 
             try
             {

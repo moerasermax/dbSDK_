@@ -10,10 +10,10 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
 {
     public class ElasticMap
     {
-        public ElasticFilter toFilter(string ConditionData)
+        public ElasticFilter toFilter(string ConditionData_Json)
         {
             ElasticFilter filter = new ElasticFilter();
-            using (JsonDocument doc = JsonDocument.Parse(ConditionData))
+            using (JsonDocument doc = JsonDocument.Parse(ConditionData_Json))
             {
                 JsonElement root = doc.RootElement;
 

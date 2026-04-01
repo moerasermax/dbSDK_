@@ -8,6 +8,7 @@ using NO3._dbSDK_Imporve.Application.Sample.Redis;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
+using System.Text.Json;
 
 var Services = new ServiceCollection();
 
@@ -44,13 +45,15 @@ async Task init()
     var provider = Services.BuildServiceProvider();
 
     var _mongoEngine = new dbSDKEngine<Order>(provider.GetRequiredService<IOrderRepository_Mongo>());
-    await _mongoEngine.Insert(RandomDataGenerator.EventGiftGenerator.Generate());
+
+    string condition = JsonSerializer.Serialize(new Test_Condition("EVT2569_GFT98142"));
+
+    await _mongoEngine.TestFlow(condition, RandomDataGenerator.EventGiftGenerator.Generate());
 
 
     Console.WriteLine("執行結束");
     Console.ReadKey();
 }
-
 
 
 
@@ -92,3 +95,12 @@ void Redis()
     OrderRepo.pollingData();
 }
 #endregion
+
+public class Test_Condition
+{
+    public string _id { get; }
+    public Test_Condition(string id)
+    {
+        _id = id;
+    }
+}
