@@ -46,7 +46,7 @@ async Task init()
     var provider = Services.BuildServiceProvider();
 
     var _mongoEngine = new dbSDKEngine<Order>(provider.GetRequiredService<IOrderRepository_Mongo>());
-    await _mongoEngine.Insert(RandomDataGenerator.EventGiftGenerator.Generate());
+     await _mongoEngine.Insert(RandomDataGenerator.EventGiftGenerator.Generate());
 
     Console.WriteLine("執行結束");
     Console.ReadKey();
@@ -61,7 +61,7 @@ async Task Mongo()
 
     var provider = Services.BuildServiceProvider();
     var OrderRepo = provider.GetRequiredService<IOrderRepository_Mongo>();
-
+  
     await OrderRepo.insertData(RandomDataGenerator.EventGiftGenerator.Generate());
 }
 

@@ -16,8 +16,8 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Driver
         ConnectionMultiplexer _redis;
         public RedisDriver(string Service, ConnectionSettings dbInfo) : base(Service)
         {
-            _Service = Service;
-            _redis = ConnectionMultiplexer.Connect(getConnectInfo(dbInfo));
+                _Service = Service;
+                _redis = ConnectionMultiplexer.Connect(getConnectInfo(dbInfo));
         }
 
         ConfigurationOptions getConnectInfo(ConnectionSettings dbInfo)

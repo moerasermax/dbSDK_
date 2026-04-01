@@ -20,7 +20,7 @@ namespace NO3._dbSDK_Imporve.Core.Configurations
         public string EndPoint { get; set; }
         public int Port { get; set; } // 新增：支援 Redis 等需要 Port 的情境
         public string User { get; set; }
-        public string Password { get; set; }
+        public string Password { get; set; }   
         public string ApiKey { get; set; }
     }
 }
