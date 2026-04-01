@@ -1,73 +1,54 @@
-# 🚀 Data Engine SDK 
+# 🚀 Enterprise Solution Refactoring Project
 
-[![Architecture: Clean](https://img.shields.io/badge/Architecture-Clean-blue)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-[![Pattern: DDD](https://img.shields.io/badge/Pattern-DDD-green)](#)
-[![Security: Audited](https://img.shields.io/badge/Security-Audited-red)](#)
-[![Status: Refactoring](https://img.shields.io/badge/Status-Refactoring-orange)](#)
+[![Build Status](https://img.shields.io/badge/Build-Passing-success?style=flat-square&logo=github)]()
+[![Framework](https://img.shields.io/badge/.NET-8.0+-512BD4?style=flat-square&logo=dotnet)]()
+[![Architecture](https://img.shields.io/badge/Architecture-Clean_Architecture-blue?style=flat-square)]()
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)]()
 
-這是一個以 **Clean Architecture** 與 **Domain-Driven Design (DDD)** 為核心設計思想的資料處理 SDK。旨在提供高可擴展、低耦合的跨資料庫（MongoDB, Elasticsearch, Redis）統一操作介面。
-
----
-
-## 🏛️ 系統架構 (System Architecture)
-
-本專案遵循 **DIP (依賴反轉原則)**，確保核心業務邏輯與基礎設施實作徹底解耦。
-
-### 層級劃分：
-* **Core Layer (核心層)**: 定義系統合約 (Interfaces) 與業務模型 (Models/Entities)。嚴禁依賴任何外部 SDK 或第三方工具。
-* **Application Layer (SDK Engine)**: 負責協調業務流程。原 `dbSDKEngine` 應位於此層級，作為 SDK 的主要入口點。
-* **Infrastructure Layer (基礎設施層)**: 負責技術實作。包含資料庫驅動 (Drivers)、倉儲實作 (Repositories) 以及第三方 SDK 的封裝。
-* **Composition Root (Sample/Entry)**: 負責依賴注入 (DI) 的組裝、憑證配置與系統啟動。
+這是一個基於 **Clean Architecture** 與 **Domain-Driven Design (DDD)** 核心思想重構的現代化開發框架。專案旨在解決舊有系統中的非同步安全隱患、高度耦合與例外處理不一致等痛點。
 
 ---
 
-## 🛠️ 設計模式與 SOLID 實踐
+## 🏗️ Architecture Overview
 
-在架構設計中，我們嚴格執行以下原則以確保系統的長久可維護性：
+本專案遵循 **Dependency Inversion Principle (DIP)**，確保核心邏輯不依賴於外部框架或資料庫實作。
 
-| 模式/原則 | 應用位置 | 設計意圖 (Design Intent) |
+### 📂 Layering Strategy
+* **Core (Domain Layer)**: 包含核心實體 (`Entity`)、`IResult` 定義及領域介面。不依賴任何外部套件。
+* **Application (Use Case Layer)**: 包含 `dbSDKEngine` 等業務邏輯實作。負責編排 (Orchestration) 領域物件，透過介面與 Infrastructure 溝通。
+* **Infrastructure (Persistence & External Services)**: 負責 `MongoRepository`、`RedisRepository` 等具體實作。處理技術細節如持久化、快取與第三方 SDK。
+* **Presentation / Client**: 啟動進入點。目前正進行從 `Manual Instantiation` 遷移至 `Dependency Injection` 的轉型。
+
+---
+
+## 🛠️ Design Patterns & Principles
+
+| 模式 / 原則 | 應用位置 | 設計意圖 |
 | :--- | :--- | :--- |
-| **DIP 依賴反轉** | `IRepository<T>` | 核心層定義規格，Infrastructure 負責實作，更換資料庫無需修改業務邏輯。 |
-| **Strategy 策略模式** | `dbDriver` | 透過抽象類別統一不同驅動 (Elastic/Mongo/Redis) 的行為。 |
-| **Facade 外觀模式** | `dbSDKEngine` | 提供開發者單一且簡單的調用入口，隱藏底層驅動複雜性。 |
-| **OCP 開閉原則** | `IEngine<T>` | 新增資料庫支援時，只需增加新的實作類別，不需更動核心代碼。 |
-| **LSP 里氏替換** | `IRead/Write` | (重構中) 確保子類別實作不破壞父類別介面期待。 |
+| **Result Pattern** | `Task<IResult>` | 取代 Exception-based 流程控制，提供可預測的 Immutable 執行結果。 |
+| **Repository Pattern** | `MongoRepository`, `RedisRepository` | 抽象化資料存取邏輯，實現 Data Store 的抽換彈性。 |
+| **Dependency Inversion** | `IEngine`, `IRepository` | 高層模組不應依賴低層模組，雙方皆應依賴於抽象。 |
+| **Static Factory** | `Result.Success()`, `Result.Failure()` | 優化物件建立過程，強制執行結果物件的封裝性。 |
+| **LSP Compliance** | `RedisRepository` 重構 | 修正子類行為不一致問題，確保回傳值符合介面契約而非拋出非預期例外。 |
 
 ---
 
-## 📋 重構優化路線圖 (Refactoring Roadmap)
+## 🗺️ Project Roadmap
 
-基於架構審計報告，目前系統正處於重構階段，優先處理以下項目：
+### 🔴 P0: Critical & Security (Focus: Stability)
+- [x] **Result Persistence**: 修正 `IEngine` 介面，全面回傳 `Task<IResult>`。
+- [x] **Async Integrity**: 補全非同步方法中的 `await` 關鍵字，排除 Thread-safety 隱患。
+- [x] **Result Refactoring**: 實作不可變 (Immutable) 的 `Result` 物件。
+- [ ] **Deployment Security**: 導入 `User Secrets` 或環境變數，將 `appsettings.json` 敏感資訊隔離。
 
-### 1. 核心功能與安全性修正 (P0)
-- [ ] **Result Persistence**: 修正 `IEngine` 介面，將 `Task` 改為 `Task<IResult>`，解決回傳值丟失問題。
-- [ ] **Async Integrity**: 修正 `MongoRepository` 等實作中缺失的 `await` 調用，確保執行緒非同步安全。
-- [ ] **Credential Security**: 移除代碼中的硬編碼憑證 (Passwords/Keys)，改由配置檔或環境變數注入。
+### 🟡 P1: Architectural Evolution (Focus: Decoupling)
+- [x] **Layer Re-alignment**: 重新分配專案目錄結構，確保 Entity 回歸 Core 層。
+- [x] **Interface Segregation**: 移除特定 Repository 對 Exception 的依賴。
+- [ ] **Composition over Inheritance**: 重構 Sample 層，移除對 Infrastructure 的直接繼承耦合。
+- [ ] **DI Container Integration**: 導入 `Microsoft.Extensions.DependencyInjection` 全面接管生命週期。
 
-### 2. 架構層級重整 (P1)
-- [ ] **Layer Re-alignment**: 將 `dbSDKEngine` 從 Infrastructure 移回 Core/Application 層級。
-- [ ] **Domain Model Extraction**: 將分散在各處的 Entity (`Order`, `Query` 等) 統一收納至 `Core.Models`。
-- [ ] **Interface Segregation**: 拆分 Read 與 Write 介面，解決 Redis 違反 LSP 的問題。
-
-### 3. 代碼質量維護 (P2)
-- [ ] **Thread-Safe Singleton**: 移除靜態欄位的手工 Singleton，改用 DI 容器管理生命週期。
-- [ ] **Encapsulation**: 修正 `Result` 的訪問權限，確保作為 SDK 發佈時的型別可見性。
-
----
-
-## 🚀 快速開始 (Quick Start)
-
-```csharp
-// 1. 配置資料庫連接資訊 (建議由配置檔注入)
-var dbInfo = new dbInfo("Your_Connection_String");
-
-// 2. 初始化引擎 (建議透過實踐 DI 注入)
-// 目前架構正從繼承轉向組合 (Composition)
-var engine = new dbSDKEngine<Order>(new MongoRepository<Order>(...));
-
-// 3. 執行業務操作並接收結果
-var result = await engine.Read("filter-condition");
-
-if(result.IsSuccess) {
-    Console.WriteLine(result.Message);
-}
+### 🟢 P2: Maintenance & Quality (Focus: Clean Code)
+- [x] **Encapsulation**: 優化屬性存取權限 (Internal/Public) 控制。
+- [ ] **Thread-Safe Singleton**: 移除手寫 Singleton 模式，改用 DI Container 單例注入。
+- [ ] **Dead Code Cleanup**: 清理 `Program.cs` 殘留死碼與未使用的命名空間。
+- [ ] **Development Sandboxing**: 將 `#region` 內的測試邏輯轉化為正式的單元測試 (Unit Tests)。
