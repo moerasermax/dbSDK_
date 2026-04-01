@@ -1,5 +1,5 @@
 ﻿
-namespace NO3._dbSDK_Imporve.Core.Configurations
+namespace NO3._dbSDK_Imporve.Core.Models
 {
     /// <summary>
     /// 總體連線配置容器

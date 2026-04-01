@@ -4,7 +4,6 @@ using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
 using System.Reflection;
-using IResult = NO3._dbSDK_Imporve.Core.Models.IResult;
 
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
@@ -78,7 +77,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
 
                 BsonDocument _updateData = MongoMap.getInstance().ToBsonDocument(UpdateData);
 
-                var queryResult =  _Collection.FindOneAndUpdateAsync(filter, _updateData);
+                var queryResult = await _Collection.FindOneAndUpdateAsync(filter, _updateData);
                 return Result.setResult("[MongoDBSDK]資料更新成功。", queryResult.ToJson());
             }
             catch (Exception ex)

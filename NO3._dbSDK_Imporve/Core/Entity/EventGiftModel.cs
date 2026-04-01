@@ -1,18 +1,6 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using NO3._dbSDK_Imporve.Core.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NO3._dbSDK_Imporve.Sample.Mongo
+﻿
+namespace NO3._dbSDK_Imporve.Core.Entity
 {
-    public interface IOrderRepository_Mongo : IRepository<Order>
-    {
-        
-    }
-
     public class EventGiftModel : Order
     {
         // 仍建議保留此標記，明確指定此屬性對應 MongoDB 的 _id 欄位

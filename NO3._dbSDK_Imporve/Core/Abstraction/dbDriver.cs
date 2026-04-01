@@ -10,7 +10,7 @@ namespace NO3._dbSDK_Imporve.Core.Abstraction
 {
     public abstract class dbDriver : IdbDriver
     {
-        public string _Service { get; set; }
+        public string _Service { get;}
         public dbDriver(string Service)
         {
             _Service = Service;

@@ -1,15 +1,13 @@
-﻿
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NO3._dbSDK_Imporve.Core.Configurations;
+using NO3._dbSDK_Imporve.Application;
+using NO3._dbSDK_Imporve.Application.Sample;
+using NO3._dbSDK_Imporve.Application.Sample.Elastic;
+using NO3._dbSDK_Imporve.Application.Sample.Mongo;
+using NO3._dbSDK_Imporve.Application.Sample.Redis;
+using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Models;
-using NO3._dbSDK_Imporve.Infrastructure;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
-using NO3._dbSDK_Imporve.Sample;
-using NO3._dbSDK_Imporve.Sample.Elastic;
-using NO3._dbSDK_Imporve.Sample.Mongo;
-using NO3._dbSDK_Imporve.Sample.Redis;
-using static NO3._dbSDK_Imporve.Infrastructure.Driver.RedisDriver;
 
 var Services = new ServiceCollection();
 
@@ -46,11 +44,15 @@ async Task init()
     var provider = Services.BuildServiceProvider();
 
     var _mongoEngine = new dbSDKEngine<Order>(provider.GetRequiredService<IOrderRepository_Mongo>());
-     await _mongoEngine.Insert(RandomDataGenerator.EventGiftGenerator.Generate());
+    await _mongoEngine.Insert(RandomDataGenerator.EventGiftGenerator.Generate());
+
 
     Console.WriteLine("執行結束");
     Console.ReadKey();
 }
+
+
+
 
 
 #region 開發區_後面要刪除

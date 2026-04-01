@@ -1,16 +1,6 @@
-﻿using NO3._dbSDK_Imporve.Core.Interface;
-using NO3._dbSDK_Imporve.Core.Models;
-
-
-namespace NO3._dbSDK_Imporve.Sample.Elastic
+﻿
+namespace NO3._dbSDK_Imporve.Core.Entity
 {
-    public interface IOrderRepository_Elastic : IRepository<OrderSummary>
-    {
-        IResult changeTable(string tableName);
-    }
-
-
-
     /// <summary>
     /// 活動贈品摘要 (精簡版) - 用於列表展示與快速存取
     /// </summary>

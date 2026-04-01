@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using NO3._dbSDK_Imporve.Core.Interface;
+﻿using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
 using StackExchange.Redis;
@@ -38,8 +37,8 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
         {
             try
             {
-                var result = await _db.StringGetAsync(ConditionData);
-                return Result.setResult("[RedisSDK]查詢資料成功。", result.ToJson());
+                RedisValue result = await _db.StringGetAsync(ConditionData);
+                return Result.setResult("[RedisSDK]查詢資料成功。", result);
             }
             catch (Exception ex)
             {
@@ -81,9 +80,9 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
         }
 
 
-        public Task<IResult> updateData(string ConditionData, T UpdateData)
+        public async Task<IResult> updateData(string ConditionData, T UpdateData)
         {
-            throw new NotImplementedException("[Redis]因Redis本身機制，再新增資料時若有相同的Key變會直接覆蓋，因此不需進行此實作。");
+            return Result.setErrorResult(MethodBase.GetCurrentMethod()?.Name, "[Redis]因Redis本身機制，再新增資料時若有相同的Key變會直接覆蓋，因此不需進行此實作。");
         }
     }
 }

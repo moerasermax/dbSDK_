@@ -1,14 +1,9 @@
 ﻿using NO3._dbSDK_Imporve.Core.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace NO3._dbSDK_Imporve.Core.Models
 {
-    internal class Result : IResult
+    public class Result : IResult
     {
         public bool IsSuccess { get;  }
         public string Msg { get;  }
@@ -25,10 +20,5 @@ namespace NO3._dbSDK_Imporve.Core.Models
         public static Result setErrorResult(string MethodName, string msg, bool isSucess = false) => new(isSucess, string.Format("發生錯誤請檢查，函示名稱{0}\r\n錯誤訊息：{1}",MethodName,msg), "");
         }
 
-    public interface IResult
-        {
-        bool IsSuccess { get; }
-        string Msg { get; }
-        string DataJson { get; }
-    }
+
 }

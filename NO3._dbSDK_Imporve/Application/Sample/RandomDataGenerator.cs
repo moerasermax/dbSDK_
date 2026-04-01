@@ -1,12 +1,7 @@
-﻿using NO3._dbSDK_Imporve.Sample.Elastic;
-using NO3._dbSDK_Imporve.Sample.Mongo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NO3._dbSDK_Imporve.Core.Entity;
 
-namespace NO3._dbSDK_Imporve.Sample
+
+namespace NO3._dbSDK_Imporve.Application.Sample
 {
 
     public class RandomDataGenerator
