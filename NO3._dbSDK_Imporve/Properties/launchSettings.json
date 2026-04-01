@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "NO3._dbSDK_Imporve": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
