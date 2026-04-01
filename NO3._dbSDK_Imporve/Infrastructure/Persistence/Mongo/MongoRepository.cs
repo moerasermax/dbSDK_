@@ -3,15 +3,9 @@ using MongoDB.Driver;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using IResult = NO3._dbSDK_Imporve.Core.Models.IResult;
+
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
 {
