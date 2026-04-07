@@ -1,106 +1,120 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NO3._dbSDK_Imporve.Application;
-using NO3._dbSDK_Imporve.Application.Sample;
 using NO3._dbSDK_Imporve.Application.Sample.Elastic;
 using NO3._dbSDK_Imporve.Application.Sample.Mongo;
 using NO3._dbSDK_Imporve.Application.Sample.Redis;
+using NO3._dbSDK_Imporve.Core.DTO;
 using NO3._dbSDK_Imporve.Core.Entity;
+using NO3._dbSDK_Imporve.Core.External;
+using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
+using NO3._dbSDK_Imporve.Infrastructure.External;
+using NO3._dbSDK_Imporve.Infrastructure.MAP;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis;
 using System.Text.Json;
 
+
+
 var Services = new ServiceCollection();
+init();
+var provider = Services.BuildServiceProvider();
 
-await init();
+await TestFlow_Mongo(provider.GetRequiredService<MongoRepository<Order>>(), provider.GetRequiredService<ElasticRepository<OrderSummary>>(),
+    provider.GetRequiredService<IDTO>()
+    , provider.GetRequiredService<EventGiftRandomDataGenerator>(), provider.GetRequiredService<ObjectExtension>());
 
-
-async Task init()
+void init()
 {
     IConfiguration configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false)
     .Build();
 
+
+
+    Services.AddSingleton(new MongoMap());
+    Services.AddSingleton(new ElasticMap());
+
     var settings = new ConnectionSettings();
     configuration.GetSection("ConnectionSettings").Bind(settings);
 
-    // Mongo
-    string mongoConnStr = $"mongodb+srv://{settings.Mongo.User}:{settings.Mongo.Password}@{settings.Mongo.Uri}";
-    Console.WriteLine($"準備連線至 Mongo: {settings.Mongo.Uri}");
-
-    // Redis
-    string redisConnStr = $"{settings.Redis.EndPoint}:{settings.Redis.Port},password={settings.Redis.Password}";
-    Console.WriteLine($"準備連線至 Redis: {settings.Redis.EndPoint}");
-
     Services.AddSingleton<MongoDBDriver>(s => new MongoDBDriver("MongoDB", settings));
-    Services.AddSingleton<IOrderRepository_Mongo, OrderRepository_Mongo>();
+    Services.AddSingleton<MongoRepository<Order>, OrderRepository_Mongo>();
 
     Services.AddSingleton<ElasticDriver>(s => new ElasticDriver("Elastic", settings));
-    Services.AddSingleton<IOrderRepository_Elastic, OrderRepository_Elastic>();
+    Services.AddSingleton<ElasticRepository<OrderSummary>, OrderRepository_Elastic>();
 
     Services.AddSingleton<RedisDriver>(s => new RedisDriver("Redis", settings));
-    Services.AddSingleton<IOrderRepository_Redis, OrderRepository_Redis>();
+    Services.AddSingleton<RedisRepository<Query>, OrderRepository_Redis>();
 
-    var provider = Services.BuildServiceProvider();
+    Services.AddSingleton<IDTO, DTO>();
+    Services.AddSingleton<IUniversalMapper, UniversalMapper>();
 
-    var _mongoEngine = new dbSDKEngine<Order>(provider.GetRequiredService<IOrderRepository_Mongo>());
+    Services.AddSingleton<EventGiftRandomDataGenerator>();
 
-    string condition = JsonSerializer.Serialize(new Test_Condition("EVT2569_GFT98142"));
+    Services.AddSingleton<ObjectExtension>();
 
-    await _mongoEngine.TestFlow(condition, RandomDataGenerator.EventGiftGenerator.Generate());
-
-
-    Console.WriteLine("執行結束");
-    Console.ReadKey();
 }
 
-
-
-
-#region 開發區_後面要刪除
-async Task Mongo()
+async Task TestFlow_Mongo(MongoRepository<Order> MongoRepo, ElasticRepository<OrderSummary> ElasticRepo,
+    IDTO dto, 
+    EventGiftRandomDataGenerator TestDataEngine, ObjectExtension objectExtension)
 {
-    //Services.AddSingleton<MongoDBDriver>(s => new MongoDBDriver("MongoDB", _dbInfo));
-    Services.AddSingleton<IOrderRepository_Mongo, OrderRepository_Mongo>();
+    var _mongoEngine = new DbSDKEngine<Order>(MongoRepo);
 
-    var provider = Services.BuildServiceProvider();
-    var OrderRepo = provider.GetRequiredService<IOrderRepository_Mongo>();
-  
-    await OrderRepo.insertData(RandomDataGenerator.EventGiftGenerator.Generate());
+    
+
+    Result response;
+
+    EventGiftModel Data = TestDataEngine.Generate();
+    string condition = JsonSerializer.Serialize(dto.GetCondition(Data.event_id));
+
+    EventGiftModel dev_DATA = objectExtension.Copy(Data);
+    dev_DATA.event_id += "Dev";
+
+    string NewData = JsonSerializer.Serialize(dev_DATA);
+
+
+    /// MongoDB測試流程：Insert -> Update -> Read -> Remove
+    response = (Result)await _mongoEngine.Insert(Data);
+    Console.WriteLine($"{response.Msg}。請按一下繼續下一步......{Data.event_id}"); Console.ReadKey();
+    response = (Result)await _mongoEngine.Update(condition, dev_DATA);
+    Console.WriteLine($"{response.Msg}......條件{condition} 更新為{NewData}"); Console.ReadKey();
+
+    condition = JsonSerializer.Serialize(dto.GetCondition(dev_DATA.event_id));
+    response = (Result)await _mongoEngine.Read(condition);
+    Console.WriteLine($"{response.Msg}。請按一下繼續下一步......{response.DataJson}"); Console.ReadKey();
+    response = (Result)await _mongoEngine.Remove(condition);
+    Console.WriteLine($"已完成資料移除。請按一下結束測試流程......已刪除 {condition}資料"); Console.ReadKey();
+
+
+
+    /// ElasticSearch測試流程：Insert -> Update -> Read -> Remove
+    var _elasticEngine = new DbSDKEngine<OrderSummary>(ElasticRepo);
+    EventGiftSummaryModel Data_Summry = TestDataEngine.ToSummary(Data);
+    string condition_Summry = JsonSerializer.Serialize(dto.GetCondition(Data_Summry.event_id));
+
+    EventGiftSummaryModel dev_DATA_Summry = objectExtension.Copy(Data_Summry);
+    dev_DATA_Summry.event_id += "Dev";
+
+    string NewData_Summry = JsonSerializer.Serialize(dev_DATA_Summry);
+
+    response = (Result)await _elasticEngine.Insert(Data_Summry);
+    Console.WriteLine($"{response.Msg}。請按一下繼續下一步......{Data.event_id}"); Console.ReadKey();
+    response = (Result)await _elasticEngine.Update(condition_Summry, dev_DATA_Summry);
+    Console.WriteLine($"{response.Msg}......條件{condition_Summry} 更新為{NewData_Summry}"); Console.ReadKey();
+
+    condition = JsonSerializer.Serialize(dto.GetCondition(dev_DATA_Summry.event_id));
+    response = (Result)await _elasticEngine.Read(condition);
+    Console.WriteLine($"{response.Msg}。請按一下繼續下一步......{response.DataJson}"); Console.ReadKey();
+    response = (Result)await _elasticEngine.Remove(condition_Summry);
+    Console.WriteLine($"已完成資料移除。請按一下結束測試流程......已刪除 {condition}資料"); Console.ReadKey();
+
 }
 
-async Task Elastic()
-{
-    //Services.AddSingleton<ElasticDriver>(s => new ElasticDriver("Elastic", _dbInfo));
-    Services.AddSingleton<IOrderRepository_Elastic, OrderRepository_Elastic>();
 
-    var provider = Services.BuildServiceProvider();
-    var OrderRepo = provider.GetRequiredService<IOrderRepository_Elastic>();
-    var engine = new dbSDKEngine<OrderSummary>(provider.GetRequiredService<IOrderRepository_Elastic>());
 
-    OrderRepo.changeTable("order");
-    await OrderRepo.insertData(RandomDataGenerator.EventGiftGenerator.ToSummary(RandomDataGenerator.EventGiftGenerator.Generate()));
-
-}
-
-void Redis()
-{
-    //Services.AddSingleton<RedisDriver>(s => new RedisDriver("Redis", _redisDBInfo));
-    Services.AddSingleton<IOrderRepository_Redis, OrderRepository_Redis>();
-
-    var provider = Services.BuildServiceProvider();
-    var OrderRepo = provider.GetRequiredService<IOrderRepository_Redis>();
-
-    OrderRepo.pollingData();
-}
-#endregion
-
-public class Test_Condition
-{
-    public string _id { get; }
-    public Test_Condition(string id)
-    {
-        _id = id;
-    }
-}

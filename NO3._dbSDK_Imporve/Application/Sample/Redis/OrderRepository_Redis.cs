@@ -4,7 +4,7 @@ using NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis;
 
 namespace NO3._dbSDK_Imporve.Application.Sample.Redis
 {
-    public class OrderRepository_Redis : RedisRepository<Query>, IOrderRepository_Redis
+    public class OrderRepository_Redis : RedisRepository<Query>
     {
         public OrderRepository_Redis(RedisDriver Driver) : base(Driver, "Query")
         {

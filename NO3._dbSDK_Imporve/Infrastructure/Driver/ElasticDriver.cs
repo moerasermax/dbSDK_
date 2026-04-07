@@ -4,7 +4,7 @@ using NO3._dbSDK_Imporve.Core.Models;
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Driver
 {
-    public class ElasticDriver : dbDriver
+    public class ElasticDriver : DbDriver
     {
         protected ElasticsearchClient _client;
         public ElasticDriver(string Service, ConnectionSettings _dbInfo) : base(Service)
@@ -14,7 +14,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Driver
 
             _client = new ElasticsearchClient(settings);
         }
-        public ElasticsearchClient getClient()
+        public ElasticsearchClient GetClient()
         {
             return this._client;
         }

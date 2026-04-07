@@ -3,6 +3,9 @@ using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
 using StackExchange.Redis;
 using System.Reflection;
+using System.Text.Json;
+using static MongoDB.Driver.WriteConcern;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
 {
@@ -14,50 +17,49 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
         {
             _db = Driver.GetDataBase();
         }
-        public async Task<IResult> insertData(T Data)
+        public async Task<IResult> InsertData(T Data)
         {
-            Dictionary<string, string> dic = RedisMap.GetObjectProperties<T>(Data);
+            string RequestData = JsonSerializer.Serialize(Data);
             string respose = "";
             try
             {
-                foreach (var item in dic)
-                {
-                    await _db.StringSetAsync(item.Key, item.Value);
-                    respose += string.Format("{0} 新增成功\r\n", item.Value);
-                }
-                return Result.setResult(string.Format("[Redis]資料新增成功。\r\n{0}", respose));
+
+                var response = await _db.ListRightPushAsync(GetKey(RequestData), RequestData);
+                respose += string.Format("{0} 新增成功\r\n", RequestData);
+
+                return Result.SetResult(string.Format("[Redis]資料新增成功。\r\n{0}", respose));
             }
             catch (Exception ex)
             {
-                return Result.setErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
             }
         }
 
-        public async Task<IResult> getData(string ConditionData_Json)
+        public async Task<IResult> GetData(string ConditionData_Json)
         {
             try
             {
-                RedisValue result = await _db.StringGetAsync(ConditionData_Json);
-                return Result.setResult("[RedisSDK]查詢資料成功。", result);
+                RedisValue result = await _db.ListLeftPopAsync(ConditionData_Json);
+                return Result.SetResult("[RedisSDK]查詢資料成功。", result);
             }
             catch (Exception ex)
             {
-                return Result.setErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
             }
         }
-        public async Task<IResult> removeData(string ConditionData_Json)
+        public async Task<IResult> RemoveData(string ConditionData_Json)
         {
             try
             {
                 var response = await _db.KeyDeleteAsync(ConditionData_Json);
-                return Result.setResult("[RedisSDK]刪除資料成功。");
+                return Result.SetResult("[RedisSDK]刪除資料成功。");
             }
             catch (Exception ex)
             {
-                return Result.setErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
             }
         }
-        public async Task<IResult> pollingData()
+        public async Task<IResult> PollingData()
         {
             try
             {
@@ -66,23 +68,35 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
 
                 if (!queryResult.Contains("Result\":null"))
                 {
-                    return  Result.setResult("[RedisSDK]資料拉取成功。", queryResult);
+                    return Result.SetResult("[RedisSDK]資料拉取成功。", queryResult);
                 }
                 else
                 {
-                    return  Result.setResult("[RedisSDK]目前Redis Buffer是空的");
+                    return Result.SetResult("[RedisSDK]目前Redis Buffer是空的");
                 }
             }
             catch (Exception ex)
             {
-                return Result.setErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
             }
         }
 
-
-        public async Task<IResult> updateData(string ConditionData_Json, T UpdateData)
+        string GetKey(string Request)
         {
-            return Result.setErrorResult(MethodBase.GetCurrentMethod()?.Name, "[Redis]因Redis本身機制，再新增資料時若有相同的Key變會直接覆蓋，因此不需進行此實作。");
+
+            if (Request.Contains("Mongo"))
+            {
+                return string.Format($"Request_Mongo");
+            }
+            else
+            {
+                return string.Format($"Request_Elastic");
+            }
+        }
+
+        public async Task<IResult> UpdateData(string ConditionData_Json, T UpdateData)
+        {
+            return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, "[Redis]因Redis本身機制，再新增資料時若有相同的Key變會直接覆蓋，因此不需進行此實作。");
         }
     }
 }

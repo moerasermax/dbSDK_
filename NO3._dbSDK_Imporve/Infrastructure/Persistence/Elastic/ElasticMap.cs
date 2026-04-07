@@ -1,38 +1,41 @@
-﻿using MongoDB.Bson;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic;
 using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
+public class ElasticMap
 {
-    public class ElasticMap
+    public ElasticFilter ToFilter(string ConditionData_Json)
     {
-        public ElasticFilter toFilter(string ConditionData_Json)
+        ElasticFilter filter = new ElasticFilter();
+
+        using (JsonDocument doc = JsonDocument.Parse(ConditionData_Json))
         {
-            ElasticFilter filter = new ElasticFilter();
-            using (JsonDocument doc = JsonDocument.Parse(ConditionData_Json))
+            JsonElement root = doc.RootElement;
+
+            // 遍歷所有的屬性
+            foreach (JsonProperty property in root.EnumerateObject())
             {
-                JsonElement root = doc.RootElement;
+                string key = property.Name;
+                JsonElement value = property.Value;
 
-                // 遍歷所有的屬性
-                foreach (JsonProperty property in root.EnumerateObject())
+                // 【關鍵新增】：處理 Elasticsearch 的字串分詞陷阱
+                // 如果值是字串，且不是 Elasticsearch 的保留字元 (如 _id)
+                if (value.ValueKind == JsonValueKind.String && key != "_id" && key.ToLower() != "id")
                 {
-                    string key = property.Name;
-                    JsonElement value = property.Value;
-
-                    filter.Eq(key, value);
+                    // 防呆機制：避免別人已經手動加了 .keyword 我們又重複加，Elastic自動映射一定要加
+                    if (!key.EndsWith(".keyword"))
+                    {
+                        key = $"{key}.keyword";
+                    }
                 }
+
+                // 使用 .Clone() 解決 ObjectDisposedException
+                filter.Eq(key, value.Clone());
             }
-            return filter;
         }
+        return filter;
+    }
 
-
-        public static ElasticMap getInstance() { return _Instance;  }
-        private static ElasticMap _Instance = new ElasticMap();
-        private ElasticMap() { }
-        
+    public ElasticMap()
+    {
     }
 }
