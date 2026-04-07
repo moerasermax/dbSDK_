@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Eou8SJuQy6w=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tzsia\\Desktop\\WorkSpace\\測試專案\\NO3._dbSDK_Imporve\\CPF.RedisPost\\CPF.RedisPost.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tzsia\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.23.0\\microsoft.visualstudio.azure.containers.tools.targets.1.23.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CPF.RedisPost": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
