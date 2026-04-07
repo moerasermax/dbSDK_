@@ -4,15 +4,15 @@ using StackExchange.Redis;
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Driver
 {
-    public class RedisDriver : dbDriver
+    public class RedisDriver : DbDriver
     {
         ConnectionMultiplexer _redis;
         public RedisDriver(string Service, ConnectionSettings dbInfo) : base(Service)
         {
-                _redis = ConnectionMultiplexer.Connect(getConnectInfo(dbInfo));
+                _redis = ConnectionMultiplexer.Connect(GetConnectInfo(dbInfo));
         }
 
-        ConfigurationOptions getConnectInfo(ConnectionSettings dbInfo)
+        ConfigurationOptions GetConnectInfo(ConnectionSettings dbInfo)
         {
             return new ConfigurationOptions
             {

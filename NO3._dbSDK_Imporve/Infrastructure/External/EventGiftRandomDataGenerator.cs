@@ -2,7 +2,7 @@
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
 
-namespace NO3._dbSDK_Imporve.Core.DTO
+namespace NO3._dbSDK_Imporve.Infrastructure.External
 {
     public class EventGiftRandomDataGenerator : BaseRandomDataGenerator, IRandamDataGenerator<EventGiftModel, EventGiftSummaryModel>
     {
@@ -29,7 +29,7 @@ namespace NO3._dbSDK_Imporve.Core.DTO
 
             return list;
         }
-        public EventGiftModel CreateRandomItem()
+        private EventGiftModel CreateRandomItem()
         {
             // 基礎識別碼
             string eventId = $"EVT{NextInt(1000, 9999)}";

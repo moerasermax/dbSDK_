@@ -29,7 +29,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.MAP
                 expr.CreateMap(sourceType, destType);
 
                 // 將 Expression 傳入 MapperConfiguration 的建構式中
-                var config = new MapperConfiguration(expr, new LoggerFactory());
+                var config = new MapperConfiguration(expr, new NullLoggerFactory());
 
                 return config.CreateMapper();
             });
@@ -40,7 +40,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.MAP
     }
 
 
-    public class LoggerFactory : ILoggerFactory
+    public class NullLoggerFactory : ILoggerFactory
     {
         public void AddProvider(ILoggerProvider provider)
         {
@@ -50,7 +50,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.MAP
         public ILogger CreateLogger(string categoryName)
         {
 
-            return new logger();
+            return new NullLogger();
         }
 
         public void Dispose()
@@ -58,7 +58,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.MAP
 
         }
     }
-    public class logger : ILogger
+    public class NullLogger : ILogger
     {
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull
         {
@@ -67,30 +67,12 @@ namespace NO3._dbSDK_Imporve.Infrastructure.MAP
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            switch (logLevel)
-            {
-                case LogLevel.Trace:
-                    return true;
-                case LogLevel.Debug:
-                    return true;
-                case LogLevel.Information:
-                    return true;
-                case LogLevel.Warning:
-                    return true;
-                case LogLevel.Error:
-                    return true;
-                case LogLevel.Critical:
-                    return true;
-                case LogLevel.None:
-                    return true;
-                default:
-                    return true;
-            }
+            return true;
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            Console.WriteLine($"{logLevel} {eventId} {state}");
+            
         }
     }
 }

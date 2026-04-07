@@ -1,11 +1,13 @@
-﻿namespace NO3._dbSDK_Imporve.Core.Models
+﻿using Microsoft.Extensions.Logging;
+
+namespace NO3._dbSDK_Imporve.Core.Models
 {
     public class Condition
     {
-        public string _id { get; }
-        public Condition(string id)
+        public string event_id { get; }
+        public Condition(string Event_id)
         {
-            _id = id;
+            event_id = Event_id;
         }
     }
 }

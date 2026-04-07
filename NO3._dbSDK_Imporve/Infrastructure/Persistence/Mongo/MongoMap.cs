@@ -1,14 +1,10 @@
 ﻿using MongoDB.Bson;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
 {
     public class MongoMap
     {
+        public MongoMap() { }
         /// <summary>
         /// 將任何物件轉換為 BsonDocument
         /// </summary>
@@ -30,12 +26,5 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
         {
             return list.Select(item => ToBsonDocument(item));
         }
-
-
-
-        public static MongoMap getInstance() { return _Instance; }
-        private static MongoMap _Instance = new MongoMap();
-        private MongoMap() { }
-
     }
 }

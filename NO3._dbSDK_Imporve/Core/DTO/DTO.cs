@@ -5,7 +5,7 @@ namespace NO3._dbSDK_Imporve.Core.DTO
 {
     public class DTO : IDTO
     {
-        public Condition getCondition(string id)
+        public Condition GetCondition(string id)
         {
             return new Condition(id);
         }

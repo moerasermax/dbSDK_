@@ -3,7 +3,7 @@ using NO3._dbSDK_Imporve.Core.Abstraction;
 using NO3._dbSDK_Imporve.Core.Models;
 namespace NO3._dbSDK_Imporve.Infrastructure.Driver
 {
-    public class MongoDBDriver : dbDriver
+    public class MongoDBDriver : DbDriver
     {
         MongoClient _client;
 

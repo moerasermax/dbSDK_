@@ -5,6 +5,6 @@ namespace NO3._dbSDK_Imporve.Core.Interface
 {
     public interface IDTO
     {
-        public Condition getCondition(string id);
+        public Condition GetCondition(string EventId);
     }
 }
