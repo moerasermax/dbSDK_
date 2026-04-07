@@ -23,18 +23,10 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
             string respose = "";
             try
             {
-                ///後面要修掉
-                if (RequestData.Contains("Mongo"))
-                {
-                    var response = await _db.ListRightPushAsync(string.Format($"Request_Mongo"), RequestData);
-                }
-                else
-                {
-                    var response = await _db.ListRightPushAsync(string.Format($"Request_Elastic"), RequestData);
-                }
-                    
-                    respose += string.Format("{0} 新增成功\r\n", RequestData);
-                
+
+                var response = await _db.ListRightPushAsync(GetKey(RequestData), RequestData);
+                respose += string.Format("{0} 新增成功\r\n", RequestData);
+
                 return Result.SetResult(string.Format("[Redis]資料新增成功。\r\n{0}", respose));
             }
             catch (Exception ex)
@@ -76,11 +68,11 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
 
                 if (!queryResult.Contains("Result\":null"))
                 {
-                    return  Result.SetResult("[RedisSDK]資料拉取成功。", queryResult);
+                    return Result.SetResult("[RedisSDK]資料拉取成功。", queryResult);
                 }
                 else
                 {
-                    return  Result.SetResult("[RedisSDK]目前Redis Buffer是空的");
+                    return Result.SetResult("[RedisSDK]目前Redis Buffer是空的");
                 }
             }
             catch (Exception ex)
@@ -89,6 +81,18 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
             }
         }
 
+        string GetKey(string Request)
+        {
+
+            if (Request.Contains("Mongo"))
+            {
+                return string.Format($"Request_Mongo");
+            }
+            else
+            {
+                return string.Format($"Request_Elastic");
+            }
+        }
 
         public async Task<IResult> UpdateData(string ConditionData_Json, T UpdateData)
         {
