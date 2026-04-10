@@ -1,3 +1,5 @@
+using CPF.Service.SendDataToElasticCloud.Model;
+using CPF.Services.Redis.Post.Model.Elastic;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
@@ -22,18 +24,17 @@ namespace CPF.Service.SendDataToElasticCloud
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Query query = new Query("Request_Elastic");
-
+            ElasticAddOrder query = new ElasticAddOrder();
+            string Key = "Request_Elastic";
             try
             {
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    string queryStr = JsonSerializer.Serialize(_dto.GetCondition(query.QueryDB));
-                    result = await _Redis.GetData(query.QueryDB) as Result;
+                    result = await _Redis.GetData(Key) as Result;
 
                     if (result != null)
                     {
-                        Query response = JsonSerializer.Deserialize<Query>(result.DataJson);
+                        ElasticAddOrder response = JsonSerializer.Deserialize<ElasticAddOrder>(result.DataJson);
 
                         Do(response);
 
@@ -51,36 +52,62 @@ namespace CPF.Service.SendDataToElasticCloud
 
         }
 
-        async Task Do(Query query)
+        async Task Do(ElasticAddOrder query)
         {
-            EventGiftSummaryModel data;
+            
             Condition condition;
-            switch (query.QueryType)
+            switch (query.Name)
             {
-                case "Insert":
-                    data = JsonSerializer.Deserialize<EventGiftSummaryModel>(query.OrderData);
+                case "AddOrderEvent":
+
+                    OrderInfoModel data = new OrderInfoModel();
+
+                    data.CoomNo = query.Args.CoomNo;
+                    data.CoomName = query.Args.CoomName;
+                    data.CoomStatus = query.Args.CoomStatus;
+                    data.CoomTempType = query.Args.CoomTempType;
+                    data.CoomCreateDatetime = query.Args.CoomCreateDatetime;
+                    data.CoomCuamCid = query.Args.CoomCuamCid;
+                    data.CoocNo = query.Args.CoocNo;
+                    data.CoocPaymentType = query.Args.CoocPaymentType;
+                    data.CoocDeliverMethod = query.Args.CoocDeliverMethod;
+                    data.CoocOrdChannelKind = query.Args.CoocOrdChannelKind;
+                    data.CoocMemSid = query.Args.CoocMemSid;
+                    data.CoocPaymentPayDatetime = query.Args.CoocPaymentPayDatetime;
+                    data.CoodNames = query.Args.CoodNames.ToArray();
+                    data.CoomRcvTotalAmt = query.Args.CoomRcvTotalAmt;
+                    data.CoodItems = query.Args.CoodItems.Select(x => new CoodItems()
+                    {
+                        CgddCgdmid = x.CgddCgdmid,
+                        CgddId = x.CgddId,
+                        CoodCgdsId = x.CoodCgdsId,
+                        CoodName = x.CoodName,
+                        CoodQty = x.CoodQty,
+                        CoodImagePath = x.CgddId,
+                    }).ToArray();
+
                     await _elasticRepo.InsertData(data);
                     break;
-                case "Update":
-                    data = JsonSerializer.Deserialize<EventGiftSummaryModel>(query.OrderData);
-                    condition = _dto.GetCondition(data.event_id.Replace("Dev", "").ToString());
-                    await _elasticRepo.UpdateData(JsonSerializer.Serialize(condition), data);
-                    break;
-                case "Read":
-                    data = JsonSerializer.Deserialize<EventGiftSummaryModel>(query.OrderData);
-                    condition = _dto.GetCondition(data.event_id);
-                    result = await _elasticRepo.GetData(JsonSerializer.Serialize(condition)) as Result;
+                //case "Update":
+                //    data = JsonSerializer.Deserialize<EventGiftSummaryModel>(query.OrderData);
+                //    condition = _dto.GetCondition(data.event_id.Replace("Dev", "").ToString());
+                //    await _elasticRepo.UpdateData(JsonSerializer.Serialize(condition), data);
+                //    break;
+                //case "Read":
+                //    data = JsonSerializer.Deserialize<EventGiftSummaryModel>(query.OrderData);
+                //    condition = _dto.GetCondition(data.event_id);
+                //    result = await _elasticRepo.GetData(JsonSerializer.Serialize(condition)) as Result;
 
-                    if (result.DataJson != "")
-                    {
-                        Console.WriteLine(result.DataJson);
-                    }
-                    break;
-                case "Delete":
-                    data = JsonSerializer.Deserialize<EventGiftSummaryModel>(query.OrderData);
-                    condition = _dto.GetCondition(data.event_id);
-                    await _elasticRepo.RemoveData(JsonSerializer.Serialize(condition));
-                    break;
+                //    if (result.DataJson != "")
+                //    {
+                //        Console.WriteLine(result.DataJson);
+                //    }
+                //    break;
+                //case "Delete":
+                //    data = JsonSerializer.Deserialize<EventGiftSummaryModel>(query.OrderData);
+                //    condition = _dto.GetCondition(data.event_id);
+                //    await _elasticRepo.RemoveData(JsonSerializer.Serialize(condition));
+                //    break;
                 default:
                     break;
             }

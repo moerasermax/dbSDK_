@@ -1,11 +1,11 @@
-using CPF.Service.SendDataToElasticCloud;
+using CPF.Service.SendDataToMongoDB;
 using NO3._dbSDK_Imporve.Application.Sample.Mongo;
 using NO3._dbSDK_Imporve.Application.Sample.Redis;
-using NO3._dbSDK_Imporve.Core.DTO;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
+using NO3._dbSDK_Imporve.Infrastructure.DTO;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -24,7 +24,7 @@ configuration.GetSection("ConnectionSettings").Bind(settings);
 builder.Services.AddSingleton(new MongoMap());
 builder.Services.AddSingleton<MongoDBDriver>(s => new MongoDBDriver("MongoDB", settings));
 
-builder.Services.AddSingleton<IRepository<Order>, OrderRepository_Mongo>();
+builder.Services.AddSingleton<IRepository<Orders>, OrderRepository_Mongo>();
 
 builder.Services.AddSingleton<RedisDriver>(s => new RedisDriver("Redis",settings));
 builder.Services.AddSingleton<IRepository<Query>, OrderRepository_Redis>();

@@ -10,7 +10,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Driver
         public ElasticDriver(string Service, ConnectionSettings _dbInfo) : base(Service)
         {
             var settings = new ElasticsearchClientSettings(new Uri(_dbInfo.Elastic.EndPoint))
-                .Authentication(new Elastic.Transport.ApiKey(_dbInfo.Elastic.ApiKey));
+                .Authentication(new Elastic.Transport.ApiKey(_dbInfo.Elastic.ApiKey)).ServerCertificateValidationCallback((sender, certificate, chain, errors) => true);
 
             _client = new ElasticsearchClient(settings);
         }

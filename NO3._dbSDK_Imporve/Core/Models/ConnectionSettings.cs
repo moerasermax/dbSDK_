@@ -22,5 +22,6 @@ namespace NO3._dbSDK_Imporve.Core.Models
         public string User { get; set; }
         public string Password { get; set; }   
         public string ApiKey { get; set; }
+        public string CertificateFingerprint {  get; set; }
     }
 }

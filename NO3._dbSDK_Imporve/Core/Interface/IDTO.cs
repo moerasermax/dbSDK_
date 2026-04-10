@@ -1,4 +1,5 @@
 ﻿
+using MongoDB.Bson;
 using NO3._dbSDK_Imporve.Core.Models;
 
 namespace NO3._dbSDK_Imporve.Core.Interface

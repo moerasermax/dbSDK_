@@ -4,27 +4,42 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
 {
     public class MongoMap
     {
-        public MongoMap() { }
-        /// <summary>
-        /// 將任何物件轉換為 BsonDocument
-        /// </summary>
-        /// <typeparam name="T">物件的類型</typeparam>
-        /// <param name="obj">要轉換的物件實例</param>
-        /// <returns>轉換後的 BsonDocument</returns>
         public BsonDocument ToBsonDocument<T>(T obj)
         {
             if (obj == null) return new BsonDocument();
-
-            // 直接利用官方的序列化器，這會尊重類別中的所有 Bson 特性（如 [BsonIgnore]）
             return obj.ToBsonDocument();
         }
 
         /// <summary>
-        /// 將物件清單轉換為 BsonDocument 清單
+        /// 專門為了 Upsert 設計：轉換為扁平化的 $set 字典 (點符號)
         /// </summary>
-        public IEnumerable<BsonDocument> ToBsonDocumentList<T>(IEnumerable<T> list)
+        public BsonDocument ToPatchDocument<T>(T obj)
         {
-            return list.Select(item => ToBsonDocument(item));
+            var rootDoc = ToBsonDocument(obj);
+            rootDoc.Remove("_id"); // Upsert 不更新 ID
+
+            var patchDoc = new BsonDocument();
+            FlattenAndFill(patchDoc, "", rootDoc);
+            return patchDoc;
+        }
+
+        private void FlattenAndFill(BsonDocument result, string prefix, BsonDocument current)
+        {
+            foreach (var element in current)
+            {
+                var path = string.IsNullOrEmpty(prefix) ? element.Name : $"{prefix}.{element.Name}";
+
+                // 如果是子物件，繼續遞迴扁平化
+                if (element.Value.IsBsonDocument)
+                {
+                    FlattenAndFill(result, path, element.Value.AsBsonDocument);
+                }
+                else
+                {
+                    // 這是最終要 $set 的點符號路徑
+                    result.Add(path, element.Value);
+                }
+            }
         }
     }
 }

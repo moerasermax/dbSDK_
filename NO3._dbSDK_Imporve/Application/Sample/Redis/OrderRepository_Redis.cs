@@ -9,5 +9,11 @@ namespace NO3._dbSDK_Imporve.Application.Sample.Redis
         public OrderRepository_Redis(RedisDriver Driver) : base(Driver, "Query")
         {
         }
+        public string QueryDB { get; set; }
+        public override string GetKey()
+        {
+            return QueryDB;
+        }
+
     }
 }

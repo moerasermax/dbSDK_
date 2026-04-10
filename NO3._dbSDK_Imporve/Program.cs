@@ -4,13 +4,12 @@ using NO3._dbSDK_Imporve.Application;
 using NO3._dbSDK_Imporve.Application.Sample.Elastic;
 using NO3._dbSDK_Imporve.Application.Sample.Mongo;
 using NO3._dbSDK_Imporve.Application.Sample.Redis;
-using NO3._dbSDK_Imporve.Core.DTO;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.External;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
-using NO3._dbSDK_Imporve.Infrastructure.External;
+using NO3._dbSDK_Imporve.Infrastructure.DTO;
 using NO3._dbSDK_Imporve.Infrastructure.MAP;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
@@ -23,7 +22,7 @@ var Services = new ServiceCollection();
 init();
 var provider = Services.BuildServiceProvider();
 
-await TestFlow_Mongo(provider.GetRequiredService<MongoRepository<Order>>(), provider.GetRequiredService<ElasticRepository<OrderSummary>>(),
+await TestFlow_Mongo(provider.GetRequiredService<MongoRepository<Orders>>(), provider.GetRequiredService<ElasticRepository<OrderSummary>>(),
     provider.GetRequiredService<IDTO>()
     , provider.GetRequiredService<EventGiftRandomDataGenerator>(), provider.GetRequiredService<ObjectExtension>());
 
@@ -34,16 +33,16 @@ void init()
     .AddJsonFile("appsettings.json", optional: false)
     .Build();
 
-
+    var settings = new ConnectionSettings();
 
     Services.AddSingleton(new MongoMap());
     Services.AddSingleton(new ElasticMap());
 
-    var settings = new ConnectionSettings();
+    
     configuration.GetSection("ConnectionSettings").Bind(settings);
 
     Services.AddSingleton<MongoDBDriver>(s => new MongoDBDriver("MongoDB", settings));
-    Services.AddSingleton<MongoRepository<Order>, OrderRepository_Mongo>();
+    Services.AddSingleton<MongoRepository<Orders>, OrderRepository_Mongo>();
 
     Services.AddSingleton<ElasticDriver>(s => new ElasticDriver("Elastic", settings));
     Services.AddSingleton<ElasticRepository<OrderSummary>, OrderRepository_Elastic>();
@@ -60,11 +59,11 @@ void init()
 
 }
 
-async Task TestFlow_Mongo(MongoRepository<Order> MongoRepo, ElasticRepository<OrderSummary> ElasticRepo,
+async Task TestFlow_Mongo(MongoRepository<Orders> MongoRepo, ElasticRepository<OrderSummary> ElasticRepo,
     IDTO dto, 
     EventGiftRandomDataGenerator TestDataEngine, ObjectExtension objectExtension)
 {
-    var _mongoEngine = new DbSDKEngine<Order>(MongoRepo);
+    var _mongoEngine = new DbSDKEngine<Orders>(MongoRepo);
 
     
 

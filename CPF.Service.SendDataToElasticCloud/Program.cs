@@ -2,12 +2,13 @@ using CPF.Service.SendDataToElasticCloud;
 using NO3._dbSDK_Imporve.Application.Sample.Elastic;
 using NO3._dbSDK_Imporve.Application.Sample.Mongo;
 using NO3._dbSDK_Imporve.Application.Sample.Redis;
-using NO3._dbSDK_Imporve.Core.DTO;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
+using NO3._dbSDK_Imporve.Infrastructure.DTO;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();

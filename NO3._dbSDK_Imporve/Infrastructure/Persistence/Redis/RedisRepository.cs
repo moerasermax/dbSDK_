@@ -4,12 +4,11 @@ using NO3._dbSDK_Imporve.Infrastructure.Driver;
 using StackExchange.Redis;
 using System.Reflection;
 using System.Text.Json;
-using static MongoDB.Driver.WriteConcern;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
 {
-    public class RedisRepository<T> : IRepository<T>
+    public abstract class RedisRepository<T> : IRepository<T> 
     {
         IDatabase _db;
 
@@ -19,12 +18,12 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
         }
         public async Task<IResult> InsertData(T Data)
         {
-            string RequestData = JsonSerializer.Serialize(Data);
+            string RequestData = JsonSerializer.Serialize((object)Data, new JsonSerializerOptions() { IncludeFields = true });
             string respose = "";
             try
             {
 
-                var response = await _db.ListRightPushAsync(GetKey(RequestData), RequestData);
+                var response = await _db.ListRightPushAsync(GetKey(), RequestData);
                 respose += string.Format("{0} 新增成功\r\n", RequestData);
 
                 return Result.SetResult(string.Format("[Redis]資料新增成功。\r\n{0}", respose));
@@ -81,22 +80,11 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis
             }
         }
 
-        string GetKey(string Request)
-        {
-
-            if (Request.Contains("Mongo"))
-            {
-                return string.Format($"Request_Mongo");
-            }
-            else
-            {
-                return string.Format($"Request_Elastic");
-            }
-        }
-
         public async Task<IResult> UpdateData(string ConditionData_Json, T UpdateData)
         {
             return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, "[Redis]因Redis本身機制，再新增資料時若有相同的Key變會直接覆蓋，因此不需進行此實作。");
         }
+
+        public abstract string GetKey();
     }
 }

@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
+using NO3._dbSDK_Imporve.Infrastructure.DTO;
 using System.Reflection;
 
 
@@ -13,13 +14,15 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
 
         IMongoCollection<T> _Collection { get; set; }
         private readonly MongoMap _map;
+        private readonly IDTO _dto;
 
-        public MongoRepository(MongoDBDriver driver, MongoMap mongoMap, string collectionName) 
+        public MongoRepository(MongoDBDriver driver, MongoMap mongoMap, IDTO dto , string collectionName) 
         {
             
             var db = driver.GetDatabase(collectionName);
             _Collection = db.GetCollection<T>(collectionName);
             _map = mongoMap;
+            _dto = dto;
         }
 
         async Task<IResult> IRepository<T>.GetData(string ConditionData_Json)
@@ -85,8 +88,18 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
 
                 BsonDocument _updateData = _map.ToBsonDocument(UpdateData);
 
-                var queryResult = await _Collection.FindOneAndUpdateAsync(filter, _updateData);
+                var options = new FindOneAndUpdateOptions<T> // 如果沒強型別可以把 <YourModelClass> 拿掉
+                {
+                    IsUpsert = true,
 
+                    // 強烈建議加上這行：
+                    // 預設情況下會回傳「更新前」的舊資料。如果是新插入(Upsert)，舊資料會是 null。
+                    // 改成 ReturnDocument.After 可以確保你拿到的是「最新更新/插入後」的完整資料。
+                    ReturnDocument = ReturnDocument.After
+                };
+
+                var queryResult = await _Collection.FindOneAndUpdateAsync(filter, _updateData, options);
+                
                 if (queryResult != null)
                 {
                     return Result.SetResult("[MongoDBSDK]資料更新成功。", queryResult.ToJson());

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "CPF.Service.SendDataToElasticCloud": {
+    "CPF.Service.SendDataToMongoDB": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"

@@ -4,10 +4,10 @@ namespace NO3._dbSDK_Imporve.Core.Models
 {
     public class Condition
     {
-        public string event_id { get; }
-        public Condition(string Event_id)
+        public string _coom_no { get; }
+        public Condition(string coom_no)
         {
-            event_id = Event_id;
+            _coom_no = coom_no;
         }
     }
 }

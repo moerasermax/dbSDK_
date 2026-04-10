@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-CPF.Service.SendDataToElasticCloud-b058e077-c700-4695-998a-a920c55693c8</UserSecretsId>
+    <UserSecretsId>dotnet-CPF.Service.SendDataToMongoDB-b058e077-c700-4695-998a-a920c55693c8</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CPF.Services.Redis.Post\CPF.Services.Redis.Post.csproj" />
     <ProjectReference Include="..\NO3._dbSDK_Imporve\NO3._dbSDK_Imporve.csproj" />
   </ItemGroup>
 </Project>

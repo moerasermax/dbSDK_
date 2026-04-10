@@ -1,11 +1,11 @@
 ﻿
 namespace NO3._dbSDK_Imporve.Core.Entity
 {
-    public class EventGiftModel : Order
+    public class EventGiftModel : Orders
     {
         // 仍建議保留此標記，明確指定此屬性對應 MongoDB 的 _id 欄位
 
-        public string Id { get; set; }
+        public string id { get; set; }
 
         // 1. 基礎資訊
         public string event_id { get; set; }
@@ -76,7 +76,7 @@ namespace NO3._dbSDK_Imporve.Core.Entity
         public string create_date { get; set; }
     }
 
-    public class Order
+    public class Orders
     {
 
     }

@@ -1,35 +1,22 @@
-﻿using NO3._dbSDK_Imporve.Core.Abstraction;
-using NO3._dbSDK_Imporve.Core.Entity;
+﻿using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
+using NO3._dbSDK_Imporve.Infrastructure.External;
 
-namespace NO3._dbSDK_Imporve.Infrastructure.External
+namespace NO3._dbSDK_Imporve.Application
 {
-    public class EventGiftRandomDataGenerator : BaseRandomDataGenerator, IRandamDataGenerator<EventGiftModel, EventGiftSummaryModel>
+    public class EventGiftRandomDataGenerator : BaseRandomDataGenerator<EventGiftModel> 
     {
         private readonly IUniversalMapper _map;
-
         public EventGiftRandomDataGenerator(IUniversalMapper map)
         {
             _map = map;
         }
-
-        public EventGiftModel Generate()
+        public EventGiftSummaryModel ToSummary(EventGiftModel full)
         {
-            return CreateRandomItem();
+            return _map.Map<EventGiftModel, EventGiftSummaryModel>(full);
         }
-        public List<EventGiftModel> Generate(int count)
-        {
-            var list = new List<EventGiftModel>();
 
-            for (int i = 0; i < count; i++)
-            {
-                var item = CreateRandomItem();
-                list.Add(item);
-            }
-
-            return list;
-        }
-        private EventGiftModel CreateRandomItem()
+        public override EventGiftModel CreateRandomItem()
         {
             // 基礎識別碼
             string eventId = $"EVT{NextInt(1000, 9999)}";
@@ -43,7 +30,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.External
             return new EventGiftModel
             {
                 // 1. 手動實作 _id (串接 PK_SK)
-                Id = $"{eventId}_{giftId}",
+                id = $"{eventId}_{giftId}",
 
                 // 2. 基礎資訊
                 event_id = eventId,
@@ -114,10 +101,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.External
                 create_date = nowStr
             };
         }
-        public EventGiftSummaryModel ToSummary(EventGiftModel full)
-        {
-            return _map.Map<EventGiftModel, EventGiftSummaryModel>(full);
-        }
+        
 
     }
 }
