@@ -3,7 +3,7 @@ namespace NO3._dbSDK_Imporve.Core.Entity
 {
     public class Query
     {
-
+        public string? Name { get; set; } = null;
 
     }
 

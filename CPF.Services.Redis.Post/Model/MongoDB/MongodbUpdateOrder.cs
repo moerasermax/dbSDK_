@@ -1,10 +1,9 @@
 ﻿using NO3._dbSDK_Imporve.Core.Entity;
-
+using CPF.Services.Redis.Post.Model.MongoDB.Order;
 namespace CPF.Services.Redis.Post.Model.MongoDB
 {
     public class MongodbUpdateOrder : Query
     {
-        public string? Name { get; set; } = null;
         public SellerMemoArgs? Args { get; set; } = null;
     }
     public class SellerMemoArgs
@@ -15,6 +14,6 @@ namespace CPF.Services.Redis.Post.Model.MongoDB
 
         //[Required(ErrorMessage = "「CoomSellerMemo」是必填欄位")]
         //[MaxLength(200, ErrorMessage = "「CoomSellerMemo」長度不能超過 200 個字元")]
-        public string? CoomSellerMemo { get; set; } = null;
+        public C_Order_M_Model? coom { get; set; } = null;
     }
 }

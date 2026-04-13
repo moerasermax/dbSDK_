@@ -1,10 +1,6 @@
 using CPF.Services.Redis.Post.Model;
-using CPF.Services.Redis.Post.Model.Elastic;
-using CPF.Services.Redis.Post.Model.MongoDB;
 using NO3._dbSDK_Imporve.Application.Sample.Redis;
-using NO3._dbSDK_Imporve.Core.Entity;
-using NO3._dbSDK_Imporve.Core.Interface;
-using System.Text.Json;
+
 namespace CPF.Services.Redis.Post
 {
     public class Worker_ForCPF : BackgroundService
@@ -25,7 +21,9 @@ namespace CPF.Services.Redis.Post
             while (true)
 
             {
-                System.Console.WriteLine("[Redis_Post]按下【1】，發送【一般】【新增/修改】的Request");
+                System.Console.WriteLine("[Redis_Post]按下【1】，發送【一般】【新增】的Request");
+                System.Console.WriteLine("[Redis_Post]按下【2】，發送【一般】【修改】的Request");
+
                 var keyInfo = Console.ReadKey(intercept: true); // true 代表不把按下的字顯示在螢幕上
 
                 if (keyInfo.KeyChar.ToString().Equals("1"))
@@ -74,8 +72,9 @@ namespace CPF.Services.Redis.Post
 
         async void UpdateFolw()
         {
-            var UpdateData = _CPF_TestDataEngine.GetMongoUpDataObject("Test");
+            var UpdateData = _CPF_TestDataEngine.GetMongoUpDataObject("CM9050659946371");
 
+            _redis.QueryDB = "Request_MongoDB";
             await _redis.InsertData(UpdateData);
 
         }

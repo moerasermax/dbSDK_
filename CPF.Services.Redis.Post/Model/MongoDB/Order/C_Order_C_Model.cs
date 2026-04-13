@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace CPF.Service.SendDataToMongoDB.Model.Order
+namespace CPF.Services.Redis.Post.Model.MongoDB.Order
 {
     public class C_Order_C_Model
     {

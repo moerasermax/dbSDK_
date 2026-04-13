@@ -1,7 +1,7 @@
 ﻿using System;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace CPF.Service.SendDataToMongoDB.Model.User
+namespace CPF.Services.Redis.Post.Model.MongoDB.User
 {
     public class C_User_Account_M_Model
     {

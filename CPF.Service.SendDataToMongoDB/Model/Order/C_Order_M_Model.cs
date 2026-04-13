@@ -22,7 +22,7 @@ namespace CPF.Service.SendDataToMongoDB.Model.Order
 
         [BsonElement("coom_create_datetime")]
         [BsonIgnoreIfNull]
-        public DateTime? CoomCreateDatetime { get; set; }
+        public string? CoomCreateDatetime { get; set; }
 
         [BsonElement("coom_cuam_cid")]
         [BsonIgnoreIfNull]

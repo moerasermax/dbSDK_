@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace CPF.Service.SendDataToMongoDB.Model.Order // 命名空間已同步修改為 MongoDB
+namespace CPF.Services.Redis.Post.Model.MongoDB.Order // 命名空間已同步修改為 MongoDB
 {
     /// <summary>
     /// 貨態主檔

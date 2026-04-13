@@ -5,7 +5,6 @@ namespace CPF.Services.Redis.Post.Model.MongoDB
 {
     public class MongoDBAddOrder : Query
     {
-        public string? Name { get; set; } = null;
         public OrderArgs? Args { get; set; } = null;
     }
     public class OrderArgs

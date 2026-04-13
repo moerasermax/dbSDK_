@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace CPF.Service.SendDataToMongoDB.Model.Order
+namespace CPF.Services.Redis.Post.Model.MongoDB.Order
 {
     /// <summary>
     /// 賣場項目設定檔

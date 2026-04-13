@@ -1,9 +1,10 @@
+using CPF.Service.SendDataToMongoDB.Model;
 using CPF.Service.SendDataToMongoDB.Model.Order;
 using CPF.Services.Redis.Post.Model.MongoDB;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
-using PIC.CPF.OrderSDK.Biz.MongoDB.Model.Orders;
+using System.Reflection;
 using System.Text.Json;
 
 namespace CPF.Service.SendDataToMongoDB
@@ -35,11 +36,16 @@ namespace CPF.Service.SendDataToMongoDB
                 {
                     result = await _Redis.GetData(Key) as Result;
 
-                    if (result != null) 
+                    if (result.DataJson != null) 
                     {
-                        MongoDBAddOrder response = JsonSerializer.Deserialize<MongoDBAddOrder>(result.DataJson);
 
-                        Do(response);
+                        Do(result.DataJson);
+
+                    }
+                    else
+                    {
+                        result = Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, "目前沒有資料");
+                        Console.WriteLine($"目前狀態：{result.IsSuccess}，回報訊息：{result.Msg}");
 
                     }
 
@@ -55,14 +61,16 @@ namespace CPF.Service.SendDataToMongoDB
             
         }
 
-        async Task Do(object query)
+        async Task Do(string Query_Json)
         {
+            Query query = JsonSerializer.Deserialize <Query>(Query_Json);
+
+
             
-            Condition condition;
             switch (query.Name)
             {
                 case "AddOrderEvent":
-                    MongoDBAddOrder Addquery = query as MongoDBAddOrder;
+                    MongoDBAddOrder Addquery = JsonSerializer.Deserialize<MongoDBAddOrder>(Query_Json);
                     OrderModel data = new OrderModel()
                     {
                         C_Order_M = new C_Order_M_Model(),
@@ -146,13 +154,13 @@ namespace CPF.Service.SendDataToMongoDB
                     await _mongoRepo.InsertData(data);
                     break;
                 case "UpdateSellerMemoEvent":
-                    MongodbUpdateOrder Updatequery = query as MongodbUpdateOrder;
+                    MongodbUpdateOrder Updatequery = JsonSerializer.Deserialize<MongodbUpdateOrder>(Query_Json);
 
-                    condition = new Condition(Updatequery.Args.CoomNo);
+                    CRUD_Condition condition = new CRUD_Condition(Updatequery.Args.CoomNo);
                     OrderModel UpdateorderData = new OrderModel()
                     {
                         PK = Updatequery.Args.CoomNo,
-                        C_Order_M = new C_Order_M_Model() { CoomSellerMemo = Updatequery.Args.CoomSellerMemo}
+                        C_Order_M = new C_Order_M_Model() { CoomSellerMemo = Updatequery.Args.coom.CoomSellerMemo }
                     };
 
                     await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition) , UpdateorderData);

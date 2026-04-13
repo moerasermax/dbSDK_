@@ -1,6 +1,6 @@
-﻿using CPF.Service.SendDataToMongoDB.Model.Order;
-using CPF.Services.Redis.Post.Model.Elastic;
+﻿using CPF.Services.Redis.Post.Model.Elastic;
 using CPF.Services.Redis.Post.Model.MongoDB;
+using CPF.Services.Redis.Post.Model.MongoDB.Order;
 using NO3._dbSDK_Imporve.Infrastructure.External;
 
 
@@ -42,7 +42,7 @@ namespace CPF.Services.Redis.Post.Model
             // 2. 產生主檔資料 (M)
             var master = new C_Order_M_CreateOrder
             {
-                CoomNo = RandomNumericString(15), // 必須是 15 個字元
+                CoomNo = "CM"+RandomNumericString(13), // 必須是 15 個字元
                 CoomOrderDate = DateTime.Now,
                 CoomName = "測試訂單_" + DateTime.Now.ToString("yyyyMMddHHmm"),
                 CoomStatus = "10", // 固定值
@@ -53,13 +53,13 @@ namespace CPF.Services.Redis.Post.Model
                 CoomGoodsItemNum = itemCount,
                 CoomGoodsTotalNum = totalQty,
                 CoomRcvTotalAmt = Math.Min(totalAmt, 20000),
-                CoomCgdmId = RandomNumericString(15)
+                CoomCgdmId = "GM"+RandomNumericString(13)
             };
 
             // 3. 產生付款/配送相關資料 (C)
             var context = new C_Order_C_CreateOrder
             {
-                CoocNo = master.CoomNo,
+                CoocNo = "CC"+RandomNumericString(13),
                 CoocPaymentType = _random.Next(0, 7).ToString(), // '0' 到 '6'
                 CoocDeliverMethod = _random.Next(1, 4).ToString(), // '1' 到 '3'
                 CoocOrdChannelKind = _random.Next(1, 7).ToString(), // '1' 到 '6'
@@ -226,7 +226,14 @@ namespace CPF.Services.Redis.Post.Model
             return new MongodbUpdateOrder()
             {
                 Name = "UpdateSellerMemoEvent",
-                Args = new SellerMemoArgs() { CoomNo = coomNo, CoomSellerMemo = "備註更新" },
+                Args = new SellerMemoArgs()
+                {
+                    CoomNo = coomNo,
+                    coom = new C_Order_M_Model()
+                    {
+                        CoomSellerMemo = "更新備註"
+                    }
+                }
             };
 
         }
