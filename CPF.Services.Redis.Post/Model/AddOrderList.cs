@@ -41,7 +41,7 @@ namespace CPF.Services.Redis.Post.Model
         public string? CoomTempType { get; set; } = null;
 
         //[Required(ErrorMessage = "「CoomCreateDatetime」是必填欄位")]
-        public string? CoomCreateDatetime { get; set; } = null;
+        public DateTime? CoomCreateDatetime { get; set; } = null;
 
         //[Required(ErrorMessage = "「CoomCuamCid」是必填欄位")]
         //[Range(1, int.MaxValue, ErrorMessage = "「CoomCuamCid」必須大於 0")]

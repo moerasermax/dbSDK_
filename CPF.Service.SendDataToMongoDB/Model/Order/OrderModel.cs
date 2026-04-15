@@ -12,6 +12,8 @@ namespace CPF.Service.SendDataToMongoDB.Model.Order
         /// </summary>
         /// <value></value>
         [BsonId] // 標示為 MongoDB 的主鍵 (_id)，取代原 DynamoDBHashKey
+        public string _id { get; set; }
+
         [BsonElement("coom_no")]
         public string? PK { get; set; } = null!;
 

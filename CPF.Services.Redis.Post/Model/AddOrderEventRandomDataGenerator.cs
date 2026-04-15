@@ -47,7 +47,7 @@ namespace CPF.Services.Redis.Post.Model
                 CoomName = "測試訂單_" + DateTime.Now.ToString("yyyyMMddHHmm"),
                 CoomStatus = "10", // 固定值
                 CoomTempType = _random.Next(1, 4).ToString("D2"), // 01, 02, 03
-                CoomCreateDatetime = DateTime.Now.ToString(),
+                CoomCreateDatetime = DateTime.Now,
                 CoomCuamCid = _random.Next(1, 99999),
                 CoomSellerGoodsTotalAmt = Math.Min(totalAmt, 20000), // 限制在 20000 內
                 CoomGoodsItemNum = itemCount,

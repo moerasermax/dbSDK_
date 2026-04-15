@@ -39,7 +39,7 @@ namespace CPF.Service.SendDataToElasticCloud.Model
         /// <summary>
         /// 訂購單建立時間
         /// </summary>
-        public string? CoomCreateDatetime { get; set; } = null;
+        public DateTime? CoomCreateDatetime { get; set; } = null;
 
         /// <summary>
         /// 訂購單所屬賣家會員編號

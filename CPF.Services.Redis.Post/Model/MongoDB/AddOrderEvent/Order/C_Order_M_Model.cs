@@ -22,7 +22,7 @@ namespace CPF.Services.Redis.Post.Model.MongoDB.AddOrderEvent.Order
 
         [BsonElement("coom_create_datetime")]
         [BsonIgnoreIfNull]
-        public string? CoomCreateDatetime { get; set; }
+        public DateTime? CoomCreateDatetime { get; set; }
 
         [BsonElement("coom_cuam_cid")]
         [BsonIgnoreIfNull]
