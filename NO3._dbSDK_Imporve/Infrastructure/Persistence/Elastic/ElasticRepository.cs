@@ -191,5 +191,28 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
                 return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
             }
         }
+        public async Task<SearchResponse<T>> AdvancedSearchAsync(Action<SearchRequestDescriptor<T>> configureQuery)
+        {
+            try
+            {
+                var response = await _client.SearchAsync<T>(s =>
+                {
+                    s.Indices(_indexName); // 確保套用 SDK 管控的 Index
+                    configureQuery(s);   // 執行客戶自訂的複雜查詢與聚合
+                });
+
+                if (!response.IsValidResponse)
+                {
+                    return null; // 或是依據你 SDK 的 Result 模式回傳錯誤，這裡先簡單處理
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                // 拋出例外或用 Result.SetErrorResult 紀錄
+                throw new Exception($"[ElasticSDK] AdvancedSearch Exception: {ex.Message}", ex);
+            }
+        }
     }
 }

@@ -89,7 +89,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
                 // 1. 將泛型 T 轉成原始的 BsonDocument
                 BsonDocument rawUpdateData = UpdateData.ToBsonDocument();
 
-                // 2. 呼叫高手的扁平化工具，轉換成點符號格式
+                // 2. 呼叫扁平化工具，轉換成點符號格式
                 BsonDocument flattenedUpdateData = FlattenBsonDocument(rawUpdateData);
 
                 // 防呆機制：如果傳進來的資料全都是 null 或只有 _id，攤平後會是空的
@@ -126,18 +126,17 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
         }
 
-        // 寫在同一個 class 裡面
         private BsonDocument FlattenBsonDocument(BsonDocument doc, string prefix = "")
         {
             var flatDoc = new BsonDocument();
 
             foreach (var element in doc.Elements)
             {
-                // 高手防禦 1：忽略最外層的 _id，防止 Duplicate Key 報錯
+                // 1：忽略最外層的 _id，防止 Duplicate Key 報錯
                 if (prefix == "" && element.Name == "_id")
                     continue;
 
-                // 高手防禦 2：忽略 null 值。這樣前端傳 null 來時，就不會把資料庫裡的舊資料洗空
+                // 2：忽略 null 值。這樣前端傳 null 來時，就不會把資料庫裡的舊資料洗空
                 if (element.Value.IsBsonNull)
                     continue;
 
