@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using NO3._dbSDK_Imporve.Core.Entity;
 namespace CPF.Services.Redis.Post.Model.MongoDB.Order
 {
@@ -11,7 +12,8 @@ namespace CPF.Services.Redis.Post.Model.MongoDB.Order
         /// coom_no
         /// </summary>
         /// <value></value>
-        [BsonId] // 標示為 MongoDB 的主鍵 (_id)，取代原 DynamoDBHashKey
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)] // 關鍵：允許 ObjectId 自動轉 string
         [BsonElement("coom_no")]
         public string? PK { get; set; } = null!;
 

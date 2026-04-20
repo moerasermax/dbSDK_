@@ -3,13 +3,14 @@ using MongoDB.Driver;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
-using NO3._dbSDK_Imporve.Infrastructure.DTO;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Interfaces;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Models;
 using System.Reflection;
 
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
 {
-    public class MongoRepository<T> : IRepository<T>
+    public class MongoRepository<T> : IMongoDBRepository<T>
     {
 
         IMongoCollection<T> _Collection { get; set; }
@@ -80,6 +81,12 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
         }
 
+        /// <summary>
+        /// Upsert的方式實作，利用扁平化欄位技術，將可完成類別底下的類別指定的欄位更新。
+        /// </summary>
+        /// <param name="ConditionData_Json">條件資料</param>
+        /// <param name="UpdateData">欲更新之資料</param>
+        /// <returns></returns>
         async Task<IResult> IRepository<T>.UpdateData(string ConditionData_Json, T UpdateData)
         {
             try
@@ -155,6 +162,16 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
 
             return flatDoc;
+        }
+
+        public Task<IResult> UpdateInit(string ConditionData_Json, T UpdateData, MongoUpdateOptions options)
+        {
+            throw new NotImplementedException("需完成實作");
+        }
+
+        public Task<IResult> UpdateData(string ConditionData_Json, T UpdateData, MongoUpdateOptions options)
+        {
+            throw new NotImplementedException("需完成實作");
         }
     }
 }

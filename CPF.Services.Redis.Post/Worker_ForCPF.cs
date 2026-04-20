@@ -21,8 +21,9 @@ namespace CPF.Services.Redis.Post
             while (true)
 
             {
-                System.Console.WriteLine("[Redis_Post]按下【1】，發送【一般】【新增】的Request");
-                System.Console.WriteLine("[Redis_Post]按下【2】，發送【一般】【修改】的Request");
+                System.Console.WriteLine("[Redis_Post]按下【1】，發送【一般】【新增訂單】的Request");
+                System.Console.WriteLine("[Redis_Post]按下【2】，發送【一般】【訂單備註更新】的Request");
+                System.Console.WriteLine("[Redis_Post]按下【3】，發送【一般】【變更付款方式】的Request");
 
                 var keyInfo = Console.ReadKey(intercept: true); // true 代表不把按下的字顯示在螢幕上
 
@@ -36,20 +37,17 @@ namespace CPF.Services.Redis.Post
                 }
                 else if (keyInfo.KeyChar.ToString().Equals("2"))
                 {
-                    UpdateFolw();
+                    UpdateCoomSellerMemoFolw();
+                }
+                else if (keyInfo.KeyChar.ToString().Equals("3"))
+                {
+                    UpdateChangePayTypeEvent();
                 }
 
 
                 await Task.Delay(1000, stoppingToken);
 
             }
-        }
-        public string GenerateRandomCode(int length = 6)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         async void Createflow()
@@ -70,15 +68,30 @@ namespace CPF.Services.Redis.Post
 
         }
 
-        async void UpdateFolw()
+        async void UpdateCoomSellerMemoFolw()
         {
-            var UpdateData = _CPF_TestDataEngine.GetMongoUpDataObject("CM4216179510575");
+            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateCoomSellerMemoObject("CM4216179510575");
 
             _redis.QueryDB = "Request_MongoDB";
             await _redis.InsertData(UpdateData);
 
         }
 
+        async void UpdateChangePayTypeEvent()
+        {
+            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateChangePayTypeEventObject("CC2265481053604");
+
+            _redis.QueryDB = "Request_MongoDB";
+            await _redis.InsertData(UpdateData);
+        }
+
+        public string GenerateRandomCode(int length = 6)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
     }
 }

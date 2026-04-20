@@ -1,6 +1,6 @@
 ﻿using CPF.Services.Redis.Post.Model.Elastic;
-using CPF.Services.Redis.Post.Model.MongoDB;
 using CPF.Services.Redis.Post.Model.MongoDB.Order;
+using CPF.Services.Redis.Post.Model.QueryModel.MongoDB;
 using NO3._dbSDK_Imporve.Infrastructure.External;
 
 
@@ -108,7 +108,7 @@ namespace CPF.Services.Redis.Post.Model
             MongoDBAddOrder OrderModel = new MongoDBAddOrder()
             {
                 Name = "",
-                Args = new MongoDB.OrderArgs()
+                Args = new CPF.Services.Redis.Post.Model.QueryModel.MongoDB.OrderArgs()
             };
 
             OrderModel.Name = "AddOrderEvent";
@@ -221,9 +221,9 @@ namespace CPF.Services.Redis.Post.Model
         }
 
 
-        public MongodbUpdateOrder GetMongoUpDataObject(string coomNo)
+        public UpdateCoomSellerMemo GetMongoUpdateCoomSellerMemoObject(string coomNo)
         {
-            return new MongodbUpdateOrder()
+            return new UpdateCoomSellerMemo()
             {
                 Name = "UpdateSellerMemoEvent",
                 Args = new SellerMemoArgs()
@@ -237,6 +237,25 @@ namespace CPF.Services.Redis.Post.Model
             };
 
         }
+
+        public UpdateChangePayTypeEvent GetMongoUpdateChangePayTypeEventObject(string coocNo)
+        {
+            return new UpdateChangePayTypeEvent()
+            {
+                Name = "UpdateChangePayTypeEvent",
+                Args = new ChangePayTypeEventArgs()
+                {
+                    CoocNo = coocNo,
+                    cooc = new C_Order_C_Model()
+                    {
+                        CoocPaymentType = "1"
+                    }
+                }
+            };
+        }
+
+
+
 
     }
 }

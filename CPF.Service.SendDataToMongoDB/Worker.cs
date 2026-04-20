@@ -1,6 +1,6 @@
 using CPF.Service.SendDataToMongoDB.Model;
 using CPF.Service.SendDataToMongoDB.Model.Order;
-using CPF.Services.Redis.Post.Model.MongoDB;
+using CPF.Services.Redis.Post.Model.QueryModel.MongoDB;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
@@ -65,8 +65,8 @@ namespace CPF.Service.SendDataToMongoDB
         {
             Query query = JsonSerializer.Deserialize <Query>(Query_Json);
 
+            OrderModel UpdateOrderData = null;
 
-            
             switch (query.Name)
             {
                 case "AddOrderEvent":
@@ -154,32 +154,31 @@ namespace CPF.Service.SendDataToMongoDB
                     await _mongoRepo.InsertData(data);
                     break;
                 case "UpdateSellerMemoEvent":
-                    MongodbUpdateOrder Updatequery = JsonSerializer.Deserialize<MongodbUpdateOrder>(Query_Json);
+                    UpdateCoomSellerMemo Updatequery = JsonSerializer.Deserialize<UpdateCoomSellerMemo>(Query_Json);
 
-                    CRUD_Condition condition = new CRUD_Condition(Updatequery.Args.CoomNo);
-                    OrderModel UpdateorderData = new OrderModel()
+                    CRUD_Condition_COOM condition_m = new CRUD_Condition_COOM(Updatequery.Args.CoomNo);
+                    UpdateOrderData = new OrderModel()
                     {
                         PK = Updatequery.Args.CoomNo,
                         C_Order_M = new C_Order_M_Model() { CoomSellerMemo = Updatequery.Args.coom.CoomSellerMemo }
                     };
 
-                    await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition) , UpdateorderData);
+                    await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition_m) , UpdateOrderData);
                     break;
-                //case "Read":
-                //    data = JsonSerializer.Deserialize<EventGiftModel>(query.OrderData);
-                //    condition = _dto.GetCondition(data.event_id);
-                //    result = await _mongoRepo.GetData(JsonSerializer.Serialize(condition)) as Result;
 
-                //    if(result.DataJson != "")
-                //    {
-                //        Console.WriteLine(result.DataJson);
-                //    }
-                //    break;
-                //case "Delete":
-                //    data = JsonSerializer.Deserialize<EventGiftModel>(query.OrderData);
-                //    condition = _dto.GetCondition(data.event_id);
-                //    await _mongoRepo.RemoveData(JsonSerializer.Serialize(condition));
-                //    break;
+                case "UpdateChangePayTypeEvent":
+                    UpdateChangePayTypeEvent UpdateQuery = JsonSerializer.Deserialize<UpdateChangePayTypeEvent>(Query_Json);
+
+                    CRUD_Condition_COOC condition_c = new CRUD_Condition_COOC(UpdateQuery.Args.CoocNo);
+                    UpdateOrderData = new OrderModel()
+                    {
+                        CoocNo = UpdateQuery.Args.CoocNo,
+                        C_Order_C = new C_Order_C_Model() { CoocPaymentType = UpdateQuery.Args.cooc.CoocPaymentType }
+                    };
+
+                    await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition_c), UpdateOrderData);
+
+                    break;
                 default:
                     break;
             }

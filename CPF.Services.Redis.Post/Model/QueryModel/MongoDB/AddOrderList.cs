@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CPF.Services.Redis.Post.Model
+namespace CPF.Services.Redis.Post.Model.QueryModel.MongoDB
 {
     public class AddOrdersList
     {

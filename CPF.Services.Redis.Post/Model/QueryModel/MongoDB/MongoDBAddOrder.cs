@@ -1,7 +1,7 @@
 ﻿using CPF.Services.Redis.Post.Model.MongoDB.AddOrderEvent.Order;
 using NO3._dbSDK_Imporve.Core.Entity;
 
-namespace CPF.Services.Redis.Post.Model.MongoDB
+namespace CPF.Services.Redis.Post.Model.QueryModel.MongoDB
 {
     public class MongoDBAddOrder : Query
     {

@@ -1,8 +1,8 @@
 ﻿using NO3._dbSDK_Imporve.Core.Entity;
 using CPF.Services.Redis.Post.Model.MongoDB.Order;
-namespace CPF.Services.Redis.Post.Model.MongoDB
+namespace CPF.Services.Redis.Post.Model.QueryModel.MongoDB
 {
-    public class MongodbUpdateOrder : Query
+    public class UpdateCoomSellerMemo : Query
     {
         public SellerMemoArgs? Args { get; set; } = null;
     }
