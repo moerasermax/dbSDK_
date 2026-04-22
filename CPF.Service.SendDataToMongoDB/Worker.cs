@@ -4,6 +4,8 @@ using CPF.Services.Redis.Post.Model.QueryModel.MongoDB;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Interfaces;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Models;
 using System.Reflection;
 using System.Text.Json;
 
@@ -12,11 +14,11 @@ namespace CPF.Service.SendDataToMongoDB
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IRepository<Orders> _mongoRepo;
+        private readonly IMongoDBRepository<Orders> _mongoRepo;
         private readonly IRepository<Query> _Redis;
         private readonly IDTO _dto;
         private Result result { get; set;  }
-        public Worker(ILogger<Worker> logger, IRepository<Orders> repository, IRepository<Query> Redis, IDTO dTO)
+        public Worker(ILogger<Worker> logger, IMongoDBRepository<Orders> repository, IRepository<Query> Redis, IDTO dTO)
         {
             _logger = logger;
             _mongoRepo = repository;
@@ -176,7 +178,14 @@ namespace CPF.Service.SendDataToMongoDB
                         C_Order_C = new C_Order_C_Model() { CoocPaymentType = UpdateQuery.Args.cooc.CoocPaymentType }
                     };
 
-                    await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition_c), UpdateOrderData);
+                    // 移除特定欄位
+                    var options = new MongoUpdateOptions
+                    {
+                        UnsetFields = new List<string> { "c_order_c.cooc_payment_dueday" }
+                    };
+
+
+                    await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition_c), UpdateOrderData,options);
 
                     break;
                 default:

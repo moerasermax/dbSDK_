@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using MongoDB.Bson.Serialization;
 using NO3._dbSDK_Imporve.Application;
 using NO3._dbSDK_Imporve.Application.Sample.Elastic;
 using NO3._dbSDK_Imporve.Application.Sample.Mongo;
@@ -13,59 +15,64 @@ using NO3._dbSDK_Imporve.Infrastructure.DTO;
 using NO3._dbSDK_Imporve.Infrastructure.MAP;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Serialization;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis;
 using System.Text.Json;
 
+// 註冊自定義日期序列化器，解決「下午」格式字串的反序列化問題
+BsonSerializer.RegisterSerializer(new MongoDateTimeSerializer());
+BsonSerializer.RegisterSerializer(new MongoNullableDateTimeSerializer());
 
+var host = CreateHostBuilder(args).Build();
 
-var Services = new ServiceCollection();
-init();
-var provider = Services.BuildServiceProvider();
+await TestFlow_Mongo(
+    host.Services.GetRequiredService<MongoRepository<Orders>>(),
+    host.Services.GetRequiredService<ElasticRepository<OrderSummary>>(),
+    host.Services.GetRequiredService<IDTO>(),
+    host.Services.GetRequiredService<EventGiftRandomDataGenerator>(),
+    host.Services.GetRequiredService<ObjectExtension>()
+);
 
-await TestFlow_Mongo(provider.GetRequiredService<MongoRepository<Orders>>(), provider.GetRequiredService<ElasticRepository<OrderSummary>>(),
-    provider.GetRequiredService<IDTO>()
-    , provider.GetRequiredService<EventGiftRandomDataGenerator>(), provider.GetRequiredService<ObjectExtension>());
+static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .ConfigureAppConfiguration((context, config) =>
+        {
+            config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        })
+        .ConfigureServices((context, services) =>
+        {
+            var settings = new ConnectionSettings();
+            context.Configuration.GetSection("ConnectionSettings").Bind(settings);
 
-void init()
-{
-    IConfiguration configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false)
-    .Build();
+            // Map 註冊
+            services.AddSingleton(new MongoMap());
+            services.AddSingleton(new ElasticMap());
 
-    var settings = new ConnectionSettings();
+            // Driver 註冊
+            services.AddSingleton<MongoDBDriver>(s => new MongoDBDriver("MongoDB", settings));
+            services.AddSingleton<ElasticDriver>(s => new ElasticDriver("Elastic", settings));
+            services.AddSingleton<RedisDriver>(s => new RedisDriver("Redis", settings));
 
-    Services.AddSingleton(new MongoMap());
-    Services.AddSingleton(new ElasticMap());
+            // Repository 註冊
+            services.AddSingleton<MongoRepository<Orders>, OrderRepository_Mongo>();
+            services.AddSingleton<ElasticRepository<OrderSummary>, OrderRepository_Elastic>();
+            services.AddSingleton<RedisRepository<Query>, OrderRepository_Redis>();
 
-    
-    configuration.GetSection("ConnectionSettings").Bind(settings);
+            // 通用服務註冊
+            services.AddSingleton<IDTO, DTO>();
+            services.AddSingleton<IUniversalMapper, UniversalMapper>();
+            services.AddSingleton<EventGiftRandomDataGenerator>();
+            services.AddSingleton<ObjectExtension>();
+        });
 
-    Services.AddSingleton<MongoDBDriver>(s => new MongoDBDriver("MongoDB", settings));
-    Services.AddSingleton<MongoRepository<Orders>, OrderRepository_Mongo>();
-
-    Services.AddSingleton<ElasticDriver>(s => new ElasticDriver("Elastic", settings));
-    Services.AddSingleton<ElasticRepository<OrderSummary>, OrderRepository_Elastic>();
-
-    Services.AddSingleton<RedisDriver>(s => new RedisDriver("Redis", settings));
-    Services.AddSingleton<RedisRepository<Query>, OrderRepository_Redis>();
-
-    Services.AddSingleton<IDTO, DTO>();
-    Services.AddSingleton<IUniversalMapper, UniversalMapper>();
-
-    Services.AddSingleton<EventGiftRandomDataGenerator>();
-
-    Services.AddSingleton<ObjectExtension>();
-
-}
-
-async Task TestFlow_Mongo(MongoRepository<Orders> MongoRepo, ElasticRepository<OrderSummary> ElasticRepo,
-    IDTO dto, 
-    EventGiftRandomDataGenerator TestDataEngine, ObjectExtension objectExtension)
+async Task TestFlow_Mongo(
+    MongoRepository<Orders> MongoRepo,
+    ElasticRepository<OrderSummary> ElasticRepo,
+    IDTO dto,
+    EventGiftRandomDataGenerator TestDataEngine,
+    ObjectExtension objectExtension)
 {
     var _mongoEngine = new DbSDKEngine<Orders>(MongoRepo);
-
-    
 
     Result response;
 
@@ -76,7 +83,6 @@ async Task TestFlow_Mongo(MongoRepository<Orders> MongoRepo, ElasticRepository<O
     dev_DATA.event_id += "Dev";
 
     string NewData = JsonSerializer.Serialize(dev_DATA);
-
 
     /// MongoDB測試流程：Insert -> Update -> Read -> Remove
     response = (Result)await _mongoEngine.Insert(Data);
@@ -89,8 +95,6 @@ async Task TestFlow_Mongo(MongoRepository<Orders> MongoRepo, ElasticRepository<O
     Console.WriteLine($"{response.Msg}。請按一下繼續下一步......{response.DataJson}"); Console.ReadKey();
     response = (Result)await _mongoEngine.Remove(condition);
     Console.WriteLine($"已完成資料移除。請按一下結束測試流程......已刪除 {condition}資料"); Console.ReadKey();
-
-
 
     /// ElasticSearch測試流程：Insert -> Update -> Read -> Remove
     var _elasticEngine = new DbSDKEngine<OrderSummary>(ElasticRepo);
@@ -112,8 +116,4 @@ async Task TestFlow_Mongo(MongoRepository<Orders> MongoRepo, ElasticRepository<O
     Console.WriteLine($"{response.Msg}。請按一下繼續下一步......{response.DataJson}"); Console.ReadKey();
     response = (Result)await _elasticEngine.Remove(condition_Summry);
     Console.WriteLine($"已完成資料移除。請按一下結束測試流程......已刪除 {condition}資料"); Console.ReadKey();
-
 }
-
-
-

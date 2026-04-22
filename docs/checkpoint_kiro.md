@@ -1,82 +1,32 @@
-# Checkpoint — dbSDK 重構歷程（Kiro 用）
+# Kiro 工程師任務存檔點 (2026-04-22)
 
-## 專案基本資訊
-- 專案名稱：NO3._dbSDK_Imporve
-- 框架：.NET 8
-- 目標：建立支援 MongoDB / Elasticsearch / Redis 的通用 SDK
+## 1. 專案現況
+- **專案名稱**：NO3._dbSDK_Imporve
+- **當前角色**：Kiro (首席工程師)
+- **當前 PM**：Gemini (負責需求與驗收)
 
-## 目前解耦評分：7 / 10
+## 2. 進行中的 Sprint
+### [Sprint H1] MongoDB 資料強健性優化 (Hotfix) - **已完成** ✅
+- **目標**：修復 `DateTime` 反序列化失敗問題（「下午」字串格式）。
+- **已完成任務**：
+    1. ✅ 建立 `MultiCultureDateTimeSerializer` 支援多語系日期格式
+    2. ✅ 在 `MongoMap` 註冊全域 DateTime Serializer
+    3. ✅ 優化 `FlattenBsonDocument`，自動將日期字串轉為 `BsonDateTime`
+- **報告**：`docs/sprints/H1-DateTime-Deserializer-Fix-report.md`
 
-## 最終目錄結構
-```
-Application/
-  dbSDKEngine.cs              ← Use Case，只依賴 Core 介面
-  Sample/
-    Mongo/  Elastic/  Redis/  ← IOrderRepository_* / OrderRepository_*
+### [Sprint S2] MongoDB 進階更新支援 - **已完成** ✅
+- **已實作**：`UpdateInit` 與 `UpdateData(..., MongoUpdateOptions)`。
+- **核心邏輯**：支援 `$set` (點符號) 與 `$unset` (欄位移除) 並行執行。
+- **報告**：`docs/sprints/S2-Mongo-Unset-Support-report.md`
 
-Core/
-  Abstraction/
-    dbDriver.cs               ← abstract，實作 IdbDriver
-    BaseRandomDataGenerator.cs← 隨機工具基底
-  DTO/
-    DTO.cs                    ← 實作 IDTO，產生 Condition
-    EventGiftRandomDataGenerator.cs ← 注入 IUniversalMapper，產生測試資料
-  Entity/
-    EventGiftModel.cs / EventGiftSummaryModel.cs / Query.cs
-  Interface/
-    IEngine<T> / IRepository<T> / IResult / IdbDriver
-    IDTO / IUniversalMapper / IRandamDataGenerator<T,T1>
-  Models/
-    Result.cs        ← public, immutable, static factory
-    ConnectionSettings.cs / DbDetail
-    Condition.cs     ← immutable，_id only getter
+## 3. 重大技術決策 (由開發憲章第 10 點定義)
+- **MongoDB 更新**：必須使用 `FlattenBsonDocument` 工具進行點符號扁平化。
+- **欄位移除**：必須透過 `MongoUpdateOptions.UnsetFields` 觸發 `$unset` 指令。
+- **日期處理**：所有日期欄位在寫入前應正規化為 `BsonDateTime`。
 
-Infrastructure/
-  Driver/   ElasticDriver / MongoDBDriver / RedisDriver
-  MAP/      UniversalMapper  ← AutoMapper 封裝，ConcurrentDictionary 快取
-  Persistence/
-    Elastic/ Mongo/ Redis/   ← *Repository<T> + Map + Filter
-```
+## 4. 下一步行動
+1. ✅ Sprint H1 已完成，建置成功
+2. 向 PM Gemini 提交完成報告，請求對 S2 與 H1 進行聯合驗收
 
-## 已解決問題清單
-
-### P0（功能性）
-- [x] IEngine<T> 四個方法改為 Task<IResult> 回傳
-- [x] dbSDKEngine 補上 return
-- [x] MongoRepository.updateData 補 await
-- [x] RedisRepository.updateData 改回傳 IResult（不再拋例外）
-- [x] Result 改為 public + immutable + static factory
-- [x] IResult 移回 Core/Interface/IResult.cs
-- [x] 憑證從 .cs 移至 appsettings.json（結構正確，值仍明文）
-
-### P1（架構）
-- [x] dbSDKEngine 移至 Application 層
-- [x] Entity 移至 Core/Entity/
-- [x] ConnectionSettings namespace 與路徑對齊（Core.Models）
-- [x] dbDriver._Service 改為只有 getter
-- [x] IRandamDataGenerator 改為 public
-- [x] RandomDataGenerator 重構為可注入類別（EventGiftRandomDataGenerator）
-- [x] UniversalMapper 移至 Infrastructure/MAP/
-- [x] LoggerFactory.Dispose() / AddProvider() 改空實作
-- [x] logger.BeginScope() 改回傳 null
-- [x] Test_Condition 移至 Core/Models/Condition
-- [x] Program.cs 死碼清除（mongoConnStr / redisConnStr / 開發區段）
-
-### P2（整理）
-- [x] 跨 Driver 污染 using 清除（MongoDB.Bson in Redis、Elastic in Redis）
-- [x] dbDriver 子類別移除重複賦值 _Service
-- [x] EventGiftRandomDataGenerator 移除重複的 GetRandomFrom
-
-## 尚未解決
-
-### P0
-- [ ] appsettings.json 明文憑證 → 環境變數 + .gitignore
-
-### P1
-- [ ] Program.cs BuildServiceProvider 仍呼叫兩次（第二次應改用同一個 provider）
-- [ ] LoggerFactory / logger 命名與 MS 官方衝突，建議改名 NullLoggerFactory / NullLogger
-- [ ] Application/Sample 層繼承 Infrastructure 具體類別（DIP 違反，長期目標）
-
-### P2
-- [ ] Core/DTO/ 命名語意不精確（放的是 DataGenerator，不是 DTO）
-- [ ] Core/Interface/ 殘留 using（IdbDriver、IResult 的 System.* 樣板）
+## 5. 待驗收事項
+- H1 與 S2 已完成，待 PM Gemini 進行聯合驗收

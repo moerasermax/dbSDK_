@@ -141,39 +141,53 @@
 - 建立 IDTO 介面與 DTO 實作，統一產生 Condition 物件
 - Program.cs 改透過 dto.getCondition() 取得查詢條件
 
+### 階段八：核心架構重組與 MongoDB 強化 (2026-04-22)
+
+**DI 改用 IHost Builder (Sprint S1)**
+- 問題：手動 `ServiceCollection` 組裝不符合標準，無法整合 .NET 日誌與配置系統。
+- 修正：將 `Program.cs` 重構為 `Host.CreateDefaultBuilder(args)` 模式，實作真正的 Dependency Injection。
+
+**MongoDB 進階更新與 $unset (Sprint S2)**
+- 問題：現有 `$set` 扁平化更新因忽略 `null` 而無法移除欄位。
+- 修正：實作 `MongoUpdateOptions.UnsetFields` 支援，並在 `UpdateInit` 內達成 `$set` 與 `$unset` 的原子化合併。
+
+**日期格式正規化與容錯 (Sprint H1)**
+- 問題：資料庫中存在大量包含「下午」等字眼的本地語系日期字串，導致反序列化崩潰。
+- 修正：
+  - 實作 `FlattenBsonDocument` 的日期識別 logic，寫入時強制轉型為 `BsonDateTime`。
+  - 建立並全域註冊 `MongoDateTimeSerializer`，相容讀取髒資料中的日期字串。
+
 ---
 
 ## 最終狀態
 
-解耦評分：7 / 10
+解耦評分：7.5 / 10
 
 ```
-起點 4.5 → 最終 7.0
+起點 4.5 → 階段七 7.0 → 階段八 7.5
 ```
 
 ### 各面向分數變化
 
-| 面向 | 起點 | 最終 |
-|---|---|---|
-| Core 介面純淨度 | 6/10 | 9/10 |
-| 層級隔離 | 3/10 | 8/10 |
-| DI 組裝 | 4/10 | 6/10 |
-| 功能正確性 | 3/10 | 8/10 |
-| 安全性 | 1/10 | 6/10 |
-| 可擴展性 | 5/10 | 7/10 |
+| 面向 | 起點 | 階段七 | 最終 (階段八) |
+|---|---|---|---|
+| Core 介面純淨度 | 6/10 | 9/10 | 9/10 |
+| 層級隔離 | 3/10 | 8/10 | 8/10 |
+| DI 組裝 | 4/10 | 6/10 | 8/10 |
+| 功能正確性 | 3/10 | 8/10 | 9/10 |
+| 安全性 | 1/10 | 6/10 | 7/10 |
+| 可擴展性 | 5/10 | 7/10 | 8/10 |
+| **整體** | **4.5** | **7.0** | **7.5** |
 
 ---
 
 ## 尚未完成（下次繼續）
 
 ### P0
+- Application/Sample 層繼承 Infrastructure 具體類別（DIP 違反，長期目標，預計 Sprint S3）
+- IResult 泛型化（預計 Sprint S4）
 - appsettings.json 明文憑證 → 環境變數覆蓋 + .gitignore
 
 ### P1
-- Program.cs BuildServiceProvider 仍呼叫兩次，第二次應改用同一個 provider
-- NullLoggerFactory / NullLogger 命名（目前仍叫 LoggerFactory / logger）
-- Application/Sample 層繼承 Infrastructure 具體類別（DIP 違反，長期目標）
-
-### P2
-- Core/DTO/ 命名語意不精確（放的是 DataGenerator，不是 DTO）
-- Core/Interface/ 部分檔案殘留 System.* 樣板 using
+- ElasticFilter 強型別（預計 Sprint S5）
+- CancellationToken 支援
