@@ -34,6 +34,11 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Serializers
             "yyyy/MM/dd 下午 hh:mm:ss",
             "yyyy/MM/dd 上午 hh:mm:ss",
             
+            // CSV/Redis 常見格式 (S5 貨態更新需求)
+            "yyyyMMddHHmmss.fff",
+            "yyyyMMddHHmmss",
+            "yyyyMMdd",
+            
             // 其他常見格式
             "MM/dd/yyyy HH:mm:ss",
             "MM/dd/yyyy",

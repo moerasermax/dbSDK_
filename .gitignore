@@ -3,6 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# ===== 敏感憑證設定 =====
+# appsettings.json 可能含有私鑰，請使用 appsettings.Template.json 作為範本
+# 若需要版控，請確認內容已替換為佔位符
+# appsettings.json
+appsettings.*.json
+!appsettings.Template.json
+
 # User-specific files
 *.rsuser
 *.suo

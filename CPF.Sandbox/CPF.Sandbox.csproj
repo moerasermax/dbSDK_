@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NO3._dbSDK_Imporve\NO3._dbSDK_Imporve.csproj" />
+    <ProjectReference Include="..\CPF.Service.SendDataToMongoDB\CPF.Service.SendDataToMongoDB.csproj" />
+    <ProjectReference Include="..\CPF.Service.SendDataToElasticCloud\CPF.Service.SendDataToElasticCloud.csproj" />
+    <ProjectReference Include="..\CPF.Services.Redis.Post\CPF.Services.Redis.Post.csproj" />
+  </ItemGroup>
+
+</Project>

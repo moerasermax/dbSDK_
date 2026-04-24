@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="CPF.Sandbox/CPF.Sandbox.csproj" />
   <Project Path="CPF.Service.SendDataToElasticCloud/CPF.Service.SendDataToElasticCloud.csproj" Id="ff50daf7-69ac-4787-b2b5-7f885ddd4037" />
   <Project Path="CPF.Service.SendDataToMongoDB/CPF.Service.SendDataToMongoDB.csproj" />
   <Project Path="CPF.Services.Redis.Post/CPF.Services.Redis.Post.csproj" Id="16c3d3b9-0f67-422b-be16-18fa3eb10d26" />

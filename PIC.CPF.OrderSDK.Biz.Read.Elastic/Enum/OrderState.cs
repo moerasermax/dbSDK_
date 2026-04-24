@@ -1,48 +1,33 @@
 ﻿namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Enum
 {
     /// <summary>
-    /// 訂單排序
+    /// 訂單狀態
     /// </summary>
-    public enum OrderSort
+    public enum OrderState
     {
         /// <summary>
-        /// 訂購單建立時間 (由舊到新)
+        /// 待處理
         /// </summary>
-        CoomCreateDatetimeAsc,
+        Pending = 0,
 
         /// <summary>
-        /// 訂購單建立時間 (由新到舊)
+        /// 處理中
         /// </summary>
-        CoomCreateDatetimeDesc,
+        Processing = 1,
 
         /// <summary>
-        /// 訂購單編號 (由小到大)
+        /// 已完成
         /// </summary>
-        CoomNoAsc,
+        Completed = 2,
 
         /// <summary>
-        /// 訂購單編號 (由大到小)
+        /// 已取消
         /// </summary>
-        CoomNoDesc,
+        Cancelled = 3,
 
         /// <summary>
-        /// 賣家未回覆問答數量 (由小到大)
+        /// 已退款
         /// </summary>
-        SellerQaNeverReplyCountAsc,
-
-        /// <summary>
-        /// 賣家未回覆問答數量 (由大到小)
-        /// </summary>
-        SellerQaNeverReplyCountDesc,
-
-        /// <summary>
-        /// 買家未回覆問答數量 (由小到大)
-        /// </summary>
-        BuyerQaNeverReplyCountAsc,
-
-        /// <summary>
-        /// 買家未回覆問答數量 (由大到小)
-        /// </summary>
-        BuyerQaNeverReplyCountDesc,
+        Refunded = 4
     }
 }

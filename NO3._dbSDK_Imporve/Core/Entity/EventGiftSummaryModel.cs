@@ -39,5 +39,29 @@ namespace NO3._dbSDK_Imporve.Core.Entity
     }
     public class OrderSummary
     {
+        /// <summary>
+        /// 主鍵 (訂單編號)
+        /// </summary>
+        public string? PK { get; set; }
+
+        /// <summary>
+        /// 訂單狀態
+        /// </summary>
+        public string? CoomStatus { get; set; }
+
+        /// <summary>
+        /// 物流單號
+        /// </summary>
+        public string? EsmmShipNo { get; set; }
+
+        /// <summary>
+        /// 物流狀態
+        /// </summary>
+        public string? EsmmStatus { get; set; }
+
+        /// <summary>
+        /// 寄貨時間
+        /// </summary>
+        public DateTime? EsmlStatusShippingDatetime { get; set; }
     }
 }

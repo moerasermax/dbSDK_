@@ -5,6 +5,7 @@ using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Driver;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Interfaces;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Models;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Utils;
 using System.Globalization;
 using System.Reflection;
 
@@ -49,7 +50,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
             catch (Exception ex)
             {
-                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name,  ex.Message);
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.ToString());
             }
         }
 
@@ -62,7 +63,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
             catch (Exception ex)
             {
-                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.ToString());
             }
         }
 
@@ -78,7 +79,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
             catch (Exception ex)
             {
-                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.ToString());
             }
         }
 
@@ -130,156 +131,34 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             catch (Exception ex)
             {
                 // 記得捕捉並印出錯誤，除錯會快很多
-                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, $"[MongoDBSDK] 例外錯誤: {ex.Message}");
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, $"[MongoDBSDK] 例外錯誤: {ex.ToString()}");
             }
-        }
-
-        private BsonDocument FlattenBsonDocument(BsonDocument doc, string prefix = "")
-        {
-            var flatDoc = new BsonDocument();
-
-            foreach (var element in doc.Elements)
-            {
-                // 1：忽略最外層的 _id，防止 Duplicate Key 報錯
-                if (prefix == "" && element.Name == "_id")
-                    continue;
-
-                // 2：忽略 null 值。這樣前端傳 null 來時，就不會把資料庫裡的舊資料洗空
-                if (element.Value.IsBsonNull)
-                    continue;
-
-                // 如果該屬性是一個巢狀的 Document，進行遞迴處理
-                if (element.Value.IsBsonDocument)
-                {
-                    // 將前綴加上當前屬性名與點號，例如 "c_order_m."
-                    var nestedDoc = FlattenBsonDocument(element.Value.AsBsonDocument, prefix + element.Name + ".");
-                    flatDoc.Merge(nestedDoc); // 把遞迴攤平的結果合併進來
-                }
-                else
-                {
-                    // 3：日期字串自動轉換為 BsonDateTime (開發憲章第 10 點)
-                    var processedValue = TryConvertToBsonDateTime(element.Value);
-                    
-                    // 如果是一般值（字串、數字、陣列等），直接加入
-                    flatDoc.Add(prefix + element.Name, processedValue);
-                }
-            }
-
-            return flatDoc;
         }
 
         /// <summary>
-        /// 嘗試將 BsonValue 轉換為 BsonDateTime
-        /// 支援多語系日期字串格式（包含「下午」格式）
+        /// 將 BsonDocument 扁平化為點符號路徑格式（public static，供 Mock 與沙盒直接呼叫）
+        /// 規則：忽略 _id、忽略 null、日期字串轉 BsonDateTime、陣列保留整體
         /// </summary>
-        /// <param name="value">原始 BsonValue</param>
-        /// <returns>轉換後的 BsonValue (成功則為 BsonDateTime，失敗則回傳原值)</returns>
-        private BsonValue TryConvertToBsonDateTime(BsonValue value)
+        public static BsonDocument FlattenBsonDocument(BsonDocument doc, string prefix = "")
         {
-            // 已經是 DateTime，直接回傳
-            if (value.BsonType == BsonType.DateTime)
-                return value;
-
-            // 不是字串，不處理
-            if (value.BsonType != BsonType.String)
-                return value;
-
-            var stringValue = value.AsString;
-            
-            // 空字串不處理
-            if (string.IsNullOrWhiteSpace(stringValue))
-                return value;
-
-            // 嘗試解析日期字串
-            if (TryParseMultiCultureDateTime(stringValue, out var dateTime))
-            {
-                // 轉換為 UTC milliseconds since epoch
-                var utcTicks = dateTime.Kind == DateTimeKind.Local 
-                    ? dateTime.ToUniversalTime().Ticks 
-                    : DateTime.SpecifyKind(dateTime, DateTimeKind.Utc).Ticks;
-                
-                // MongoDB 使用 milliseconds since Unix epoch
-                var milliseconds = utcTicks / 10000 - 62135596800000;
-                return new BsonDateTime(milliseconds);
-            }
-
-            // 無法解析，回傳原值
-            return value;
+            // 委派給 SDK 統一工具，確保生產邏輯與沙盒邏輯一致
+            return MongoCommandBuilder.Flatten(doc, prefix);
         }
 
         /// <summary>
-        /// 嘗試使用多種文化特性解析日期字串
+        /// 嘗試將日期字串轉換為 BsonDateTime（public static，供 Mock 與沙盒直接呼叫）
         /// </summary>
-        private static bool TryParseMultiCultureDateTime(string dateString, out DateTime result)
+        public static BsonValue TryConvertToBsonDateTime(BsonValue value)
         {
-            result = default;
-
-            // 支援的日期格式
-            var formats = new[]
-            {
-                "yyyy-MM-ddTHH:mm:ss.fffZ",
-                "yyyy-MM-ddTHH:mm:ssZ",
-                "yyyy-MM-ddTHH:mm:ss",
-                "yyyy-MM-dd HH:mm:ss",
-                "yyyy-MM-dd",
-                "yyyy/MM/dd HH:mm:ss",
-                "yyyy/MM/dd",
-                "yyyy年MM月dd日 tt hh:mm:ss",
-                "yyyy年MM月dd日",
-                "yyyy/MM/dd tt hh:mm:ss",
-                "yyyy/MM/dd 下午 hh:mm:ss",
-                "yyyy/MM/dd 上午 hh:mm:ss"
-            };
-
-            // 支援的文化特性
-            var cultures = new[]
-            {
-                CultureInfo.InvariantCulture,
-                new CultureInfo("zh-TW"),
-                new CultureInfo("zh-CN"),
-                new CultureInfo("en-US")
-            };
-
-            // 先嘗試標準解析
-            foreach (var culture in cultures)
-            {
-                if (DateTime.TryParse(dateString, culture, DateTimeStyles.None, out result))
-                    return true;
-            }
-
-            // 嘗試精確格式匹配
-            foreach (var format in formats)
-            {
-                foreach (var culture in cultures)
-                {
-                    if (DateTime.TryParseExact(dateString, format, culture, DateTimeStyles.None, out result))
-                        return true;
-                }
-            }
-
-            // 特殊處理：替換中文上午/下午為 AM/PM
-            var normalizedString = dateString
-                .Replace("上午", "AM")
-                .Replace("下午", "PM");
-
-            if (DateTime.TryParse(normalizedString, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
-                return true;
-
-            foreach (var format in formats)
-            {
-                if (DateTime.TryParseExact(normalizedString, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
-                    return true;
-            }
-
-            return false;
+            return MongoCommandBuilder.TryConvertToBsonDateTime(value);
         }
 
         /// <summary>
-        /// 進階更新：支援 $set 與 $unset 合併操作
+        /// 進階更新：支援 $set、$unset 與 $push 合併操作
         /// </summary>
         /// <param name="ConditionData_Json">查詢條件 (JSON 格式)</param>
         /// <param name="UpdateData">欲更新之資料</param>
-        /// <param name="options">更新選項 (支援 UnsetFields)</param>
+        /// <param name="options">更新選項 (支援 UnsetFields, PushFields)</param>
         /// <returns></returns>
         public async Task<IResult> UpdateData(string ConditionData_Json, T UpdateData, MongoUpdateOptions options)
         {
@@ -295,7 +174,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
                 // 2. 呼叫扁平化工具，轉換成點符號格式
                 BsonDocument flattenedUpdateData = FlattenBsonDocument(rawUpdateData);
 
-                // 3. 建立更新指令 (合併 $set 與 $unset)
+                // 3. 建立更新指令 (合併 $set、$unset 與 $push)
                 var updateDefinition = new BsonDocument();
 
                 // 3.1 加入 $set (如果有資料)
@@ -316,7 +195,28 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
                     updateDefinition.Add("$unset", unsetDoc);
                 }
 
-                // 防呆機制：如果 $set 和 $unset 都沒有
+                // 3.3 加入 $push (如果有指定陣列追加欄位)
+                if (options.PushFields != null && options.PushFields.Count > 0)
+                {
+                    var pushDoc = new BsonDocument();
+                    foreach (var pushField in options.PushFields)
+                    {
+                        // $push 格式: { "陣列路徑": { "$each": [元素] } }
+                        // 支援單一元素或多個元素
+                        if (pushField.Value.IsBsonArray)
+                        {
+                            pushDoc.Add(pushField.Key, new BsonDocument("$each", pushField.Value));
+                        }
+                        else
+                        {
+                            // 單一元素包裝成 $each 陣列
+                            pushDoc.Add(pushField.Key, new BsonDocument("$each", new BsonArray { pushField.Value }));
+                        }
+                    }
+                    updateDefinition.Add("$push", pushDoc);
+                }
+
+                // 防呆機制：如果 $set、$unset 和 $push 都沒有
                 if (updateDefinition.ElementCount == 0)
                 {
                     return Result.SetResult("[MongoDBSDK]沒有需要更新的有效欄位。");
@@ -353,7 +253,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
             catch (Exception ex)
             {
-                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, $"[MongoDBSDK] 例外錯誤: {ex.Message}");
+                return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, $"[MongoDBSDK] 例外錯誤: {ex.ToString()}");
             }
         }
 
@@ -378,7 +278,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
                 // 2. 呼叫扁平化工具，轉換成點符號格式
                 BsonDocument flattenedUpdateData = FlattenBsonDocument(rawUpdateData);
 
-                // 3. 建立更新指令 (合併 $set 與 $unset)
+                // 3. 建立更新指令 (合併 $set、$unset 與 $push)
                 var updateDefinition = new BsonDocument();
 
                 // 3.1 加入 $set (如果有資料)
@@ -398,6 +298,25 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
                     updateDefinition.Add("$unset", unsetDoc);
                 }
 
+                // 3.3 加入 $push (如果有指定陣列追加欄位)
+                if (options.PushFields != null && options.PushFields.Count > 0)
+                {
+                    var pushDoc = new BsonDocument();
+                    foreach (var pushField in options.PushFields)
+                    {
+                        // $push 格式: { "陣列路徑": { "$each": [元素] } }
+                        if (pushField.Value.IsBsonArray)
+                        {
+                            pushDoc.Add(pushField.Key, new BsonDocument("$each", pushField.Value));
+                        }
+                        else
+                        {
+                            pushDoc.Add(pushField.Key, new BsonDocument("$each", new BsonArray { pushField.Value }));
+                        }
+                    }
+                    updateDefinition.Add("$push", pushDoc);
+                }
+
                 // 4. 回傳完整指令供檢查
                 var result = new
                 {
@@ -410,11 +329,11 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
                     }
                 };
 
-                return Task.FromResult<IResult>(Result.SetResult("[MongoDBSDK]更新指令初始化完成。", result.ToJson()));
+                return Task.FromResult<IResult>(Result.SetResult("[MongoDBSDK]更新指令初始化完成。", System.Text.Json.JsonSerializer.Serialize(result)));
             }
             catch (Exception ex)
             {
-                return Task.FromResult<IResult>(Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, $"[MongoDBSDK] 例外錯誤: {ex.Message}"));
+                return Task.FromResult<IResult>(Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, $"[MongoDBSDK] 例外錯誤: {ex.ToString()}"));
             }
         }
     }

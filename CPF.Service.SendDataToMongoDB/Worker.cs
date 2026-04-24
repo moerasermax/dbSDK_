@@ -9,16 +9,26 @@ using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Models;
 using System.Reflection;
 using System.Text.Json;
 
+// 使用別名明確指定使用本地端的模型
+using C_Order_M_Model = CPF.Service.SendDataToMongoDB.Model.Order.C_Order_M_Model;
+using C_Order_C_Model = CPF.Service.SendDataToMongoDB.Model.Order.C_Order_C_Model;
+using C_Order_D_Model = CPF.Service.SendDataToMongoDB.Model.Order.C_Order_D_Model;
+using C_Goods_Item_Model = CPF.Service.SendDataToMongoDB.Model.Order.C_Goods_Item_Model;
+using E_Shipment_M_Model = CPF.Service.SendDataToMongoDB.Model.Order.E_Shipment_M_Model;
+using E_Shipment_L_Model = CPF.Service.SendDataToMongoDB.Model.Order.E_Shipment_L_Model;
+using E_Shipment_S_Model = CPF.Service.SendDataToMongoDB.Model.Order.E_Shipment_S_Model;
+
 namespace CPF.Service.SendDataToMongoDB
 {
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IMongoDBRepository<Orders> _mongoRepo;
+        private readonly IMongoDBRepository<OrderModel> _mongoRepo;
         private readonly IRepository<Query> _Redis;
         private readonly IDTO _dto;
-        private Result result { get; set;  }
-        public Worker(ILogger<Worker> logger, IMongoDBRepository<Orders> repository, IRepository<Query> Redis, IDTO dTO)
+        private Result result { get; set; }
+
+        public Worker(ILogger<Worker> logger, IMongoDBRepository<OrderModel> repository, IRepository<Query> Redis, IDTO dTO)
         {
             _logger = logger;
             _mongoRepo = repository;

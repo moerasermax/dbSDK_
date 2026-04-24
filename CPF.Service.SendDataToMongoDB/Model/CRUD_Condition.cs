@@ -12,9 +12,9 @@ namespace CPF.Service.SendDataToMongoDB.Model
             _coom_no = coom_no;
         }
 
-        [BsonId] // 給 MongoDB Driver 看的 (轉成 BSON 時用)
-        [JsonPropertyName("_id")] // 給 System.Text.Json 看的 (轉成 JSON 時用)
-        [BsonRepresentation(BsonType.ObjectId)] // 關鍵：允許 ObjectId 自動轉 string
+        // 不再標示為 MongoDB 的主鍵 (_id)，讓 MongoDB 原生產生 ObjectId
+        [BsonElement("coom_no")]
+        [JsonPropertyName("coom_no")] // 給 System.Text.Json 看的 (轉成 JSON 時用)
         public string _coom_no { get; }
     }
 

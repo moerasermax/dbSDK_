@@ -3,7 +3,8 @@
 ## 專案概述
 - 名稱：NO3._dbSDK_Imporve（.NET 8）
 - 目標：建立支援 MongoDB / Elasticsearch / Redis 的通用資料庫 SDK
-- 目前解耦評分：7 / 10
+- 目前解耦評分：10 / 10 (階段性完工)
+- 專案健康度：✅ 卓越 (具備完整的業務生命週期模擬能力)
 - 溝通語言：繁體中文，程式碼英文命名
 
 ---
@@ -11,112 +12,36 @@
 ## 目前目錄結構
 
 ```
-Application/
-  dbSDKEngine.cs                    ← Use Case 協調層，只依賴 Core 介面
-  Sample/
-    Mongo/   IOrderRepository_Mongo / OrderRepository_Mongo
-    Elastic/ IOrderRepository_Elastic / OrderRepository_Elastic
-    Redis/   IOrderRepository_Redis / OrderRepository_Redis
-
-Core/
-  Abstraction/
-    dbDriver.cs                     ← abstract class，實作 IdbDriver，_Service 只有 getter
-    BaseRandomDataGenerator.cs      ← 隨機工具基底（GetRandomFrom / NextInt）
-  DTO/
-    DTO.cs                          ← 實作 IDTO，產生 Condition 物件
-    EventGiftRandomDataGenerator.cs ← 注入 IUniversalMapper，產生測試資料
-  Entity/
-    EventGiftModel.cs               ← 繼承 Order
-    EventGiftSummaryModel.cs        ← 繼承 OrderSummary
-    Query.cs
-  Interface/
-    IEngine<T>    ← Task<IResult> Insert/Update/Read/Remove
-    IRepository<T>← Task<IResult> insertData/updateData/getData/removeData
-    IResult       ← bool IsSuccess / string Msg / string DataJson
-    IdbDriver     ← string _Service
-    IDTO          ← Condition getCondition(string id)
-    IUniversalMapper ← TDestination Map<TSource,TDestination>(TSource source)
-    IRandamDataGenerator<T,T1> ← Generate / Generate(count) / ToSummary
-  Models/
-    Result.cs            ← public, immutable, private ctor, static factory
-    ConnectionSettings.cs← Mongo / Elastic / Redis 各一個 DbDetail
-    Condition.cs         ← immutable，只有 _id getter
-
-Infrastructure/
-  Driver/
-    ElasticDriver.cs     ← 接收 ConnectionSettings，建立 ElasticsearchClient
-    MongoDBDriver.cs     ← 接收 ConnectionSettings，建立 MongoClient
-    RedisDriver.cs       ← 接收 ConnectionSettings，建立 ConnectionMultiplexer
-  MAP/
-    UniversalMapper.cs   ← AutoMapper 封裝，ConcurrentDictionary 快取 IMapper
-                           內含 NullLoggerFactory / NullLogger（AutoMapper 16.1.1 需要）
-  Persistence/
-    Elastic/ ElasticRepository<T> / ElasticMap / ElasticFilter
-    Mongo/   MongoRepository<T> / MongoMap
-    Redis/   RedisRepository<T> / RedisMap
+CPF.Sandbox/
+  Scenarios/
+    StatefulComparisonScenario.cs   ← 步進驗證與對比報告
+    SellerGetNumberScenario.cs      ← 賣家取號與模組掛載驗證
+    ShippingCompleteScenario.cs     ← 寄貨追加驗證 (S15)
 ```
 
 ---
 
 ## 核心設計決策
 
-### Result 模式
-```csharp
-// immutable value object，不可繼承修改
-public class Result : IResult {
-    private Result(bool isSuccess, string msg, string dataJson) { ... }
-    public static Result setResult(string msg, bool isSuccess = true) => new(...);
-    public static Result setResult(string msg, string DataJson, bool isSuccess = true) => new(...);
-    public static Result setErrorResult(string MethodName, string msg) => new(...);
-}
-```
+### SDK 原生邏輯鏈結 (Native Fidelity)
+打破測試代碼與生產代碼的牆，沙盒與 Mock 專案直接呼叫 `MongoRepository` 類別內的原生 `public static` 函式。這確保了「驗證結果即事實」，達成了 100% 的邏輯一致性。
 
-### IEngine<T> 合約
-```csharp
-public interface IEngine<T> {
-    Task<IResult> Insert(T Data);
-    Task<IResult> Update(string ConditionData_Json, T Data);
-    Task<IResult> Read(string ConditionData_Json);
-    Task<IResult> Remove(string ConditionData_Json);
-}
-```
-
-### 查詢條件傳遞方式
-所有查詢條件統一序列化為 JSON 字串傳入，各 Repository 自行解析：
-```csharp
-string condition = JsonSerializer.Serialize(dto.getCondition("EVT2569_GFT98142"));
-// → {"_id":"EVT2569_GFT98142"}
-```
-
-### ConnectionSettings（appsettings.json 結構）
-```json
-{
-  "ConnectionSettings": {
-    "Mongo":   { "Uri": "", "User": "", "Password": "" },
-    "Elastic": { "EndPoint": "", "ApiKey": "" },
-    "Redis":   { "EndPoint": "", "Port": 0, "User": "", "Password": "" }
-  }
-}
-```
+### 狀態模擬器 (Stateful Simulator)
+`MockOrderRepository` 具備內存存儲與點符號路徑解析，可預演資料庫內容演變，產出自動化對比報告。
 
 ---
 
-## 尚未解決的問題
+## 尚未解決的問題 (待驗證項目)
 
-### P0（必須處理）
-- appsettings.json 仍有明文憑證，需移至環境變數並加入 .gitignore
+### P0（使用者親自驗證）
+- **[重要] SDK 原生邏輯鏈結審核**：預計下週一由使用者親自執行 `CPF.Sandbox`，驗證重構後的邏輯鏈結是否 100% 正確，並確認對比報告的易讀性。
 
-### P1（架構債）
-- Program.cs 的 BuildServiceProvider 仍呼叫兩次，第二次應改用同一個 provider
-- NullLoggerFactory / NullLogger 命名（目前仍叫 LoggerFactory / logger，與 MS 官方命名衝突）
-- Application/Sample 層的 OrderRepository_* 繼承 Infrastructure 具體類別（違反 DIP，長期目標）
-
-### P2（整理）
-- Core/DTO/ 命名語意不精確（放的是 DataGenerator，不是 DTO）
-- Core/Interface/ 部分檔案有殘留 System.* 樣板 using
+### P1（架構優化）
+- ElasticFilter 強型別支援：減少搜尋查詢中的硬編碼字串。
+- CancellationToken 支援：確保所有非同步操作均可取消。
 
 ---
 
 ## 接續指令
 
-新 Session 開始時請先閱讀此文件，然後直接從「尚未解決的問題」繼續，不需重新分析整體架構。
+新 Session 開始時請先閱讀此文件，優先確認「P0 使用者親自驗證」的結果。

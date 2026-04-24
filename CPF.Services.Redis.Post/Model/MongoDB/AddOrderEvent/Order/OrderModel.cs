@@ -9,11 +9,10 @@ namespace CPF.Services.Redis.Post.Model.MongoDB.AddOrderEvent.Order
     public class OrderModel
     {
         /// <summary>
-        /// coom_no
+        /// coom_no - 業務主鍵 (非資料庫主鍵)
         /// </summary>
         /// <value></value>
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)] // 關鍵：允許 ObjectId 自動轉 string
+        // 不再標示為 MongoDB 的主鍵 (_id)，讓 MongoDB 原生產生 ObjectId
         [BsonElement("coom_no")]
         public string PK { get; set; } = null!;
 

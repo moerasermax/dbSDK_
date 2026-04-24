@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Serializers;
 
 namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
@@ -8,6 +10,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
     {
         // 使用靜態欄位追蹤是否已註冊
         private static bool _serializersRegistered = false;
+        private static bool _classMapsRegistered = false;
         private static readonly object _lock = new();
 
         /// <summary>
@@ -44,10 +47,83 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
             }
         }
 
+        /// <summary>
+        /// 註冊實體類別的 BsonClassMap，確保業務主鍵欄位以 String 格式儲存
+        /// 注意：不使用 MapIdMember，讓 MongoDB 原生產生 ObjectId 作為 _id
+        /// </summary>
+        public static void EnsureClassMapsRegistered()
+        {
+            if (_classMapsRegistered) return;
+
+            lock (_lock)
+            {
+                if (_classMapsRegistered) return;
+
+                // 註冊 Orders 基礎類別
+                if (!BsonClassMap.IsClassMapRegistered(typeof(Orders)))
+                {
+                    BsonClassMap.RegisterClassMap<Orders>(cm =>
+                    {
+                        cm.AutoMap();
+                        // PK 欄位作為業務主鍵，明確設定為 String 序列化
+                        cm.MapMember(c => c.PK)
+                          .SetSerializer(new StringSerializer(BsonType.String));
+                    });
+                }
+
+                // 註冊 OrderSummary 基礎類別
+                if (!BsonClassMap.IsClassMapRegistered(typeof(OrderSummary)))
+                {
+                    BsonClassMap.RegisterClassMap<OrderSummary>(cm =>
+                    {
+                        cm.AutoMap();
+                        // PK 欄位作為業務主鍵，明確設定為 String 序列化
+                        cm.MapMember(c => c.PK)
+                          .SetSerializer(new StringSerializer(BsonType.String));
+                    });
+                }
+
+                // 註冊 EventGiftModel 衍生類別
+                if (!BsonClassMap.IsClassMapRegistered(typeof(EventGiftModel)))
+                {
+                    BsonClassMap.RegisterClassMap<EventGiftModel>(cm =>
+                    {
+                        cm.AutoMap();
+                        // S11 修復：AutoMap() 會將名為 "id" 的屬性自動映射為 _id (ObjectId)
+                        // 使用 SetIdMember(null) 取消此慣例，讓 MongoDB 原生產生 ObjectId 作為 _id
+                        cm.SetIdMember(null);
+                        // 重新將 id 作為普通字串欄位映射
+                        cm.MapMember(c => c.id)
+                          .SetSerializer(new StringSerializer(BsonType.String));
+                        // S11 補丁：讀取時資料庫文件含有原生 _id (ObjectId)，
+                        // 但 ClassMap 已無對應成員，加入此設定避免 "Element '_id' does not match any field" 錯誤
+                        cm.SetIgnoreExtraElements(true);
+                    });
+                }
+
+                // 註冊 EventGiftSummaryModel 衍生類別
+                if (!BsonClassMap.IsClassMapRegistered(typeof(EventGiftSummaryModel)))
+                {
+                    BsonClassMap.RegisterClassMap<EventGiftSummaryModel>(cm =>
+                    {
+                        cm.AutoMap();
+                        // 同 EventGiftModel：取消 Id 的 _id 自動映射，改為普通字串欄位
+                        cm.SetIdMember(null);
+                        cm.MapMember(c => c.Id)
+                          .SetSerializer(new StringSerializer(BsonType.String));
+                        cm.SetIgnoreExtraElements(true);
+                    });
+                }
+
+                _classMapsRegistered = true;
+            }
+        }
+
         public MongoMap()
         {
-            // 在實例化時確保 Serializer 已註冊
+            // 在實例化時確保 Serializer 與 ClassMap 已註冊
             EnsureDateTimeSerializersRegistered();
+            EnsureClassMapsRegistered();
         }
 
         public BsonDocument ToBsonDocument<T>(T obj)

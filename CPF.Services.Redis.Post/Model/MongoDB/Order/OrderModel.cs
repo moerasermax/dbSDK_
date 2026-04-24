@@ -1,29 +1,28 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using NO3._dbSDK_Imporve.Core.Entity;
+﻿using MongoDB.Bson.Serialization.Attributes;
+
 namespace CPF.Services.Redis.Post.Model.MongoDB.Order
 {
     /// <summary>
     /// 訂單主結構 (聚合根)
+    /// 注意：此類別不再繼承 Orders，以避免 BsonElement 名稱衝突。
+    /// 所有屬性均在此類別中獨立定義。
     /// </summary>
-    public class OrderModel : Orders
+    [BsonIgnoreExtraElements]
+    public class OrderModel
     {
         /// <summary>
-        /// coom_no
+        /// coom_no - 業務主鍵
         /// </summary>
-        /// <value></value>
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)] // 關鍵：允許 ObjectId 自動轉 string
         [BsonElement("coom_no")]
-        public string? PK { get; set; } = null!;
+        [BsonIgnoreIfNull]
+        public string? PK { get; set; }
 
         /// <summary>
         /// cooc_no (GSI)
         /// </summary>
-        /// <value></value>
-        [BsonElement("cooc_no")] // GSI 在 MongoDB 是透過建置 Collection 索引來處理，Model 層保留欄位對應即可
+        [BsonElement("cooc_no")]
         [BsonIgnoreIfNull]
-        public string? CoocNo { get; set; } = null!;
+        public string? CoocNo { get; set; }
 
         [BsonElement("c_order_m")]
         [BsonIgnoreIfNull]

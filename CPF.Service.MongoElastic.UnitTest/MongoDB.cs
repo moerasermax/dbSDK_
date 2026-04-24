@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using NO3._dbSDK_Imporve;
 using NO3._dbSDK_Imporve.Application.Sample.Mongo;
 using NO3._dbSDK_Imporve.Application.Sample.Redis;
-using NO3._dbSDK_Imporve.Core.DTO;
+using NO3._dbSDK_Imporve.Infrastructure.DTO;
 using NO3._dbSDK_Imporve.Core.Entity;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
@@ -20,7 +20,7 @@ namespace CPF.Service.MongoElastic.UnitTest
     public class MongoDBTests
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IRepository<Order> _Repo;
+        private readonly IRepository<Orders> _Repo;
         private readonly IRepository<Query> _Redis;
         private readonly IDTO _dto;
         private Result result;
@@ -43,7 +43,7 @@ namespace CPF.Service.MongoElastic.UnitTest
             builder.Services.AddSingleton(new MongoMap());
             builder.Services.AddSingleton<MongoDBDriver>(s => new MongoDBDriver("MongoDB", settings));
 
-            builder.Services.AddSingleton<IRepository<Order>, OrderRepository_Mongo>();
+            builder.Services.AddSingleton<IRepository<Orders>, OrderRepository_Mongo>();
 
             builder.Services.AddSingleton<RedisDriver>(s => new RedisDriver("Redis", settings));
             builder.Services.AddSingleton<IRepository<Query>, OrderRepository_Redis>();
@@ -64,7 +64,7 @@ namespace CPF.Service.MongoElastic.UnitTest
             configuration.GetSection("ConnectionSettings").Bind(settings);
 
 
-            _Repo = new OrderRepository_Mongo(new MongoDBDriver("Mongo", settings),new MongoMap());
+            _Repo = new OrderRepository_Mongo(new MongoDBDriver("Mongo", settings), new MongoMap(), new DTO());
             _Redis = new OrderRepository_Redis(new RedisDriver("Redis", settings));
             _dto = new DTO();
         }

@@ -78,6 +78,44 @@ namespace NO3._dbSDK_Imporve.Core.Entity
 
     public class Orders
     {
+        /// <summary>
+        /// 主鍵 (訂單編號)
+        /// </summary>
+        public string? PK { get; set; }
 
+        /// <summary>
+        /// 訂單主檔
+        /// </summary>
+        public C_Order_M_Model? C_Order_M { get; set; }
+
+        /// <summary>
+        /// 訂單聯絡資訊
+        /// </summary>
+        public C_Order_C_Model? C_Order_C { get; set; }
+
+        /// <summary>
+        /// 訂單明細清單
+        /// </summary>
+        public List<C_Order_D_Model>? C_Order_D { get; set; }
+
+        /// <summary>
+        /// 商品項目
+        /// </summary>
+        public C_Goods_Item_Model? C_Goods_Item { get; set; }
+
+        /// <summary>
+        /// 物流主檔
+        /// </summary>
+        public E_Shipment_M_Model? E_Shipment_M { get; set; }
+
+        /// <summary>
+        /// 貨態歷程清單
+        /// </summary>
+        public List<E_Shipment_L_Model>? E_Shipment_L { get; set; }
+
+        /// <summary>
+        /// 物流狀態清單
+        /// </summary>
+        public List<E_Shipment_S_Model>? E_Shipment_S { get; set; }
     }
 }
