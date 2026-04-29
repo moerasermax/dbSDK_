@@ -50,6 +50,73 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Utils
         }
 
         /// <summary>
+        /// 遞迴正規化 BsonValue，將所有符合日期格式的 BsonString 轉換為 BsonDateTime。
+        /// 確保不可變性：回傳新的 BsonValue 實例，不修改原始資料。
+        /// 
+        /// 處理類型：
+        ///   - BsonDocument：遞迴處理每個元素
+        ///   - BsonArray：遞迴處理每個元素
+        ///   - BsonString：嘗試解析為日期並轉換為 BsonDateTime
+        ///   - 其他：直接回傳（不可變類型）
+        /// </summary>
+        public static BsonValue Normalize(BsonValue value)
+        {
+            if (value == null || value.IsBsonNull)
+                return BsonNull.Value;
+
+            // 已經是 DateTime，直接回傳（BsonDateTime 是不可變的）
+            if (value.BsonType == BsonType.DateTime)
+                return value;
+
+            // 處理 BsonDocument（遞迴）
+            if (value.IsBsonDocument)
+            {
+                return NormalizeDocument(value.AsBsonDocument);
+            }
+
+            // 處理 BsonArray（遞迴）
+            if (value.IsBsonArray)
+            {
+                return NormalizeArray(value.AsBsonArray);
+            }
+
+            // 處理字串（日期轉換）
+            if (value.BsonType == BsonType.String)
+            {
+                return TryConvertToBsonDateTime(value);
+            }
+
+            // 其他類型直接回傳（數值、布林等為不可變）
+            return value;
+        }
+
+        /// <summary>
+        /// 正規化 BsonDocument（深拷貝 + 遞迴處理）
+        /// </summary>
+        private static BsonDocument NormalizeDocument(BsonDocument doc)
+        {
+            var result = new BsonDocument();
+            foreach (var element in doc.Elements)
+            {
+                result.Add(element.Name, Normalize(element.Value));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 正規化 BsonArray（深拷貝 + 遞迴處理）
+        /// </summary>
+        private static BsonArray NormalizeArray(BsonArray array)
+        {
+            var result = new BsonArray();
+            foreach (var item in array)
+            {
+                result.Add(Normalize(item));
+            }
+            return result;
+        }
+
+        /// <summary>
         /// 嘗試將 BsonValue 中的日期字串轉換為 BsonDateTime。
         /// 支援多語系格式（含「下午」等中文格式）。
         /// 非字串或無法解析的值原樣回傳。
@@ -81,6 +148,21 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Utils
         private static bool TryParseMultiCultureDateTime(string dateString, out DateTime result)
         {
             result = default;
+
+            // S15.4：邊界案例防護 - 業務代碼不應被誤判為日期
+            // 檢查 1：長度過短（業務代碼通常 4-6 位）
+            if (string.IsNullOrWhiteSpace(dateString) || dateString.Length < 8)
+                return false;
+
+            // 檢查 2：包含字母數字混合（業務代碼如 "1A01"）
+            bool hasLetter = dateString.Any(char.IsLetter);
+            bool hasDigit = dateString.Any(char.IsDigit);
+            if (hasLetter && hasDigit && !dateString.Contains("-") && !dateString.Contains("/") && !dateString.Contains(":"))
+                return false;
+
+            // 檢查 3：純數字且無日期分隔符（業務代碼如 "1001"）
+            if (hasDigit && !hasLetter && !dateString.Contains("-") && !dateString.Contains("/") && !dateString.Contains("."))
+                return false;
 
             var formats = new[]
             {

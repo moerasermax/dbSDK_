@@ -161,19 +161,18 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
 
                 // 3. 處理更新內容 (解決 {} 空值問題)
                 string updateJson = JsonSerializer.Serialize(UpdateData, UpdateData.GetType());
-                var updateMap = JsonSerializer.Deserialize<System.Text.Json.Nodes.JsonObject>(updateJson);
 
                 // 4. 執行更新
+                // S22 修復：透過 Map 層過濾，只允許 snake_case 欄位寫入
+                var filteredUpdateMap = _map.FilterUpdateData(updateJson);
+
                 var response = await _client.UpdateByQueryAsync<object>(_indexName, u => u
                     .Query(q => q.Bool(b => b.Filter(materializedConditions.ToArray())))
                     .Script(s => s
                         .Source("for (e in params.entrySet()) { if (e.key.toLowerCase() != 'id') { ctx._source[e.key] = e.value; } }")
                         .Params(p =>
                         {
-                            if (updateMap != null)
-                            {
-                                foreach (var kv in updateMap) p.Add(kv.Key, kv.Value);
-                            }
+                            foreach (var kv in filteredUpdateMap) p.Add(kv.Key, kv.Value);
                         })
                     )
                     .Refresh(true)

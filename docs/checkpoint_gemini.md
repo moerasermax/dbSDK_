@@ -2,46 +2,35 @@
 
 ## 專案概述
 - 名稱：NO3._dbSDK_Imporve（.NET 8）
-- 目標：建立支援 MongoDB / Elasticsearch / Redis 的通用資料庫 SDK
-- 目前解耦評分：10 / 10 (階段性完工)
-- 專案健康度：✅ 卓越 (具備完整的業務生命週期模擬能力)
-- 溝通語言：繁體中文，程式碼英文命名
+- 目前解耦評分：10 / 10
+- 專案健康度：✅ 卓越 (S17 證明級驗證通過，進入 S18 實測集成)
 
 ---
 
-## 目前目錄結構
+## 核心技術進展
 
-```
-CPF.Sandbox/
-  Scenarios/
-    StatefulComparisonScenario.cs   ← 步進驗證與對比報告
-    SellerGetNumberScenario.cs      ← 賣家取號與模組掛載驗證
-    ShippingCompleteScenario.cs     ← 寄貨追加驗證 (S15)
-```
+### 證明級沙盒驗證 (S17)
+成功在沙盒中演示了「狀態步進對比 (Stateful Comparison)」：
+- **證據實踐**：透過 V1 (Insert) -> Update -> V2 (Read) 的流程，實證了局部更新指令不會覆蓋未觸及的欄位（如個資與明細）。
+- **混合指令優化**：驗證了 MongoDB `$set` 與 `$push` ($each) 的原子性合併。
 
----
-
-## 核心設計決策
-
-### SDK 原生邏輯鏈結 (Native Fidelity)
-打破測試代碼與生產代碼的牆，沙盒與 Mock 專案直接呼叫 `MongoRepository` 類別內的原生 `public static` 函式。這確保了「驗證結果即事實」，達成了 100% 的邏輯一致性。
-
-### 狀態模擬器 (Stateful Simulator)
-`MockOrderRepository` 具備內存存儲與點符號路徑解析，可預演資料庫內容演變，產出自動化對比報告。
+### 實際環境集成規劃 (S18)
+已完成三個核心服務（Redis.Post, Mongo.Worker, Elastic.Worker）的重構藍圖，旨在將沙盒邏輯轉化為可操作的測試環境功能。
 
 ---
 
-## 尚未解決的問題 (待驗證項目)
+## 任務狀態與驗收
 
-### P0（使用者親自驗證）
-- **[重要] SDK 原生邏輯鏈結審核**：預計下週一由使用者親自執行 `CPF.Sandbox`，驗證重構後的邏輯鏈結是否 100% 正確，並確認對比報告的易讀性。
+### 已完工 (Done)
+- ✅ S16 Elastic 強化：強型別濾鏡與 Mock 體系。
+- ✅ S17 貨態更新：端到端業務場景與狀態步進驗證。
+- ✅ **S19 取號資料修正**：MongoDB (含 Redis) 實測完畢，欄位結構對齊 ✅。
 
-### P1（架構優化）
-- ElasticFilter 強型別支援：減少搜尋查詢中的硬編碼字串。
-- CancellationToken 支援：確保所有非同步操作均可取消。
+### 進行中 (Active)
+- 🛠️ **S18 環境集成**：MongoDB 部分已完成測試；**ElasticSearch 因帳號更換需重新佈署環境，目前尚未測試 ⚠️**。
+- 🧹 **S20 移除付款更新**：清理 `UpdatePaymentUpdateEvent` 相關實作 (進行中)。
 
 ---
 
 ## 接續指令
-
-新 Session 開始時請先閱讀此文件，優先確認「P0 使用者親自驗證」的結果。
+下次 Session 請讀取 `kiro-sync-point-08.md`，開始執行 S18 的具體程式碼重構。

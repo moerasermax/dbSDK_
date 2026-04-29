@@ -67,7 +67,7 @@ namespace CPF.Service.SendDataToMongoDB
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("Redis目前尚無【Mongo】Request資料");
                 throw;
             }
             
@@ -198,6 +198,111 @@ namespace CPF.Service.SendDataToMongoDB
                     await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition_c), UpdateOrderData,options);
 
                     break;
+
+                #region S18 貨態更新事件
+
+                case "UpdateSellerGetNumberEvent":
+                    // 取號事件 - 初始化 E_Shipment_M/L/S (S19 修復：使用完整 esmm 物件)
+                    var sellerGetNumberQuery = JsonSerializer.Deserialize<CPF.Services.Redis.Post.Model.QueryModel.MongoDB.UpdateSellerGetNumberEvent>(Query_Json);
+                    
+                    if (sellerGetNumberQuery?.Args != null)
+                    {
+                        var coomNo = sellerGetNumberQuery.Args.CoomNo;
+                        var coom = sellerGetNumberQuery.Args.coom;
+                        var esmm = sellerGetNumberQuery.Args.esmm;
+                        var esml = sellerGetNumberQuery.Args.esml;
+                        var esms = sellerGetNumberQuery.Args.esms;
+
+                        // 轉換類型
+                        List<E_Shipment_L_Model>? esmlList = esml?.Select(x => new E_Shipment_L_Model 
+                        { 
+                            EsmlEsmmStatus = x.EsmlEsmmStatus, 
+                            EsmlStatusDatetime = x.EsmlStatusDatetime 
+                        }).ToList();
+                        
+                        List<E_Shipment_S_Model>? esmsList = esms?.Select(x => new E_Shipment_S_Model 
+                        { 
+                            EsmsDlvStatusNo = x.EsmsDlvStatusNo, 
+                            EsmsStatusDatetime = x.EsmsStatusDatetime 
+                        }).ToList();
+
+                        // 使用 UpdateData 搭配條件與更新物件 (完整 esmm 欄位)
+                        CRUD_Condition_COOM condition1 = new CRUD_Condition_COOM(coomNo);
+                        UpdateOrderData = new OrderModel()
+                        {
+                            PK = coomNo,
+                            C_Order_M = coom != null ? new C_Order_M_Model { CoomStatus = coom.CoomStatus } : null,
+                            E_Shipment_M = esmm != null ? new E_Shipment_M_Model
+                            {
+                                EsmmNo = esmm.EsmmNo,
+                                EsmmShipNo = esmm.EsmmShipNo,
+                                EsmmStatus = esmm.EsmmStatus,
+                                EsmmShipMethod = esmm.EsmmShipMethod,
+                                EsmmShipNoAuthCode = esmm.EsmmShipNoAuthCode,
+                                EsmmShipNoA = esmm.EsmmShipNoA,
+                                EsmmIbonAppFlag = esmm.EsmmIbonAppFlag
+                            } : null,
+                            E_Shipment_L = esmlList,
+                            E_Shipment_S = esmsList
+                        };
+
+                        await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition1), UpdateOrderData);
+                        _logger.LogInformation($"[UpdateSellerGetNumberEvent] CoomNo: {coomNo}, EsmmNo: {esmm?.EsmmNo}, EsmmShipNo: {esmm?.EsmmShipNo}");
+                    }
+                    break;
+
+                case "Delivery_CargoDynamics_02":
+                    // 寄貨事件 - 更新狀態並新增配送紀錄
+                    var cargoDynamics02Query = JsonSerializer.Deserialize<CPF.Services.Redis.Post.Model.QueryModel.MongoDB.Delivery_CargoDynamics_02>(Query_Json);
+                    
+                    if (cargoDynamics02Query?.Args != null)
+                    {
+                        var coomNo = cargoDynamics02Query.Args.CoomNo;
+                        var coomStatus = cargoDynamics02Query.Args.CoomStatus;
+                        var esmm = cargoDynamics02Query.Args.esmm;
+                        var esml = cargoDynamics02Query.Args.esml;
+                        var esms = cargoDynamics02Query.Args.esms;
+
+                        // 轉換類型
+                        List<E_Shipment_L_Model>? esmlList = esml?.Select(x => new E_Shipment_L_Model 
+                        { 
+                            EsmlEsmmStatus = x.EsmlEsmmStatus, 
+                            EsmlStatusDatetime = x.EsmlStatusDatetime 
+                        }).ToList();
+                        
+                        List<E_Shipment_S_Model>? esmsList = esms?.Select(x => new E_Shipment_S_Model 
+                        { 
+                            EsmsDlvStatusNo = x.EsmsDlvStatusNo, 
+                            EsmsStatusDatetime = x.EsmsStatusDatetime 
+                        }).ToList();
+
+                        // 建立更新物件
+                        var updateShipData = new OrderModel
+                        {
+                            PK = coomNo,
+                            C_Order_M = new C_Order_M_Model { CoomStatus = coomStatus },
+                            E_Shipment_M = esmm != null ? new E_Shipment_M_Model
+                            {
+                                EsmmNo = esmm.EsmmNo,
+                                EsmmShipNo = esmm.EsmmShipNo,
+                                EsmmStatus = esmm.EsmmStatus,
+                                EsmmShipMethod = esmm.EsmmShipMethod,
+                                EsmmShipNoAuthCode = esmm.EsmmShipNoAuthCode,
+                                EsmmShipNoA = esmm.EsmmShipNoA,
+                                EsmmIbonAppFlag = esmm.EsmmIbonAppFlag
+                            } : null,
+                            E_Shipment_L = esmlList,
+                            E_Shipment_S = esmsList
+                        };
+
+                        CRUD_Condition_COOM condition2 = new CRUD_Condition_COOM(coomNo);
+                        await _mongoRepo.UpdateData(JsonSerializer.Serialize(condition2), updateShipData);
+                        _logger.LogInformation($"[Delivery_CargoDynamics_02] CoomNo: {coomNo}, EsmmStatus: {esmm?.EsmmStatus}");
+                    }
+                    break;
+
+                #endregion
+
                 default:
                     break;
             }

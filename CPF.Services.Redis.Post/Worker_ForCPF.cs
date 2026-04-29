@@ -24,15 +24,13 @@ namespace CPF.Services.Redis.Post
                 System.Console.WriteLine("[Redis_Post]按下【1】，發送【一般】【新增訂單】的Request");
                 System.Console.WriteLine("[Redis_Post]按下【2】，發送【一般】【訂單備註更新】的Request");
                 System.Console.WriteLine("[Redis_Post]按下【3】，發送【一般】【變更付款方式】的Request");
+                System.Console.WriteLine("[Redis_Post]按下【4】，發送【貨態】【取號】的Request (UpdateSellerGetNumberEvent)");
+                System.Console.WriteLine("[Redis_Post]按下【5】，發送【貨態】【寄貨】的Request (Delivery_CargoDynamics_02)");
 
                 var keyInfo = Console.ReadKey(intercept: true); // true 代表不把按下的字顯示在螢幕上
 
                 if (keyInfo.KeyChar.ToString().Equals("1"))
                 {
-                    Createflow();
-                    Createflow();
-                    Createflow();
-                    Createflow();
                     Createflow();
                 }
                 else if (keyInfo.KeyChar.ToString().Equals("2"))
@@ -42,6 +40,14 @@ namespace CPF.Services.Redis.Post
                 else if (keyInfo.KeyChar.ToString().Equals("3"))
                 {
                     UpdateChangePayTypeEvent();
+                }
+                else if (keyInfo.KeyChar.ToString().Equals("4"))
+                {
+                    UpdateCargoDynamics01Flow();
+                }
+                else if (keyInfo.KeyChar.ToString().Equals("5"))
+                {
+                    UpdateCargoDynamics02Flow();
                 }
 
 
@@ -70,7 +76,7 @@ namespace CPF.Services.Redis.Post
 
         async void UpdateCoomSellerMemoFolw()
         {
-            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateCoomSellerMemoObject("CM4216179510575");
+            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateCoomSellerMemoObject("CM2176837188796");
 
             _redis.QueryDB = "Request_MongoDB";
             await _redis.InsertData(UpdateData);
@@ -79,7 +85,7 @@ namespace CPF.Services.Redis.Post
 
         async void UpdateChangePayTypeEvent()
         {
-            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateChangePayTypeEventObject("CC2265481053604");
+            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateChangePayTypeEventObject("CC5178031884610");
 
             _redis.QueryDB = "Request_MongoDB";
             await _redis.InsertData(UpdateData);
@@ -93,5 +99,74 @@ namespace CPF.Services.Redis.Post
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        #region S18 貨態更新 Flow
+
+        /// <summary>
+        /// 取號事件 Flow (UpdateSellerGetNumberEvent)
+        /// </summary>
+        async void UpdateCargoDynamics01Flow()
+        {
+            // 先建立訂單，才能進行取號
+            var TestData = _CPF_TestDataEngine.Generate();
+            var coomNo = TestData.coom.CoomNo;
+            var rcvTotalAmt = TestData.coom.CoomRcvTotalAmt ?? 138;
+
+            // 1. 先新增訂單到 MongoDB
+            _redis.QueryDB = "Request_MongoDB";
+            await _redis.InsertData(_CPF_TestDataEngine.GetMongoDataObject(TestData));
+
+            // 2. 新增訂單到 Elastic
+            _redis.QueryDB = "Request_Elastic";
+            await _redis.InsertData(_CPF_TestDataEngine.GetElasticDataObject(TestData));
+
+            // 3. 發送取號事件到 MongoDB
+            _redis.QueryDB = "Request_MongoDB";
+            await _redis.InsertData(_CPF_TestDataEngine.GetUpdateSellerGetNumberEventObject(coomNo));
+
+            // 4. 發送取號事件到 Elastic
+            _redis.QueryDB = "Request_Elastic";
+            await _redis.InsertData(_CPF_TestDataEngine.GetElasticUpdateSellerGetNumberEventObject(coomNo, rcvTotalAmt));
+
+            Console.WriteLine($"[取號完成] CoomNo: {coomNo}");
+        }
+
+        /// <summary>
+        /// 寄貨事件 Flow (Delivery_CargoDynamics_02)
+        /// </summary>
+        async void UpdateCargoDynamics02Flow()
+        {
+            // 先建立訂單並完成取號，才能進行寄貨
+            var TestData = _CPF_TestDataEngine.Generate();
+            var coomNo = TestData.coom.CoomNo;
+            var rcvTotalAmt = TestData.coom.CoomRcvTotalAmt ?? 138;
+
+            // 1. 先新增訂單到 MongoDB
+            _redis.QueryDB = "Request_MongoDB";
+            await _redis.InsertData(_CPF_TestDataEngine.GetMongoDataObject(TestData));
+
+            // 2. 新增訂單到 Elastic
+            _redis.QueryDB = "Request_Elastic";
+            await _redis.InsertData(_CPF_TestDataEngine.GetElasticDataObject(TestData));
+
+            // 3. 發送取號事件到 MongoDB
+            _redis.QueryDB = "Request_MongoDB";
+            await _redis.InsertData(_CPF_TestDataEngine.GetUpdateSellerGetNumberEventObject(coomNo));
+
+            // 4. 發送取號事件到 Elastic
+            _redis.QueryDB = "Request_Elastic";
+            await _redis.InsertData(_CPF_TestDataEngine.GetElasticUpdateSellerGetNumberEventObject(coomNo, rcvTotalAmt));
+
+            // 5. 發送寄貨事件到 MongoDB
+            _redis.QueryDB = "Request_MongoDB";
+            await _redis.InsertData(_CPF_TestDataEngine.GetDeliveryCargoDynamics02Object(coomNo));
+
+            // 6. 發送寄貨事件到 Elastic
+            _redis.QueryDB = "Request_Elastic";
+            await _redis.InsertData(_CPF_TestDataEngine.GetElasticDeliveryCargoDynamics02Object(coomNo, rcvTotalAmt));
+
+            Console.WriteLine($"[寄貨完成] CoomNo: {coomNo}");
+        }
+
+        #endregion
     }
 }

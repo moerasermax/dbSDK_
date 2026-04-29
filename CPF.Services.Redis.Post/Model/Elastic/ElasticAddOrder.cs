@@ -18,6 +18,23 @@ namespace CPF.Services.Redis.Post.Model.Elastic
         [JsonPropertyName("coom_no")]
         public string? CoomNo { get; set; }
 
+        // --- 嵌套物件：coom (訂單主檔) ---
+        [JsonPropertyName("coom")]
+        public CoomArgs? Coom { get; set; }
+
+        // --- 嵌套物件：esmm (物流主檔) ---
+        [JsonPropertyName("esmm")]
+        public EsmmArgs? Esmm { get; set; }
+
+        // --- 嵌套物件：esml (貨態歷程) ---
+        [JsonPropertyName("esml")]
+        public List<EsmlArgs>? Esml { get; set; }
+
+        // --- 嵌套物件：esms (物流狀態) ---
+        [JsonPropertyName("esms")]
+        public List<EsmsArgs>? Esms { get; set; }
+
+        // --- 向下兼容：第一層欄位 (用於 AddOrderEvent) ---
         [JsonPropertyName("coom_name")]
         public string? CoomName { get; set; }
 
@@ -28,10 +45,10 @@ namespace CPF.Services.Redis.Post.Model.Elastic
         public string? CoomTempType { get; set; }
 
         [JsonPropertyName("coom_create_datetime")]
-        public DateTime? CoomCreateDatetime { get; set; } // 修正：依圖片改為 Date 型別
+        public DateTime? CoomCreateDatetime { get; set; }
 
         [JsonPropertyName("coom_cuam_cid")]
-        public int? CoomCuamCid { get; set; }        // 修正：依圖片改為 Keyword (string)
+        public int? CoomCuamCid { get; set; }
 
         [JsonPropertyName("coom_rcv_totalamt")]
         public int? CoomRcvTotalAmt { get; set; }
@@ -52,11 +69,14 @@ namespace CPF.Services.Redis.Post.Model.Elastic
         public string? CoocOrdChannelKind { get; set; }
 
         [JsonPropertyName("cooc_mem_sid")]
-        public int? CoocMemSid { get; set; }         // 修正：依圖片改為 Keyword (string)
+        public int? CoocMemSid { get; set; }
 
-        // --- 補足圖片中遺漏的出貨與狀態欄位 (esmm / esml 系列) ---
+        // --- 向下兼容：第一層欄位 (用於 AddOrderEvent) ---
         [JsonPropertyName("esmm_ship_no")]
         public string? EsmmShipNo { get; set; }
+
+        [JsonPropertyName("esmm_ship_no_auth_code")]
+        public string? EsmmShipNoAuthCode { get; set; }
 
         [JsonPropertyName("esmm_status")]
         public string? EsmmStatus { get; set; }
@@ -73,7 +93,7 @@ namespace CPF.Services.Redis.Post.Model.Elastic
         [JsonPropertyName("esml_status_finish_datetime")]
         public DateTime? EsmlStatusFinishDatetime { get; set; }
 
-        // --- 補足布林值欄位 (Boolean) ---
+        // --- 布林值欄位 ---
         [JsonPropertyName("esms_dlvstatus_seller_pickup")]
         public bool? EsmsDlvstatusSellerPickup { get; set; }
 
@@ -86,7 +106,7 @@ namespace CPF.Services.Redis.Post.Model.Elastic
         [JsonPropertyName("crsa_applied")]
         public bool? CrsaApplied { get; set; }
 
-        // --- 補足統計欄位 (Integer) ---
+        // --- 統計欄位 ---
         [JsonPropertyName("seller_qa_never_reply_count")]
         public int? SellerQaNeverReplyCount { get; set; }
 
@@ -97,8 +117,121 @@ namespace CPF.Services.Redis.Post.Model.Elastic
         [JsonPropertyName("cood_items")]
         public List<CoodItem>? CoodItems { get; set; } = new();
 
-        // 額外保留：你原有的清單 (視需求決定是否移除)
         public List<string>? CoodNames { get; set; }
+    }
+
+    /// <summary>
+    /// 訂單主檔嵌套物件 (coom)
+    /// </summary>
+    public class CoomArgs
+    {
+        [JsonPropertyName("coom_name")]
+        public string? CoomName { get; set; }
+
+        [JsonPropertyName("coom_order_date")]
+        public DateTime? CoomOrderDate { get; set; }
+
+        [JsonPropertyName("coom_status")]
+        public string? CoomStatus { get; set; }
+
+        [JsonPropertyName("coom_ccc m_no")]
+        public string? CoomCccmNo { get; set; }
+
+        [JsonPropertyName("coom_temp_type")]
+        public string? CoomTempType { get; set; }
+
+        [JsonPropertyName("coom_create_datetime")]
+        public DateTime? CoomCreateDatetime { get; set; }
+
+        [JsonPropertyName("coom_cuam_cid")]
+        public int? CoomCuamCid { get; set; }
+
+        [JsonPropertyName("coom_seller_goods_total_amt")]
+        public int? CoomSellerGoodsTotalAmt { get; set; }
+
+        [JsonPropertyName("coom_goods_item_num")]
+        public int? CoomGoodsItemNum { get; set; }
+
+        [JsonPropertyName("coom_goods_total_num")]
+        public int? CoomGoodsTotalNum { get; set; }
+
+        [JsonPropertyName("coom_rcv_totalamt")]
+        public int? CoomRcvTotalAmt { get; set; }
+
+        [JsonPropertyName("coom_cgdm_id")]
+        public string? CoomCgdmId { get; set; }
+
+        [JsonPropertyName("coom_seller_memo")]
+        public string? CoomSellerMemo { get; set; }
+
+        [JsonPropertyName("coom_re_choice_flag")]
+        public string? CoomReChoiceFlag { get; set; }
+
+        [JsonPropertyName("coom_merge_list_coom_no")]
+        public string? CoomMergeListCoomNo { get; set; }
+
+        [JsonPropertyName("coom_ship_print_flag")]
+        public string? CoomShipPrintFlag { get; set; }
+    }
+
+    /// <summary>
+    /// 物流主檔嵌套物件 (esmm)
+    /// </summary>
+    public class EsmmArgs
+    {
+        [JsonPropertyName("esmm_no")]
+        public string? EsmmNo { get; set; }
+
+        [JsonPropertyName("esmm_ship_no")]
+        public string? EsmmShipNo { get; set; }
+
+        [JsonPropertyName("esmm_status")]
+        public string? EsmmStatus { get; set; }
+
+        [JsonPropertyName("esmm_ship_method")]
+        public string? EsmmShipMethod { get; set; }
+
+        [JsonPropertyName("esmm_ship_no_auth_code")]
+        public string? EsmmShipNoAuthCode { get; set; }
+
+        [JsonPropertyName("esmm_ship_no_a")]
+        public string? EsmmShipNoA { get; set; }
+
+        [JsonPropertyName("esmm_leave_store_date_b")]
+        public DateTime? EsmmLeaveStoreDateB { get; set; }
+
+        [JsonPropertyName("esmm_ibon_app_flag")]
+        public string? EsmmIbonAppFlag { get; set; }
+
+        [JsonPropertyName("esmm_odd_reason")]
+        public string? EsmmOddReason { get; set; }
+
+        [JsonPropertyName("esmm_confirm_ext_pay_datetime")]
+        public DateTime? EsmmConfirmExtPayDatetime { get; set; }
+    }
+
+    /// <summary>
+    /// 貨態歷程嵌套物件 (esml)
+    /// </summary>
+    public class EsmlArgs
+    {
+        [JsonPropertyName("esml_esmm_status")]
+        public string? EsmlEsmmStatus { get; set; }
+
+        [JsonPropertyName("esml_status_datetime")]
+        public DateTime? EsmlStatusDatetime { get; set; }
+    }
+
+    /// <summary>
+    /// 物流狀態嵌套物件 (esms)
+    /// </summary>
+    public class EsmsArgs
+    {
+        [JsonPropertyName("esms_dlv_status_no")]
+        public string? EsmsDlvStatusNo { get; set; }
+
+        [JsonPropertyName("esms_status_datetime")]
+        public DateTime? EsmsStatusDatetime { get; set; }
     }
 
     public class CoodItem

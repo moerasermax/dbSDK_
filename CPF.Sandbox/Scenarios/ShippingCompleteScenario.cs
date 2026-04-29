@@ -104,6 +104,7 @@ namespace CPF.Sandbox.Scenarios
             Console.WriteLine($"  e_shipment_s 筆數: {v2_esmsCount}  ← 預期=2");
 
             // 印出 esml 陣列內容，確認兩筆都在
+            // 印出 esml 陣列內容，確認兩筆都在
             if (v2.Contains("e_shipment_l") && v2["e_shipment_l"].IsBsonArray)
             {
                 Console.WriteLine("  e_shipment_l 內容：");
@@ -126,7 +127,9 @@ namespace CPF.Sandbox.Scenarios
                     var d = item.AsBsonDocument;
                     if (d.Contains("esml_esmm_status"))
                     {
-                        var s = d["esml_esmm_status"].AsString;
+                        // S15.3：使用安全轉換，相容 BsonDateTime 和 BsonString
+                        var val = d["esml_esmm_status"];
+                        var s = val.BsonType == BsonType.String ? val.AsString : val.ToString();
                         if (s == "01") hasEsml01 = true;
                         if (s == "10") hasEsml10 = true;
                     }
@@ -141,7 +144,9 @@ namespace CPF.Sandbox.Scenarios
                     var d = item.AsBsonDocument;
                     if (d.Contains("esms_dlv_status_no"))
                     {
-                        var s = d["esms_dlv_status_no"].AsString;
+                        // S15.3：使用安全轉換，相容 BsonDateTime 和 BsonString
+                        var val = d["esms_dlv_status_no"];
+                        var s = val.BsonType == BsonType.String ? val.AsString : val.ToString();
                         if (s == "1001") hasEsms1001 = true;
                         if (s == "1A01") hasEsms1A01 = true;
                     }

@@ -2,6 +2,7 @@ using MongoDB.Bson;
 using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
+using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Utils;
 using System.Collections.Concurrent;
 
 namespace NO3._dbSDK_Imporve.Application.Sample.Mongo
@@ -36,6 +37,7 @@ namespace NO3._dbSDK_Imporve.Application.Sample.Mongo
 
         // ─────────────────────────────────────────────────────────
         // Insert：將 BsonDocument 存入字典，以 coom_no 為 key
+        // S15.2：正規化所有日期字串為 BsonDateTime
         // ─────────────────────────────────────────────────────────
         public Task<IResult> Insert(BsonDocument doc)
         {
@@ -46,7 +48,11 @@ namespace NO3._dbSDK_Imporve.Application.Sample.Mongo
                         Result.SetErrorResult("Insert", "文件缺少 coom_no 欄位，無法存入 Mock Store。"));
 
                 string key = keyVal.AsString;
-                _store[key] = doc.DeepClone().AsBsonDocument;
+                
+                // S15.2：正規化處理，確保所有日期字串轉為 BsonDateTime
+                var normalized = MongoCommandBuilder.Normalize(doc);
+                _store[key] = normalized.AsBsonDocument;
+                
                 return Task.FromResult<IResult>(
                     Result.SetResult($"[Mock] Insert 成功。coom_no={key}"));
             }
@@ -127,6 +133,8 @@ namespace NO3._dbSDK_Imporve.Application.Sample.Mongo
         //   - filterJson  : { "coom_no": "CM..." }
         //   - pushDoc     : { "e_shipment_l": {BsonDocument}, "e_shipment_s": {BsonDocument} }
         //   每個 value 可以是單一 BsonDocument 或 BsonArray（$each 語意）
+        // 
+        // S15.2：正規化 pushDoc 中的所有日期字串為 BsonDateTime
         // ─────────────────────────────────────────────────────────
         public Task<IResult> Push(string filterJson, BsonDocument pushDoc)
         {
@@ -143,7 +151,10 @@ namespace NO3._dbSDK_Imporve.Application.Sample.Mongo
                     return Task.FromResult<IResult>(
                         Result.SetErrorResult("Push", $"[Mock] 查無資料，無法 Push。coom_no={key}"));
 
-                foreach (var el in pushDoc)
+                // S15.2：正規化處理，確保所有日期字串轉為 BsonDateTime
+                var normalizedPushDoc = MongoCommandBuilder.Normalize(pushDoc).AsBsonDocument;
+
+                foreach (var el in normalizedPushDoc)
                 {
                     // 確保目標欄位是陣列，若不存在則建立
                     if (!existing.Contains(el.Name) || !existing[el.Name].IsBsonArray)

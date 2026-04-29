@@ -254,8 +254,163 @@ namespace CPF.Services.Redis.Post.Model
             };
         }
 
+        #region S18 貨態更新事件
 
+        /// <summary>
+        /// 取得取號事件 (UpdateSellerGetNumberEvent) - 完整結構 (S19 修復)
+        /// </summary>
+        public UpdateSellerGetNumberEvent GetUpdateSellerGetNumberEventObject(string coomNo)
+        {
+            var now = DateTime.UtcNow;
+            return new UpdateSellerGetNumberEvent()
+            {
+                Name = "UpdateSellerGetNumberEvent",
+                Args = new SellerGetNumberArgs()
+                {
+                    CoomNo = coomNo,
+                    coom = new C_Order_M_Model()
+                    {
+                        CoomStatus = "20"
+                    },
+                    esmm = new E_Shipment_M_Model()
+                    {
+                        EsmmNo = "SM" + RandomNumericString(10),
+                        EsmmShipNo = "D" + RandomNumericString(10),
+                        EsmmStatus = "01",
+                        EsmmShipMethod = "1",
+                        EsmmShipNoAuthCode = RandomNumericString(4),
+                        EsmmShipNoA = "7M0",
+                        EsmmIbonAppFlag = "0"
+                    },
+                    esml = new List<E_Shipment_L_Model>
+                    {
+                        new E_Shipment_L_Model
+                        {
+                            EsmlEsmmStatus = "01",
+                            EsmlStatusDatetime = now
+                        }
+                    },
+                    esms = new List<E_Shipment_S_Model>
+                    {
+                        new E_Shipment_S_Model
+                        {
+                            EsmsDlvStatusNo = "1001",
+                            EsmsStatusDatetime = now
+                        }
+                    }
+                }
+            };
+        }
 
+        /// <summary>
+        /// 取得取號事件 (UpdateSellerGetNumberEvent) - Redis_2 格式 (完整結構)
+        /// </summary>
+        public UpdateSellerGetNumberEvent GetUpdateSellerGetNumberEventFullObject(string coomNo)
+        {
+            return GetUpdateSellerGetNumberEventObject(coomNo);
+        }
 
+        /// <summary>
+        /// 取得寄貨事件 (Delivery_CargoDynamics_02)
+        /// </summary>
+        public Delivery_CargoDynamics_02 GetDeliveryCargoDynamics02Object(string coomNo)
+        {
+            var now = DateTime.UtcNow;
+            return new Delivery_CargoDynamics_02()
+            {
+                Name = "Delivery_CargoDynamics_02",
+                Args = new CargoDynamics02Args()
+                {
+                    CoomNo = coomNo,
+                    CoomStatus = "30",
+                    coom = new C_Order_M_Model()
+                    {
+                        CoomStatus = "30"
+                    },
+                    esmm = new E_Shipment_M_Model()
+                    {
+                        EsmmNo = "SM" + RandomNumericString(10),
+                        EsmmShipNo = "D" + RandomNumericString(10),
+                        EsmmStatus = "10",
+                        EsmmShipMethod = "1",
+                        EsmmShipNoAuthCode = RandomNumericString(4),
+                        EsmmShipNoA = "7M0",
+                        EsmmIbonAppFlag = "0"
+                    },
+                    esml = new List<E_Shipment_L_Model>()
+                    {
+                        new E_Shipment_L_Model()
+                        {
+                            EsmlEsmmStatus = "01",
+                            EsmlStatusDatetime = now.AddMinutes(-10)
+                        },
+                        new E_Shipment_L_Model()
+                        {
+                            EsmlEsmmStatus = "10",
+                            EsmlStatusDatetime = now
+                        }
+                    },
+                    esms = new List<E_Shipment_S_Model>()
+                    {
+                        new E_Shipment_S_Model()
+                        {
+                            EsmsDlvStatusNo = "1A01",
+                            EsmsStatusDatetime = now.AddMinutes(-10)
+                        },
+                        new E_Shipment_S_Model()
+                        {
+                            EsmsDlvStatusNo = "1001",
+                            EsmsStatusDatetime = now
+                        }
+                    }
+                }
+            };
+        }
+
+        #endregion
+
+        #region Elastic 貨態更新事件
+
+        /// <summary>
+        /// 取得 Elastic 取號更新資料
+        /// </summary>
+        public ElasticAddOrder GetElasticUpdateSellerGetNumberEventObject(string coomNo, int rcvTotalAmt)
+        {
+            return new ElasticAddOrder()
+            {
+                Name = "UpdateSellerGetNumberEvent",
+                Args = new Elastic.OrderArgs()
+                {
+                    CoomNo = coomNo,
+                    CoomStatus = "20",
+                    EsmmShipNo = "D" + RandomNumericString(10),
+                    EsmmStatus = "01",
+                    EsmmRcvTotalAmt = rcvTotalAmt
+                }
+            };
+        }
+
+        /// <summary>
+        /// 取得 Elastic 寄貨更新資料
+        /// </summary>
+        public ElasticAddOrder GetElasticDeliveryCargoDynamics02Object(string coomNo, int rcvTotalAmt)
+        {
+            var now = DateTime.UtcNow;
+            return new ElasticAddOrder()
+            {
+                Name = "Delivery_CargoDynamics_02",
+                Args = new Elastic.OrderArgs()
+                {
+                    CoomNo = coomNo,
+                    CoomStatus = "30",
+                    EsmmShipNo = "D" + RandomNumericString(10),
+                    EsmmStatus = "10",
+                    EsmmRcvTotalAmt = rcvTotalAmt,
+                    EsmlStatusShippingDatetime = now
+                }
+            };
+        }
+
+        #endregion
     }
 }

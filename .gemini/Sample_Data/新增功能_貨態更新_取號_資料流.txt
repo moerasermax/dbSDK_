@@ -1,56 +1,52 @@
--從客戶自己的資料庫拿到的資料模型，我們可以直接實作-
-
--資料範例(可直接採用)-
+-Redis_1_取號_Elastic-
 {
-    "coom_no": "CM2604160395986",
-    "coom_name": "test",
-    "coom_status": "30",
-    "coom_temp_type": "01",
-    "coom_create_datetime": "2026-04-16T05:39:04.1827004Z",
-    "coom_cuam_cid": 528672,
-    "cooc_no": "CC2604160431308",
-    "cooc_payment_type": "1",
-    "cooc_deliver_method": "1",
-    "cooc_ord_channel_kind": "1",
-    "cooc_mem_sid": 528672,
-    "cood_name": [
-        "testtesttete test"
-    ],
-    "coom_rcv_totalamt": 138,
-    "cood_items": [
-        {
-            "cgdd_cgdmid": "GM2512170027503",
-            "cgdd_id": "2601270002368654",
-            "cood_cgdsid": "2601270002368655",
-            "cood_name": "testtesttete test",
-            "cood_qty": 1,
-            "cood_image_path": "2601270002368647.jpg"
-        }
-    ],
-    "esmm_rcv_total_amt": 138,
-    "esmm_ship_no": "D88032120964",
-    "esmm_status": "10",
-    "esml_status_shipping_datetime": "2026-04-16T06:20:00Z"
+    "Name": "UpdateSellerGetNumberEvent",
+    "Args": {
+        "CoomNo": "CM2604160395986",
+        "coom": {
+            "CoomName": null,
+            "CoomOrderDate": null,
+            "CoomStatus": "20",
+            "CoomCccmNo": null,
+            "CoomTempType": null,
+            "CoomCreateDatetime": null,
+            "CoomCuamCid": null,
+            "CoomSellerGoodsTotalAmt": null,
+            "CoomGoodsItemNum": null,
+            "CoomGoodsTotalNum": null,
+            "CoomRcvTotalAmt": null,
+            "CoomCgdmId": null,
+            "CoomSellerMemo": null,
+            "CoomReChoiceFlag": null,
+            "CoomMergeListCoomNo": null,
+            "CoomShipPrintFlag": null
+        },
+        "esmm": {
+            "EsmmNo": "SM2604160036207",
+            "EsmmShipNo": "D8803212",
+            "EsmmStatus": "01",
+            "EsmmShipMethod": "1",
+            "EsmmShipNoAuthCode": "0964",
+            "EsmmShipNoA": "7M0",
+            "EsmmLeaveStoreDateB": null,
+            "EsmmIbonAppFlag": "0",
+            "EsmmOddReason": null,
+            "EsmmConfirmExtPay_Datetime": null
+        },
+        "esml": [
+            {
+                "EsmlEsmmStatus": "01",
+                "EsmlStatusDatetime": "2026-04-16T06:11:56.97Z"
+            }
+        ],
+        "esms": [
+            {
+                "EsmsDlvStatusNo": "1001",
+                "EsmsStatusDatetime": "2026-04-16T06:11:56.97Z"
+            }
+        ]
+    }
 }
-
--客戶端的資料結構-
-public class DBModel
-{
-    public string Coom_No { get; set; } = null!;
-    public string Coom_Status { get; set; } = null!;
-    public string? Coom_MergeList_CoomNo { get; set; } = null;
-    public string Esmm_No { get; set; } = null!;
-    public string Esmm_Ship_No { get; set; } = null!;
-    public string Esmm_Status { get; set; } = null!;
-    public string Esmm_Ship_Method { get; set; } = null!;
-    public string Esmm_ShipNo_AuthCode { get; set; } = null!;
-    public string Esmm_Ship_No_A { get; set; } = null!;
-    public string Esmm_IbonApp_Flag { get; set; } = null!;
-    public string? Cccm_Status { get; set; } = null;
-    public string Esml_EsmmNo_List { get; set; } = null!;
-    public string Esms_EsmmNo_List { get; set; } = null!;
-}
-
 
 Elastic_更新前
 {
@@ -78,16 +74,13 @@ Elastic_更新前
             "cood_image_path": "2601270002368647.jpg"
         }
     ],
-    "esmm_rcv_total_amt": 138,
-    "esmm_ship_no": "D88032120964",
 }
-
 
 Elastic_更新後
 {
     "coom_no": "CM2604160395986",
     "coom_name": "test",
-    "coom_status": "30",
+    "coom_status": "20",
     "coom_temp_type": "01",
     "coom_create_datetime": "2026-04-16T05:39:04.1827004Z",
     "coom_cuam_cid": 528672,
@@ -112,8 +105,57 @@ Elastic_更新後
     ],
     "esmm_rcv_total_amt": 138,
     "esmm_ship_no": "D88032120964",
-    "esmm_status": "10",
-    "esml_status_shipping_datetime": "2026-04-16T06:20:00Z"
+    "esmm_status": "01"
+}
+
+-Redis_2_取號_MongoDB-
+{
+    "Name": "UpdateSellerGetNumberEvent",
+    "Args": {
+        "CoomNo": "CM2604160395986",
+        "coom": {
+            "CoomName": null,
+            "CoomOrderDate": null,
+            "CoomStatus": "20",
+            "CoomCccmNo": null,
+            "CoomTempType": null,
+            "CoomCreateDatetime": null,
+            "CoomCuamCid": null,
+            "CoomSellerGoodsTotalAmt": null,
+            "CoomGoodsItemNum": null,
+            "CoomGoodsTotalNum": null,
+            "CoomRcvTotalAmt": null,
+            "CoomCgdmId": null,
+            "CoomSellerMemo": null,
+            "CoomReChoiceFlag": null,
+            "CoomMergeListCoomNo": null,
+            "CoomShipPrintFlag": null
+        },
+        "esmm": {
+            "EsmmNo": "SM2604160036207",
+            "EsmmShipNo": "D8803212",
+            "EsmmStatus": "01",
+            "EsmmShipMethod": "1",
+            "EsmmShipNoAuthCode": "0964",
+            "EsmmShipNoA": "7M0",
+            "EsmmLeaveStoreDateB": null,
+            "EsmmIbonAppFlag": "0",
+            "EsmmOddReason": null,
+            "EsmmConfirmExtPay_Datetime": null
+        },
+        "esml": [
+            {
+                "EsmlEsmmStatus": "01",
+                "EsmlStatusDatetime": "2026-04-16T06:11:56.97Z"
+            }
+        ],
+        "esms": [
+            {
+                "EsmsDlvStatusNo": "1001",
+                "EsmsStatusDatetime": "2026-04-16T06:11:56.97Z"
+            }
+        ]
+    }
 }
 
 
@@ -224,60 +266,9 @@ Mongo_更新前
                     "N": "60"
                 }
             }
-        },
-        "e_shipment_s": {
-            "L": [
-                {
-                    "M": {
-                        "esms_status_datetime": {
-                            "S": "2026-04-16T06:20:00.000Z"
-                        },
-                        "esms_dlv_status_no": {
-                            "S": "1A01"
-                        }
-                    }
-                },
-            ]
-        },
-        "e_shipment_m": {
-            "M": {
-                "esmm_ship_no_a": {
-                    "S": "7M0"
-                },
-                "esmm_ibon_app_flag": {
-                    "S": "0"
-                },
-                "esmm_no": {
-                    "S": "SM2604160036207"
-                },
-                "esmm_ship_no": {
-                    "S": "D8803212"
-                },
-                "esmm_ship_no_auth_code": {
-                    "S": "0964"
-                },
-                "esmm_ship_method": {
-                    "S": "1"
-                }
-            }
-        },
-        "e_shipment_l": {
-            "L": [
-                {
-                    "M": {
-                        "esml_status_datetime": {
-                            "S": "2026-04-16T06:11:56.970Z"
-                        },
-                        "esml_esmm_status": {
-                            "S": "01"
-                        }
-                    }
-                },
-              ]
         }
     }
 }
-
 
 Mongo_更新後
 {
@@ -300,7 +291,7 @@ Mongo_更新後
                     "N": "1"
                 },
                 "coom_status": {
-                    "S": "30"
+                    "S": "20"
                 },
                 "coom_cuam_cid": {
                     "N": "528672"
@@ -388,19 +379,9 @@ Mongo_更新後
                     "N": "60"
                 }
             }
-        },
+        }
         "e_shipment_s": {
             "L": [
-                {
-                    "M": {
-                        "esms_status_datetime": {
-                            "S": "2026-04-16T06:20:00.000Z"
-                        },
-                        "esms_dlv_status_no": {
-                            "S": "1A01"
-                        }
-                    }
-                },
                 {
                     "M": {
                         "esms_status_datetime": {
@@ -428,7 +409,7 @@ Mongo_更新後
                     "S": "D8803212"
                 },
                 "esmm_status": {
-                    "S": "10"
+                    "S": "01"
                 },
                 "esmm_ship_no_auth_code": {
                     "S": "0964"
@@ -447,16 +428,6 @@ Mongo_更新後
                         },
                         "esml_esmm_status": {
                             "S": "01"
-                        }
-                    }
-                },
-                {
-                    "M": {
-                        "esml_status_datetime": {
-                            "S": "2026-04-16T06:20:00.000Z"
-                        },
-                        "esml_esmm_status": {
-                            "S": "10"
                         }
                     }
                 }

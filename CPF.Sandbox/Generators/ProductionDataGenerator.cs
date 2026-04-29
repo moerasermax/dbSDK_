@@ -123,10 +123,91 @@ namespace CPF.Sandbox.Generators
                 CoodItems             = args.cood.Select(d => new CoodItems
                 {
                     CgddCgdmid   = coom.CoomCgdmId,
+                    CgddId       = "2601270002368654", // 模擬資料
+                    CoodCgdsId   = "2601270002368655", // 模擬資料
                     CoodName     = d.CoodName,
                     CoodQty      = d.CoodQty,
                     CoodImagePath= d.CoodImagePath
                 }).ToArray()
+            };
+        }
+
+        /// <summary>
+        /// S21 新增：產生符合 Sample_Data 格式的 Elastic 寄貨更新後 JSON
+        /// 對應資料流：新增功能_貨態更新_寄貨_資料流.txt -> Elastic_更新後
+        /// </summary>
+        public OrderInfoModel GenerateElasticShippingUpdateModel()
+        {
+            return new OrderInfoModel
+            {
+                CoomNo                = "CM2604160395986",
+                CoomName              = "test",
+                CoomStatus            = "30",           // 配送中
+                CoomTempType          = "01",
+                CoomCreateDatetime    = DateTime.Parse("2026-04-16T05:39:04.1827004Z"),
+                CoomCuamCid           = 528672,
+                CoomRcvTotalAmt       = 138,
+                CoocNo                = "CC2604160431308",
+                CoocPaymentType       = "1",
+                CoocDeliverMethod     = "1",
+                CoocOrdChannelKind    = "1",
+                CoocMemSid            = 528672,
+                CoodNames             = new[] { "testtesttete test" },
+                CoodItems             = new[]
+                {
+                    new CoodItems
+                    {
+                        CgddCgdmid   = "GM2512170027503",
+                        CgddId       = "2601270002368654",
+                        CoodCgdsId   = "2601270002368655",
+                        CoodName     = "testtesttete test",
+                        CoodQty      = 1,
+                        CoodImagePath= "2601270002368647.jpg"
+                    }
+                },
+                EsmmRcvTotalAmt       = 138,
+                EsmmShipNo            = "D88032120964",
+                EsmmStatus            = "10",           // 已寄件
+                EsmlStatusShippingDatetime = DateTime.Parse("2026-04-16T06:20:00Z")
+            };
+        }
+
+        /// <summary>
+        /// S21 新增：產生符合 Sample_Data 格式的 Elastic 取號更新後 JSON
+        /// 對應資料流：新增功能_貨態更新_取號_資料流.txt -> Elastic_更新後
+        /// </summary>
+        public OrderInfoModel GenerateElasticGetNumberUpdateModel()
+        {
+            return new OrderInfoModel
+            {
+                CoomNo                = "CM2604160395986",
+                CoomName              = "test",
+                CoomStatus            = "20",           // 備貨中
+                CoomTempType          = "01",
+                CoomCreateDatetime    = DateTime.Parse("2026-04-16T05:39:04.1827004Z"),
+                CoomCuamCid           = 528672,
+                CoomRcvTotalAmt       = 138,
+                CoocNo                = "CC2604160431308",
+                CoocPaymentType       = "1",
+                CoocDeliverMethod     = "1",
+                CoocOrdChannelKind    = "1",
+                CoocMemSid            = 528672,
+                CoodNames             = new[] { "testtesttete test" },
+                CoodItems             = new[]
+                {
+                    new CoodItems
+                    {
+                        CgddCgdmid   = "GM2512170027503",
+                        CgddId       = "2601270002368654",
+                        CoodCgdsId   = "2601270002368655",
+                        CoodName     = "testtesttete test",
+                        CoodQty      = 1,
+                        CoodImagePath= "2601270002368647.jpg"
+                    }
+                },
+                EsmmRcvTotalAmt       = 138,
+                EsmmShipNo            = "D88032120964",
+                EsmmStatus            = "01"            // 待寄件
             };
         }
 
@@ -227,16 +308,17 @@ namespace CPF.Sandbox.Generators
                 },
 
                 // $push 部分：追加新的貨態歷程
+                // S15.2：直接傳入 DateTime 物件，由 MongoCommandBuilder.Normalize 處理轉換
                 PushEsml = new BsonDocument
                 {
                     { "esml_esmm_status",     "10" },
-                    { "esml_status_datetime", shippingTime.ToString("o") }
+                    { "esml_status_datetime", shippingTime }
                 },
 
                 PushEsms = new BsonDocument
                 {
                     { "esms_dlv_status_no",    "1A01" },
-                    { "esms_status_datetime",  shippingTime.ToString("o") }
+                    { "esms_status_datetime",  shippingTime }
                 }
             };
         }
@@ -246,6 +328,150 @@ namespace CPF.Sandbox.Generators
             const string chars = "0123456789";
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[_rnd.Next(s.Length)]).ToArray());
+        }
+
+        // ─────────────────────────────────────────────
+        // S17 新增：貨態更新場景 Patch 產生器
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// 取號 Patch (Delivery_01)
+        /// 對應資料流：新增功能_貨態更新_取號_資料流
+        /// </summary>
+        public (string coomNo, MongoOrderModel patch) GenerateGetNumberPatch(string coomNo)
+        {
+            var shipNo      = "D" + RandomNumericString(10);
+            var esmmNo      = "SM" + RandomNumericString(13);
+            var statusTime  = DateTime.UtcNow;
+
+            return (coomNo, new MongoOrderModel
+            {
+                PK = coomNo,
+
+                // 更新訂單狀態為 20
+                C_Order_M = new MongoCoom { CoomStatus = "20" },
+
+                // 掛載物流主檔 (e_shipment_m)
+                E_Shipment_M = new MongoEsmm
+                {
+                    EsmmNo            = esmmNo,
+                    EsmmShipNo        = shipNo,
+                    EsmmStatus        = "01",
+                    EsmmShipMethod    = "1",
+                    EsmmShipNoAuthCode= "0964",
+                    EsmmShipNoA       = "7M0",
+                    EsmmIbonAppFlag   = "0"
+                },
+
+                // 初始化貨態歷程 (e_shipment_l)
+                E_Shipment_L = new List<MongoEsml>
+                {
+                    new MongoEsml
+                    {
+                        EsmlEsmmStatus    = "01",
+                        EsmlStatusDatetime= statusTime
+                    }
+                },
+
+                // 初始化物流狀態 (e_shipment_s)
+                E_Shipment_S = new List<MongoEsms>
+                {
+                    new MongoEsms
+                    {
+                        EsmsDlvStatusNo    = "1001",
+                        EsmsStatusDatetime = statusTime
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// 寄貨 Patch (Delivery_02)
+        /// 對應資料流：新增功能_貨態更新_寄貨_資料流
+        /// </summary>
+        public (string coomNo, MongoOrderModel patch) GenerateShippingPatch(string coomNo)
+        {
+            var shippingTime = DateTime.UtcNow;
+
+            return (coomNo, new MongoOrderModel
+            {
+                PK = coomNo,
+
+                // 更新訂單狀態為 30
+                C_Order_M = new MongoCoom { CoomStatus = "30" },
+
+                // 更新物流主檔狀態為 10 (已寄件)
+                E_Shipment_M = new MongoEsmm { EsmmStatus = "10" },
+
+                // 追加貨態歷程 (e_shipment_l) - 使用 List 追加
+                E_Shipment_L = new List<MongoEsml>
+                {
+                    new MongoEsml
+                    {
+                        EsmlEsmmStatus    = "10",
+                        EsmlStatusDatetime= shippingTime
+                    }
+                },
+
+                // 追加物流狀態 (e_shipment_s)
+                E_Shipment_S = new List<MongoEsms>
+                {
+                    new MongoEsms
+                    {
+                        EsmsDlvStatusNo    = "1A01",
+                        EsmsStatusDatetime = shippingTime
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// 付款資訊更新 Patch
+        /// 對應資料流：新增功能_貨態更新_更新付款資訊_資料流
+        /// </summary>
+        public (string coomNo, MongoOrderModel patch) GeneratePaymentUpdatePatch(string coomNo)
+        {
+            var statusTime = DateTime.UtcNow;
+
+            return (coomNo, new MongoOrderModel
+            {
+                PK = coomNo,
+
+                // 更新訂單狀態為 20
+                C_Order_M = new MongoCoom { CoomStatus = "20" },
+
+                // 掛載物流主檔
+                E_Shipment_M = new MongoEsmm
+                {
+                    EsmmNo            = "SM" + RandomNumericString(13),
+                    EsmmShipNo        = "D" + RandomNumericString(10),
+                    EsmmStatus        = "01",
+                    EsmmShipMethod    = "1",
+                    EsmmShipNoAuthCode= "0964",
+                    EsmmShipNoA       = "7M0",
+                    EsmmIbonAppFlag   = "0"
+                },
+
+                // 初始化貨態歷程
+                E_Shipment_L = new List<MongoEsml>
+                {
+                    new MongoEsml
+                    {
+                        EsmlEsmmStatus    = "01",
+                        EsmlStatusDatetime= statusTime
+                    }
+                },
+
+                // 初始化物流狀態
+                E_Shipment_S = new List<MongoEsms>
+                {
+                    new MongoEsms
+                    {
+                        EsmsDlvStatusNo    = "1001",
+                        EsmsStatusDatetime = statusTime
+                    }
+                }
+            });
         }
     }
 
