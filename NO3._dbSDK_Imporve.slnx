@@ -4,5 +4,4 @@
   <Project Path="CPF.Service.SendDataToMongoDB/CPF.Service.SendDataToMongoDB.csproj" />
   <Project Path="CPF.Services.Redis.Post/CPF.Services.Redis.Post.csproj" Id="16c3d3b9-0f67-422b-be16-18fa3eb10d26" />
   <Project Path="NO3._dbSDK_Imporve/NO3._dbSDK_Imporve.csproj" />
-  <Project Path="PIC.CPF.OrderSDK.Biz.Read.Elastic/PIC.CPF.OrderSDK.Biz.Read.Elastic.csproj" Id="57233b62-4604-4173-bdf2-34ae3243697d" />
 </Solution>
