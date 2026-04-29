@@ -33,11 +33,16 @@ namespace CPF.Service.SendDataToElasticCloud
                 {
                     result = await _Redis.GetData(Key) as Result;
 
-                    if (result != null)
+                    if (result.DataJson != null)
                     {
                         ElasticAddOrder response = JsonSerializer.Deserialize<ElasticAddOrder>(result.DataJson);
 
                         Do(response);
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Redis目前尚無【Elastic】Request資料");
 
                     }
 
@@ -47,7 +52,6 @@ namespace CPF.Service.SendDataToElasticCloud
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Redis目前尚無【Elastic】Request資料");
                 throw;
             }
 
@@ -56,7 +60,6 @@ namespace CPF.Service.SendDataToElasticCloud
         async Task Do(ElasticAddOrder query)
         {
             
-            Condition condition;
             switch (query.Name)
             {
                 case "AddOrderEvent":

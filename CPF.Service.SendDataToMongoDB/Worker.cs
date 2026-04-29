@@ -57,7 +57,7 @@ namespace CPF.Service.SendDataToMongoDB
                     else
                     {
                         result = Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, "目前沒有資料");
-                        Console.WriteLine($"目前狀態：{result.IsSuccess}，回報訊息：{result.Msg}");
+                        Console.WriteLine($"回報訊息：{result.Msg}");
 
                     }
 

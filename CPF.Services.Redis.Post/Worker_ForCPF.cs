@@ -72,23 +72,27 @@ namespace CPF.Services.Redis.Post
             _redis.QueryDB = "Request_Elastic";
             await _redis.InsertData(_CPF_TestDataEngine.GetElasticDataObject(TestData));
 
+            Console.WriteLine($"[新增訂單 Request發送完成]");
         }
 
         async void UpdateCoomSellerMemoFolw()
         {
-            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateCoomSellerMemoObject("CM2176837188796");
+            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateCoomSellerMemoObject("CM9600365368700");
 
             _redis.QueryDB = "Request_MongoDB";
             await _redis.InsertData(UpdateData);
 
+            Console.WriteLine($"[更新備註資訊 Request發送完成]");
         }
 
         async void UpdateChangePayTypeEvent()
         {
-            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateChangePayTypeEventObject("CC5178031884610");
+            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateChangePayTypeEventObject("CC3692967605991");
 
             _redis.QueryDB = "Request_MongoDB";
             await _redis.InsertData(UpdateData);
+
+            Console.WriteLine($"[更新付款資訊 Request發送完成]");
         }
 
         public string GenerateRandomCode(int length = 6)
@@ -127,7 +131,7 @@ namespace CPF.Services.Redis.Post
             _redis.QueryDB = "Request_Elastic";
             await _redis.InsertData(_CPF_TestDataEngine.GetElasticUpdateSellerGetNumberEventObject(coomNo, rcvTotalAmt));
 
-            Console.WriteLine($"[取號完成] CoomNo: {coomNo}");
+            Console.WriteLine($"[取號 Request發送完成] CoomNo: {coomNo}");
         }
 
         /// <summary>
@@ -164,7 +168,7 @@ namespace CPF.Services.Redis.Post
             _redis.QueryDB = "Request_Elastic";
             await _redis.InsertData(_CPF_TestDataEngine.GetElasticDeliveryCargoDynamics02Object(coomNo, rcvTotalAmt));
 
-            Console.WriteLine($"[寄貨完成] CoomNo: {coomNo}");
+            Console.WriteLine($"[寄貨 Request發送完成] CoomNo: {coomNo}");
         }
 
         #endregion
