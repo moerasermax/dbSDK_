@@ -1,0 +1,27 @@
+name = "charter-upgrade-verify"
+description = "Verify the integrity of AgentCharter after an upgrade or during routine health checks."
+
+[[command.args]]
+name = "diff"
+description = "Show diff between versions (Mode B)"
+type = "boolean"
+default = false
+
+[command.steps]
+phaseA = "Verify ~/.agentcharter clone status (git log/status)."
+phaseB = "Validate profile.yaml and mapping.yaml schemas."
+phaseC = "Verify agent-commons structure integrity (no /shared namespace)."
+phaseD = "Verify Domain Axioms status is USER-RATIFIED."
+phaseE = "Scan for stale references to old versions or spec sections."
+
+prompt = """
+我現在以 PM (Gemini) 身份執行升級驗證 (charter-upgrade-verify)。
+
+依據 ~/.agentcharter/tools/post-upgrade-verify-spec.md 執行：
+1. 檢查 clone 狀態：確認本機與 profile.yaml 的版本一致。
+2. 結構與命名空間：確認 agent-commons/ 下無過時的 /shared 目錄。
+3. 公理狀態：確認 protocols/DBSDK.md 為 USER-RATIFIED。
+4. 引用驗證：檢查 .gemini/commands/ 是否引用了正確的 spec 章節。
+
+請產出健康度驗證報告 (Summary: N errors / W warnings)。
+"""

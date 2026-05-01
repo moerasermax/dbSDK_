@@ -1,0 +1,19 @@
+[command]
+name = "charter-init"
+description = "Execute AgentCharter initialization Phase 1-5b"
+
+[[command.args]]
+name = "preset"
+description = "Preset profile (standard/minimal/strict)"
+default = "standard"
+
+[command.steps]
+phase1 = "Verify directory structure in agent-commons/"
+phase2 = "Update _config/profile.yaml and mapping.yaml"
+phase3 = "Verify protocols and roles status"
+phase4 = "Run charter-doctor diagnostic"
+phase5b = "Trigger sub-agent for fresh-context validation"
+
+[command.env]
+AGENTCHARTER_HOME = "~/.agentcharter"
+COMMON_MEMORY_ROOT = "agent-commons"

@@ -1,0 +1,14 @@
+charter_version: "0.9.4"
+preset: "standard"
+project_name: "dbSDK"
+domain_axioms:
+  primary: "protocols/DBSDK.md"
+  alias: "DBSDK"
+enabled_roles:
+  pm: true
+  engineer: true
+parameters:
+  failure-modes:
+    enable_modes: ["F1", "F2", "F3", "F4", "F5", "F6"]
+  audit-rights:
+    level: "standard"

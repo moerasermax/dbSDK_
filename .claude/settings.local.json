@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"D:\\\\WorkSpace\\\\AI_Lab\\\\dbSDK\" -Directory)",
+      "Bash(Select-Object Name)",
+      "PowerShell(tree *)"
+    ]
+  }
+}

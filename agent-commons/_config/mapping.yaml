@@ -1,0 +1,12 @@
+common_memory_root: "agent-commons"
+working_stack_discipline:
+  shared:
+    draft_context: "management/DRAFT_CONTEXT.md"
+    archive: "management/history/archive"
+layout:
+  protocols: "protocols"
+  capsules: "capsules"
+  handoffs: "handoffs"
+  institutional-memory: "institutional-memory"
+  state: "state"
+  roles: "roles"

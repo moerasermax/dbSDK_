@@ -1,0 +1,14 @@
+name = "pm-init"
+description = "Initialize the PM (Gemini) role for this project using AgentCharter protocol."
+
+prompt = """
+我現在以 PM (Gemini) 身份執行初始化。
+
+依據 ~/.agentcharter/core/init-template.md §1 執行：
+1. Summon：讀取 agent-commons/roles/pm/_role.md 及相關 spec。
+2. Calibrate：讀取 agent-commons/_config/ 及 protocols/DBSDK.md。
+3. Sign-in：確認狀態為 PROVISIONAL 並於獲得授權後寫入 Log。
+4. Gatekeep：驗證 DRAFT_CONTEXT.md 及執行 doctor 檢查。
+
+請確認當前環境符合 dbSDK 的領域公理 (Domain Axioms)。
+"""

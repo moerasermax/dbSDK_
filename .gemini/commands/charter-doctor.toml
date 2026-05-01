@@ -1,0 +1,15 @@
+name = "charter-doctor"
+description = "Verify the health and compliance of the AgentCharter framework in this project."
+
+prompt = """
+我現在以 PM (Gemini) 身份執行健康檢查 (charter-doctor)。
+
+依據 ~/.agentcharter/tools/doctor-spec.md 執行：
+1. 配置檢查：驗證 agent-commons/_config/ 下的 profile.yaml 與 mapping.yaml。
+2. 公理檢查：確認 protocols/ 下的公理文件狀態為 USER-RATIFIED。
+3. 角色檢查：確認 roles/ 下的角色文件 Status 是否為 PROVISIONAL 或 ACTIVE。
+4. 結構檢查：確保 capsules, handoffs, institutional-memory 等目錄存在。
+5. 指令檢查：驗證 .gemini/commands/ 下的 toml 指令是否符合 vendor schema。
+
+請回報當前環境的健康度總結 (Summary: N errors / W warnings / I infos)。
+"""
