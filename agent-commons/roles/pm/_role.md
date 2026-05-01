@@ -9,4 +9,8 @@
 
 ## Sign-in Log
 
-(Pending user explicit authorization - Status: PROVISIONAL)
+(Pending user explicit authorization - Status: ACTIVE)
+
+| Date | AI Vendor | Role | Status | Notes |
+|---|---|---|---|---|
+| 2026-05-01 | Gemini CLI | PM | ACTIVE | Explicitly authorized by user. Commencing ElasticSearch Feature Sprints. |

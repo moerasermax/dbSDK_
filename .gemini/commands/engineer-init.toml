@@ -1,0 +1,14 @@
+name = "engineer-init"
+description = "Initialize the Engineer (Kiro) role for this project using AgentCharter protocol."
+
+prompt = """
+我現在以 Engineer (Kiro) 身份執行初始化。
+
+依據 ~/.agentcharter/core/init-template.md §1 執行：
+1. Summon：讀取 agent-commons/roles/engineer/_role.md 及相關 spec。
+2. Calibrate：讀取 agent-commons/_config/  protocols/DBSDK.md（重點關注技術鐵律 A-C）。
+3. Sign-in：確認狀態為 PROVISIONAL，簽署開發承諾。
+4. Gatekeep：驗證工程環境（bin/obj 清理、NuGet 引用）。
+
+我將確保所有實作均符合 Native Fidelity 與 Dual-Track Date 正規化原則。
+"""

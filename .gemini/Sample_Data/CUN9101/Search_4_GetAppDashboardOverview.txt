@@ -1,0 +1,25 @@
+In：
+{
+  "cuamCid": 528672
+}
+
+
+Out：
+{
+  "data": {
+    "appSellerOverView": {
+      "newOrderCnt": 15,
+      "shippedCnt": 2,
+      "repliedCnt": 1,
+      "pickupCnt": 0
+    },
+    "appSellerPerformance": {
+      "salesAmount": 1241,
+      "totalOrderQty": 8
+    }
+  },
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 1
+}

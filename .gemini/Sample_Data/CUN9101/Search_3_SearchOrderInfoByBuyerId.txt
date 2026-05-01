@@ -1,0 +1,118 @@
+In：
+{
+    "PageIndex": 0,
+    "PageSize": 50,
+    "MemSid": 528672,
+    "OrderDateStart": "2026-02-27T16:00:00Z",
+    "OrderDateEnd": "2026-04-29T15:59:59.999Z",
+    "CoomNo": null,
+    "CoocNo": null,
+    "OrderState": null,
+    "OrderSorts": [
+        1,
+        3
+    ],
+    "IsQaList": false,
+    "BindMembersArray": []
+}
+
+
+Out：
+{
+  "data": [
+    {
+      "c_Order_M": {
+        "coomNo": "CM2604290379066",
+        "coomOrderDate": "2026-04-29T00:00:00",
+        "coomName": "test",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-04-29T16:41:24.562",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": null,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": null,
+        "coomSellerGoodsTotalAmt": 88,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 5,
+        "coomRcvTotalAmt": 88,
+        "coomCgdmId": "GM2512170027503",
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2604290414372",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "1",
+        "coocCreateDatetime": "2026-04-29T16:41:24.562",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "9mGOVIAvjlA=",
+        "coocRcvNameEnc": "1P9BqbGAeqs=",
+        "coocRcvMobileEnc": "RqoEfNAfHAsC67TumJ+FQQ==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "testtesttete ttttt",
+          "coodQty": 5,
+          "coodOriginalPrice": 10,
+          "coodDiscountPrice": 10,
+          "coodReceivePrice": 50,
+          "coodImagePath": "2601270002368647.jpg"
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": 60
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    }
+  ],
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 53
+}

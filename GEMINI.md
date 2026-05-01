@@ -1,3 +1,14 @@
+# [DEPRECATED] dbSDK 專案協定 (Project Protocols)
+
+> **注意**：本文件已於 2026-05-01 正式廢棄。
+> **真理來源**：請參閱 `agent-commons/protocols/DBSDK.md` 獲取最新的領域公理。
+> **角色定義**：請參閱 `agent-commons/roles/` 獲取最新的 PM 與 Engineer 角色狀態。
+> **同步協定**：請使用 `/checkpoints load` 或 `/pm-init` 等自動化指令，而非手動參考此文件。
+
+---
+(以下為歷史存根，不再更新)
+---
+
 # dbSDK 專案協定 (Project Protocols)
 
 ## 專案專有語法：`/checkpoints load`

@@ -1,0 +1,26 @@
+In：
+{
+  "cuamCid": 528672
+}
+
+
+Out：
+{
+  "data": {
+    "cuamCid": 528672,
+    "cgdm": [
+      {
+        "cgdmId": "GM2508260014245",
+        "cgdmUpdateDatetime": "2026-04-28T14:35:51.775"
+      },
+      {
+        "cgdmId": "GM2512180014259",
+        "cgdmUpdateDatetime": "2026-04-28T14:35:36.628"
+      }
+    ]
+  },
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 1
+}

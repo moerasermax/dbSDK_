@@ -1,0 +1,120 @@
+put _index_template/orders_template
+{
+  "index_patterns": [
+    "orders-*"
+  ],
+  "template": {
+    "settings": {
+      "index.number_of_shards": "1",
+      "index.number_of_replicas": "0"
+    },
+    "mappings": {
+      "properties": {
+        "crsa_applied": {
+          "type": "boolean"
+        },
+        "esmm_rcv_total_amt": {
+          "type": "integer"
+        },
+        "cooc_ord_channel_kind": {
+          "type": "keyword"
+        },
+        "cooc_deliver_method": {
+          "type": "keyword"
+        },
+        "esms_dlvstatus_seller_pickup": {
+          "type": "boolean"
+        },
+        "coom_no": {
+          "type": "keyword"
+        },
+        "coom_status": {
+          "type": "keyword"
+        },
+        "esmm_ship_no": {
+          "type": "keyword"
+        },
+        "is_return_shipping": {
+          "type": "boolean"
+        },
+        "cooc_no": {
+          "type": "keyword"
+        },
+        "coom_create_datetime": {
+          "type": "date"
+        },
+        "seller_qa_never_reply_count": {
+          "type": "integer"
+        },
+        "buyer_qa_never_reply_count": {
+          "type": "integer"
+        },
+        "cooc_payment_type": {
+          "type": "keyword"
+        },
+        "esms_sc_status_returning": {
+          "type": "boolean"
+        },
+        "cooc_mem_sid": {
+          "type": "integer"
+        },
+        "esml_status_shipping_datetime": {
+          "type": "date"
+        },
+        "coom_cuam_cid": {
+          "type": "integer"
+        },
+        "esmm_leavestoredate_b": {
+          "type": "date"
+        },
+        "coom_rcv_totalamt": {
+          "type": "integer"
+        },
+        "cood_name": {
+          "type": "keyword"
+        },
+        "cooc_payment_pay_datetime": {
+          "type": "date"
+        },
+        "esmm_status": {
+          "type": "keyword"
+        },
+        "coom_name": {
+          "type": "keyword"
+        },
+        "cood_items": {
+          "type": "nested",
+          "properties": {
+            "cood_image_path": {
+              "type": "keyword"
+            },
+            "cood_name": {
+              "type": "keyword"
+            },
+            "cood_qty": {
+              "type": "integer"
+            },
+            "cood_cgdsid": {
+              "type": "keyword"
+            },
+            "cgdd_id": {
+              "type": "keyword"
+            },
+            "cgdd_cgdmid": {
+              "type": "keyword"
+            }
+          }
+        },
+        "coom_temp_type": {
+          "type": "keyword"
+        },
+        "esml_status_finish_datetime": {
+          "type": "date"
+        }
+      }
+    },
+    "aliases": {
+      "orders": {}
+    }
+  }
+}

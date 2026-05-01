@@ -1,0 +1,240 @@
+In：
+{
+  "cuamCid": 528672,
+  "searchStartDate": "2026-04-28T16:00:00Z",
+  "searchEndDate": "2026-04-29T15:59:59Z",
+  "startDatePoP": "2026-04-28T16:00:00Z",
+  "endDatePoP": "2026-04-29T15:59:59Z",
+  "dateRangeType": "Today"
+}
+*Remark*
+dateRangeType：
+Today = 1,
+ThisWeek=2,
+ThisMonth = 3,
+PastOneMonth = 4,
+SetWeek = 5,
+SetMonth = 6
+
+Out：
+{
+  "data": {
+    "totalAmount": 88,
+    "totalOrderCnt": 1,
+    "shipmentsCnt": 0,
+    "totalAmountPoP": 88,
+    "totalOrderCntPoP": 1,
+    "shipmentsCntPoP": 0,
+    "salesTrendData": [
+      {
+        "timePane": "00",
+        "value": 0
+      },
+      {
+        "timePane": "01",
+        "value": 0
+      },
+      {
+        "timePane": "02",
+        "value": 0
+      },
+      {
+        "timePane": "03",
+        "value": 0
+      },
+      {
+        "timePane": "04",
+        "value": 0
+      },
+      {
+        "timePane": "05",
+        "value": 0
+      },
+      {
+        "timePane": "06",
+        "value": 0
+      },
+      {
+        "timePane": "07",
+        "value": 0
+      },
+      {
+        "timePane": "08",
+        "value": 0
+      },
+      {
+        "timePane": "09",
+        "value": 0
+      },
+      {
+        "timePane": "10",
+        "value": 0
+      },
+      {
+        "timePane": "11",
+        "value": 0
+      },
+      {
+        "timePane": "12",
+        "value": 0
+      },
+      {
+        "timePane": "13",
+        "value": 0
+      },
+      {
+        "timePane": "14",
+        "value": 0
+      },
+      {
+        "timePane": "15",
+        "value": 0
+      },
+      {
+        "timePane": "16",
+        "value": 88
+      },
+      {
+        "timePane": "17",
+        "value": 0
+      },
+      {
+        "timePane": "18",
+        "value": 0
+      },
+      {
+        "timePane": "19",
+        "value": 0
+      },
+      {
+        "timePane": "20",
+        "value": 0
+      },
+      {
+        "timePane": "21",
+        "value": 0
+      },
+      {
+        "timePane": "22",
+        "value": 0
+      },
+      {
+        "timePane": "23",
+        "value": 0
+      }
+    ],
+    "orderTrendData": [
+      {
+        "timePane": "00",
+        "value": 0
+      },
+      {
+        "timePane": "01",
+        "value": 0
+      },
+      {
+        "timePane": "02",
+        "value": 0
+      },
+      {
+        "timePane": "03",
+        "value": 0
+      },
+      {
+        "timePane": "04",
+        "value": 0
+      },
+      {
+        "timePane": "05",
+        "value": 0
+      },
+      {
+        "timePane": "06",
+        "value": 0
+      },
+      {
+        "timePane": "07",
+        "value": 0
+      },
+      {
+        "timePane": "08",
+        "value": 0
+      },
+      {
+        "timePane": "09",
+        "value": 0
+      },
+      {
+        "timePane": "10",
+        "value": 0
+      },
+      {
+        "timePane": "11",
+        "value": 0
+      },
+      {
+        "timePane": "12",
+        "value": 0
+      },
+      {
+        "timePane": "13",
+        "value": 0
+      },
+      {
+        "timePane": "14",
+        "value": 0
+      },
+      {
+        "timePane": "15",
+        "value": 0
+      },
+      {
+        "timePane": "16",
+        "value": 1
+      },
+      {
+        "timePane": "17",
+        "value": 0
+      },
+      {
+        "timePane": "18",
+        "value": 0
+      },
+      {
+        "timePane": "19",
+        "value": 0
+      },
+      {
+        "timePane": "20",
+        "value": 0
+      },
+      {
+        "timePane": "21",
+        "value": 0
+      },
+      {
+        "timePane": "22",
+        "value": 0
+      },
+      {
+        "timePane": "23",
+        "value": 0
+      }
+    ],
+    "productSalesRanking": [
+      {
+        "rankingNo": 1,
+        "productCgdmid": "GM2512170027503",
+        "productId": "2601270002368654",
+        "productCgdsId": "2602120002370677",
+        "productName": "testtesttete ttttt",
+        "productTotalSales": 5,
+        "productImgPath": "2601270002368647.jpg"
+      }
+    ]
+  },
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 1
+}

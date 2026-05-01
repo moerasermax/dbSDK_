@@ -1,0 +1,43 @@
+In：
+{
+  "cuamCid": 528672,
+  "searchStartDate": "2026-04-29T10:47:31.031Z",
+  "searchEndDate": "2026-04-29T10:47:31.031Z"
+}
+
+
+Out：
+{
+  "data": {
+    "buyerOverView": {
+      "unpaid": 0,
+      "toship": 0,
+      "toFinish": 0,
+      "cancel": 0,
+      "buyerQaNeverReply": 0,
+      "finish": 0,
+      "buyerReturnReq": 0
+    },
+    "buyerPerformance": {
+      "orderCount": 27,
+      "pickupCount": 1
+    },
+    "sellerOverView": {
+      "dealWith": 0,
+      "toship": 0,
+      "shipping": 0,
+      "noShowToDHL": 0,
+      "sellerQaNeverReply": 0,
+      "sellerReturnReq": 0
+    },
+    "sellerPerformance": {
+      "orderCount": 40,
+      "sendCount": 11,
+      "salesAmt": 475
+    }
+  },
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 1
+}
