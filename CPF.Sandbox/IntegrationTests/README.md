@@ -46,7 +46,39 @@ IntegrationTests/
 
 ---
 
-## Phase 2 待辦：真 pipeline ETL 整合測試
+## Phase 2.A 待辦：SDK 對外輸出格式對齊 GoldenRecipe（**最高優先**）
+
+2026-05-03 PM 驗收路上發現 SDK 回傳 model 格式跟客戶 GoldenRecipe Out **不一致**，
+經客戶決議「以客戶 GoldenRecipe 為準」，整個 SDK 輸出層需要重新設計：
+
+### 已確認 4 個層級差異（以 Search_1 為 sample）
+1. **缺外層 wrapper**：GoldenRecipe `{data, code, message, errorMsg, total}`，SDK 直接返回 data
+2. **Container 形態**：GoldenRecipe Search_1/4/7 用 single object，SDK 用 array
+3. **Property Casing**：GoldenRecipe camelCase（`buyerOverView`），SDK PascalCase（`BuyerOverview`）
+4. **多餘欄位**：SDK 多 `Took`，GoldenRecipe 沒有
+
+### 工作清單
+- [ ] 設計外層 wrapper class `ApiResponseWrapper<T>` (含 code/message/errorMsg/total/data)
+- [ ] 7 個 BLL method 回傳值改包 wrapper（影響 `ElasticOrderSearchBll.cs`）
+- [ ] 全部 Result Model 加 `[JsonPropertyName("camelCase")]` 對齊客戶欄位名
+- [ ] Search_1/4/7 的 Array → Object 轉換（其他 Search 是 array 不變）
+- [ ] 移除 `Took`（或加 `[JsonIgnore]`）
+- [ ] 7 個 Search 各跑一次 dump 對比 GoldenRecipe 逐欄位確認
+- [ ] Sandbox scenario S23~S29、E2E_S1~S7 全部對齊新 shape
+- [ ] ExpectedValueCalculator 對齊新 shape
+- [ ] 重新給 PM 驗收（含 30 筆 + 100 筆兩階段）
+
+工程量估計：3-5 個 commit、800~1500 行修改。
+
+### 注意
+- 不影響 BLL 的 query / aggregate 邏輯（4 個已修 BUG 仍有效）
+- 客戶可能還沒補資料（_ord_modify_date / 04/28-29 doc / Search_2/3 mongo-elastic 對齊問題），
+  但這個格式對齊不需要等客戶補資料就能做
+- PM 驗收 V1 (2026-05-03) 雖然 32+41 PASS，但**因格式不對齊已標記作廢**，下個 session 改完後重來
+
+---
+
+## Phase 2.B 待辦：真 pipeline ETL 整合測試
 
 當前是「假 pipeline」— 直接寫 Elastic。Phase 2 要驗證 **Redis → Mongo → Elastic 的 ETL 邏輯本身**：
 
