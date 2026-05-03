@@ -27,8 +27,7 @@ IntegrationTests/
 ### 設計原則
 - **Deterministic seed**：`OrderTestDataFactory.Build(seed: 42)` 永遠產生同樣 100 筆
 - **Source of Truth = Dataset**：ExpectedCalculator 跟 ES 各自從 dataset 算/查，比對應該完全一致
-- **資料格式對齊客戶 CUN9101 範例**：欄位選擇邏輯與客戶 30 筆樣本對齊（pay_datetime/esmm_rcv 只在特定 status 出現）
-- **預埋必要 deviation**：`_ord_modify_date` 客戶範例缺，預埋 4 筆對齊 S7 GoldenRecipe
+- **資料格式完全對齊客戶 CUN9101 範例**：欄位選擇邏輯與客戶 30 筆樣本一致（pay_datetime/esmm_rcv 只在特定 status 出現），不自加任何客戶 sample 沒有的欄位（包含 `_ord_modify_date`）
 
 ### 已修的 BUG (production 也受影響)
 1. `ElasticRepository.AdvancedSearchAsync` 沒設 IgnoreUnavailable（跨月 index 崩潰）

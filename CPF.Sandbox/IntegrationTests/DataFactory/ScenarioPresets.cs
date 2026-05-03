@@ -25,8 +25,7 @@ namespace CPF.Sandbox.IntegrationTests.DataFactory
                 coomNo: "CM2604000000001",
                 createUtc: new DateTime(2026, 4, 29, 8, 30, 0, DateTimeKind.Utc),
                 status: "10", paymentType: "1",
-                amount: 88, cgdmid: CgdmC, qty: 5,
-                ordModifyDate: 1777444551775L  // 2026-04-29T14:35:51.775+08
+                amount: 88, cgdmid: CgdmC, qty: 5
             ));
 
             // ===== Search 6 (Week) 預埋：04/28 Taiwan 16:30 = UTC 08:30 amt=88 =====
@@ -34,24 +33,22 @@ namespace CPF.Sandbox.IntegrationTests.DataFactory
                 coomNo: "CM2604000000002",
                 createUtc: new DateTime(2026, 4, 28, 8, 30, 0, DateTimeKind.Utc),
                 status: "10", paymentType: "1",
-                amount: 88, cgdmid: CgdmC, qty: 5,
-                ordModifyDate: 1777358151775L  // 2026-04-28T14:35:51.775+08
+                amount: 88, cgdmid: CgdmC, qty: 5
             ));
 
-            // ===== Search 7 預埋：CgdmA 與 CgdmB 各帶 _ord_modify_date 對齊 GoldenRecipe =====
+            // ===== Search 7 預埋：CgdmA 與 CgdmB 提供 cood_items cgdmid 多樣性 =====
+            // (不預埋 _ord_modify_date — 客戶 sample 沒給,我們也不自加)
             list.Add(MakePreset(
                 coomNo: "CM2604000000003",
                 createUtc: new DateTime(2026, 4, 23, 3, 11, 0, DateTimeKind.Utc),
                 status: "10", paymentType: "1",
-                amount: 138, cgdmid: CgdmA, qty: 1,
-                ordModifyDate: 1777358151775L  // S7 Cgdm[0] expected
+                amount: 138, cgdmid: CgdmA, qty: 1
             ));
             list.Add(MakePreset(
                 coomNo: "CM2604000000004",
                 createUtc: new DateTime(2026, 4, 23, 3, 29, 0, DateTimeKind.Utc),
                 status: "10", paymentType: "1",
-                amount: 138, cgdmid: CgdmB, qty: 1,
-                ordModifyDate: 1777358136628L  // S7 Cgdm[1] expected
+                amount: 138, cgdmid: CgdmB, qty: 1
             ));
 
             // ===== Search 4 (Dashboard) 預埋：涵蓋 NewOrder/Shipped/Replied 各態樣 =====
