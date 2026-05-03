@@ -1,30 +1,61 @@
+using CPF.Sandbox.IntegrationTests.DataFactory;
+using CPF.Sandbox.IntegrationTests.PipelineSeeders;
+using CPF.Sandbox.IntegrationTests.Scenarios;
 using CPF.Sandbox.Scenarios;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Serialization;
-// 初始化 MongoDB 序列化器（確保 BsonElement 映射正確）
+
 MongoSerializationConfig.Register();
 MongoMap.EnsureClassMapsRegistered();
 
-// S22：ElasticSearch 更新失效修復測試
-S22ElasticUpdateTest.RunAllTests();
+var mode = args.Length > 0 ? args[0].ToLower() : "offline";
 
-// S21：ElasticSearch JSON 完整測試
-//S21ElasticJsonTest.RunAllTests();
+switch (mode)
+{
+    // ── dotnet run --project CPF.Sandbox seed ─────────────────
+    case "seed":
+        await ElasticDataSeedScenario.RunAsync();
+        break;
 
-// S12：全域沙盒場景 (包含 S17 貨態更新)
-//SandboxRunner.RunAll();
+    // ── dotnet run --project CPF.Sandbox validate ─────────────
+    case "validate":
+        await S23_GetHomeToDoOverViewScenario.RunAsync();
+        await S24_SearchBySellerScenario.RunAsync();
+        await S25_SearchByBuyerScenario.RunAsync();
+        await S26_GetAppDashboardScenario.RunAsync();
+        await S27_GetAppSalesTodayScenario.RunAsync();
+        await S28_GetAppSalesWeekScenario.RunAsync();
+        await S29_GetUserCgdmDataScenario.RunAsync();
+        break;
 
-// S13：步進驗證 — Insert → Read(V1) → Update(含null混入) → Read(V2) → 對比報告
-//StatefulComparisonScenario.RunStepByStepVerification();
+    // ── dotnet run --project CPF.Sandbox inttest seed/validate ─
+    // 整合測試：100 筆 deterministic dataset，跨 orders-602/603/604 三個 monthly index
+    case "inttest":
+        var sub = args.Length > 1 ? args[1].ToLower() : "validate";
+        var intDataset = OrderTestDataFactory.Build(seed: 42);
+        if (sub == "seed")
+        {
+            await ElasticSeeder.SeedAsync(intDataset);
+        }
+        else
+        {
+            await E2E_S1_HomeOverview.RunAsync(intDataset);
+            await E2E_S2_SearchBySeller.RunAsync(intDataset);
+            await E2E_S3_SearchByBuyer.RunAsync(intDataset);
+            await E2E_S4_AppDashboard.RunAsync(intDataset);
+            await E2E_S5_AppSalesToday.RunAsync(intDataset);
+            await E2E_S6_AppSalesWeek.RunAsync(intDataset);
+            await E2E_S7_UserCgdmData.RunAsync(intDataset);
+        }
+        break;
 
-// S14：賣家取號模擬 (Status 20) — 物流模組掛載驗證
-//SellerGetNumberScenario.RunSellerGetNumberSimulation();
-
-// S15：寄貨完成模擬 (Status 30) — $set + $push 並行驗證
-//ShippingCompleteScenario.RunShippingCompleteSimulation();
-
-// S16：Elastic Search 強型別與 Mock 驗證
-//ElasticSearchScenario.RunElasticSearchSimulation();
+    // ── dotnet run --project CPF.Sandbox (預設離線驗證) ────────
+    default:
+        MockValidationScenario.Run();
+        ShippingSyncScenario.Run();
+        S22ElasticUpdateTest.RunAllTests();
+        break;
+}
 
 Console.WriteLine();
 Console.WriteLine("按任意鍵結束...");

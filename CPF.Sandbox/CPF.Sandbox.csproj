@@ -12,6 +12,7 @@
     <ProjectReference Include="..\CPF.Service.SendDataToMongoDB\CPF.Service.SendDataToMongoDB.csproj" />
     <ProjectReference Include="..\CPF.Service.SendDataToElasticCloud\CPF.Service.SendDataToElasticCloud.csproj" />
     <ProjectReference Include="..\CPF.Services.Redis.Post\CPF.Services.Redis.Post.csproj" />
+    <ProjectReference Include="..\PIC.CPF.OrderSDK.Biz.Read.Elastic\PIC.CPF.OrderSDK.Biz.Read.Elastic.csproj" />
   </ItemGroup>
 
 </Project>
