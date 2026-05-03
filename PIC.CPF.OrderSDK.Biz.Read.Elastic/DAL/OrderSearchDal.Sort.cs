@@ -49,9 +49,14 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                     }
                 }
 
-                // 修改點：使用更簡潔的強型別方式加上 _id 作為 Tie-breaker
-                // 確保在分頁 (Search After / From Size) 時，資料順序是絕對穩定的
-                s.Field("_id", fs => fs.Order(SortOrder.Asc));
+                // Tie-breaker：使用 coom_no（業務 unique key，已是 keyword 可 sort）。
+                // 不能用 _id：ES 預設停用 _id 的 fielddata，sort by _id 會 search_phase_execution_exception。
+                // 只在 user 沒指定 coom_no 排序時加，避免覆蓋使用者的方向設定。
+                if (model.OrderSorts == null
+                    || !model.OrderSorts.Any(o => o == OrderSort.CoomNoAsc || o == OrderSort.CoomNoDesc))
+                {
+                    s.Field(f => f.CoomNo, fs => fs.Order(SortOrder.Asc));
+                }
             };
         }
     }

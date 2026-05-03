@@ -86,7 +86,7 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
                 // 3. 執行 Indexing (指定 <T> 解決 {} 問題)
                 var response = await _client.IndexAsync<object>(Data, i => i
                     .Index(_indexName)
-                    .Id(((dynamic)Data).Id.ToString()) // 確保 ID 有傳
+                    .Id(documentId ?? string.Empty)
                 );
 
                 if (response.IsSuccess())
@@ -190,14 +190,19 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic
                 return Result.SetErrorResult(MethodBase.GetCurrentMethod()?.Name, ex.Message);
             }
         }
-        public async Task<SearchResponse<T>> AdvancedSearchAsync(Action<SearchRequestDescriptor<T>> configureQuery)
+        public async Task<SearchResponse<T>> AdvancedSearchAsync(
+            Action<SearchRequestDescriptor<T>> configureQuery,
+            string[]? indices = null)
         {
             try
             {
+                var indexTarget = indices?.Length > 0 ? string.Join(",", indices) : _indexName;
                 var response = await _client.SearchAsync<T>(s =>
                 {
-                    s.Indices(_indexName); // 確保套用 SDK 管控的 Index
-                    configureQuery(s);   // 執行客戶自訂的複雜查詢與聚合
+                    s.Indices(indexTarget);
+                    s.AllowNoIndices(true);
+                    s.IgnoreUnavailable(true);
+                    configureQuery(s);
                 });
 
                 if (!response.IsValidResponse)
