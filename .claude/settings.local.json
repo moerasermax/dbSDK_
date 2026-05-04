@@ -3,7 +3,11 @@
     "allow": [
       "Bash(Get-ChildItem -Path \"D:\\\\WorkSpace\\\\AI_Lab\\\\dbSDK\" -Directory)",
       "Bash(Select-Object Name)",
-      "PowerShell(tree *)"
+      "PowerShell(tree *)",
+      "Bash(dotnet build *)",
+      "Bash(Select-String -Pattern \"error\")",
+      "Bash(Select-String -NotMatch \"warning\")",
+      "Bash(git rm *)"
     ]
   }
 }

@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NO3._dbSDK_Imporve.Application;
 using NO3._dbSDK_Imporve.Application.DTO;
-using NO3._dbSDK_Imporve.Application.Sample;
 using NO3._dbSDK_Imporve.Application.Sample.Elastic;
 using NO3._dbSDK_Imporve.Application.Sample.Mongo;
 using NO3._dbSDK_Imporve.Application.Sample.Redis;
@@ -25,16 +24,13 @@ MongoSerializationConfig.Register();
 
 var host = CreateHostBuilder(args).Build();
 
-await TestFlows.RunMongoFlow(
-    host.Services.GetRequiredService<IRepository<Orders>>(),
-    host.Services.GetRequiredService<ElasticRepository<OrderSummary>>(),
-    host.Services.GetRequiredService<IDTO>(),
-    host.Services.GetRequiredService<EventGiftRandomDataGenerator>(),
-    host.Services.GetRequiredService<ObjectExtension>()
-);
+// 使用範例：從 DI 取得 Repository 後，透過 DbSDKEngine 操作資料
+// var repo = host.Services.GetRequiredService<IRepository<Orders>>();
+// var engine = new DbSDKEngine<Orders>(repo);
+// await engine.Insert(data);
+// await engine.Read(conditionJson);
 
-TestFlows.RunMockFlow();
-TestFlows.RunShippingSyncFlow();
+await host.RunAsync();
 
 static IHostBuilder CreateHostBuilder(string[] args) =>
     Host.CreateDefaultBuilder(args)
@@ -63,7 +59,7 @@ static IHostBuilder CreateHostBuilder(string[] args) =>
             services.AddSingleton<ElasticRepository<OrderSummary>, OrderRepository_Elastic>();
             services.AddSingleton<RedisRepository<Query>, OrderRepository_Redis>();
 
-            // 通用服務註冊
+            // 通用服務註��
             services.AddSingleton<IDTO, DTO>();
             services.AddSingleton<IUniversalMapper, UniversalMapper>();
             services.AddSingleton<EventGiftRandomDataGenerator>();
