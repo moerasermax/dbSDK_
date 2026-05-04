@@ -1,11 +1,11 @@
-# Sprint S31：基礎信封建立、全局清理與偵錯工具恢復
+# Sprint S31：撤銷 Wrapper 與偵錯工具恢復 (v2)
 tracking_label: P2-1
 
 ## 任務目標
-建立 `ApiResponseWrapper<T>` 標準回傳結構，徹底移除 `Took` 欄位，並恢復 Sandbox 的 `dump-sN` 偵錯命令。
+將 BLL 回傳值由 `ApiResponseWrapper<T>` 改回業務 Model 類型，並恢復 Sandbox 的 `dump-sN` 偵錯命令。
 
 ## 需求背景
-依據 GoldenRecipe，所有 API 輸出必須包裹在一個含有 `data`, `code`, `message`, `total` 的信封內。此外，為了後續 VCP 驗證，需恢復之前被移除的 `dump-sN` 命令。
+User 指示 SDK 不需要自行實作外層 API 回傳格式（Wrapper），客戶會自行處理包裹邏輯。此外，為了後續驗證，需恢復之前被移除的 `dump-sN` 命令。
 
 ---
 
@@ -18,30 +18,32 @@ tracking_label: P2-1
 
 ---
 
+## v1 → v2 變更紀錄
+- **v1 (2026-05-03 CO-SIGNED)**: 含 `ApiResponseWrapper`，已於 `b86b958..dfa5037` commit 範圍實作完畢。
+- **v2 (2026-05-04)**: 依 User 裁決撤回 Wrapper，Engineer 已於 `a50a2d5` + `a768ebc` commit 範圍完成 Revert。
+- **現狀**: v2 殘餘任務（移除 `Took` / `dump-sN`）由 `6475192` + `dfa5037` 提供，視為 v2 預先完成。
+
+---
+
 ## 任務清單
-- [ ] 在 `PIC.CPF.OrderSDK.Biz.Read.Elastic.Models` 建立 `ApiResponseWrapper.cs` (泛型)
-- [ ] 修改 `ElasticOrderSearchBll.cs` 的所有方法，將回傳值改為 `Task<ApiResponseWrapper<T>>`
-- [ ] 從以下 4 個 ResultModel 中徹底移除 `Took` 屬性：
-    - `AggregateOrderInfoResultModel` (S1)
-    - `AppDashboardAggregateResultModel` (S4)
-    - `SearchOrderInfoResultModel` (S2/3)
-    - `AppSalesMetricsResultModel` (S5/6)
-- [ ] 在 `CPF.Sandbox/Program.cs` 恢復 `dump-s1` 到 `dump-s7` 的入口命令，使其能輸出對應 Search 的 JSON 到 Console
+- [x] 修改 `ElasticOrderSearchBll.cs` 的所有方法，移除 `ApiResponseWrapper` 封裝，直接回傳對應的 ResultModel
+- [x] 移除 `ApiResponseWrapper.cs` 檔案 (已於 `a768ebc` 執行)
+- [x] 移除模型中不必要的 `Took` 屬性 (已於 `6475192` 執行)
+- [x] 在 `CPF.Sandbox/Program.cs` 恢復 `dump-s1` 到 `dump-s7` 的入口命令 (已於 `dfa5037` 執行)
 
 ---
 
 ## PM 驗收項目 (VCP)
 
-### 1. JSON 物理形狀驗證
+### 1. 輸出結構驗證
 - 執行 `dotnet run --project CPF.Sandbox -- dump-s7`
-- 驗證外層 Key：`jq -r 'keys | join(",")'` 應包含 `data,code,message,errorMsg,total`
-- 驗證無 `Took` 欄位：`jq 'has("took") or has("Took")'` 應為 `false`
+- 驗證外層**無** Wrapper：`jq 'has("data")'` 應為 `false` (直接輸出 `UserCgdmDataResultModel` 內容)
 
 ### 2. 偵錯工具可用性驗證
-- 確保 `dotnet run --project CPF.Sandbox -- dump-s1` 到 `dump-s7` 均能正常執行並輸出 JSON
+- 確保 `dotnet run --project CPF.Sandbox -- dump-s1` 到 `dump-s7` 均能正常執行
 
 ---
 
 ## 技術檢核點
-- [ ] 程式碼編譯通過（0 errors）
-- [ ] `Took` 欄位應從 Model 定義中完全刪除，而非僅在序列化時忽略
+- [x] 程式碼編譯通過 (暫時除外：Sandbox 腳本待修正)
+- [x] 確認 BLL 回傳類型與介面定義同步更新

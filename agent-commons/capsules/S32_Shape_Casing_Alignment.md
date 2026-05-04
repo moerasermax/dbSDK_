@@ -1,8 +1,8 @@
-# Sprint S32：容器結構修正與 camelCase 全局對齊
+# Sprint S32：容器結構修正與 camelCase 全局對齊 (v2)
 tracking_label: P2-2
 
 ## 任務目標
-將 Search_1/4 的輸出由陣列改為單一物件，並將 S1, S4, S5, S6, S7 的所有屬性名稱改為小寫開頭 (`camelCase`)。
+將 Search_1/4 的輸出由陣列改為單一物件，並對齊所有內層屬性為小寫開頭 (`camelCase`)。
 
 ## 需求背景
 客戶 GoldenRecipe 的 Search_1/4 輸出為單一物件 `{}` 非陣列 `[]`。此外，所有欄位名在金標中均為 `camelCase`。
@@ -29,14 +29,14 @@ tracking_label: P2-2
 
 ### 1. 容器型態驗證 (S1)
 - 執行 `dotnet run --project CPF.Sandbox -- dump-s1`
-- 驗證 `data.buyerOverView` 是 Object 而非 Array：`jq '.data.buyerOverView | type'` 應為 `"object"`
+- 驗證 `buyerOverView` 是 Object 而非 Array：`jq '.buyerOverView | type'` 應為 `"object"`
 
 ### 2. Casing 驗證 (S7)
 - 執行 `dotnet run --project CPF.Sandbox -- dump-s7`
-- 驗證欄位名：`jq '.data | has("cuamCid")'` 應為 `true`
+- 驗證欄位名：`jq 'has("cuamCid")'` 應為 `true`
 
 ---
 
 ## 技術檢核點
 - [ ] 所有 S1, S4, S5, S6, S7 涉及的 Model 均已完成屬性標註
-- [ ] 程式碼編譯通過
+- [ ] 程式碼編譯通過 (不包 Wrapper，直接回傳業務 Model)

@@ -59,3 +59,24 @@
     2. 下個 Session 優先啟動 **方案 B (格式對齊)**。
     3. **新增開發紀律**：所有 API 驗收必須包含 `ApiResponseWrapper<T>` 的實體序列化測試與 Schema 對比。
 - **狀態**：⚠️ 待重構 (Phase 2.A)。
+
+---
+
+## [F2-20260504-01] Phase 2.A SDK 對外格式方向反覆事件
+
+- **日期**：2026-05-04
+- **角色**：PM (Gemini CLI)
+- **失效模式**：F2 (Logic/Architecture Regression) — 同類偏差第 3 次
+- **歷程**：
+    - v1 (2026-05-03 初版 P2 tracker): No Wrapper / No Casing
+        → 與 HANDOFF_4 §6.2 客戶決議反向、Engineer 退稿
+    - v2 (2026-05-03 修正版): 含 Wrapper + camelCase
+        → PM CO-SIGNED, Engineer 動工 4 commit (S31 v1 實作)
+    - v2' (2026-05-04 再次修正): 不需 SDK Wrapper, 客戶端自包
+        → User 親自裁決, Engineer revert 2 commit
+- **根本原因**：
+    客戶端 / SDK 對外 contract 設計議題未在 Phase 2.A 啟動前收斂；三輪迭代浪費 ~5h Engineer 工程量。
+- **補救**：
+    1. 後續 contract 議題在 capsule 寫入前先取得 User 明示。
+    2. 重大方向變更 commit message 必引述 User 裁決原文行號。
+- **狀態**：✅ 已結案。

@@ -7,9 +7,9 @@
 - **主要風險**: SDK 輸出 JSON 格式與客戶 GoldenRecipe 不匹配 (Shape/Casing/Wrapper)。
 
 ## 2. 進行中任務 (Active Sprints)
-- **Phase 2.A (正式啟動)**: SDK 格式與資料全對齊 (方案 B)。
-- **目標**: 實作 `ApiResponseWrapper<T>`，全面對齊 `camelCase`，並透過 Mongo 補強 Search_2/3 資料。
-- **治理**: 依據 2026-05-03 修正版 P2 Tracker 執行。
+- **Phase 2.A (正式啟動)**: SDK 內層結構與資料全對齊。
+- **目標**: 撤銷 `ApiResponseWrapper`（由客戶自行包裹），全面對齊內層 `camelCase`，並透過 Mongo 補強 Search_2/3 資料。
+- **治理**: 依據 2026-05-04 修正版 v2 P2 Tracker 執行。
 
 ## 3. 領域公理校驗 (Axiom Verification)
 - [x] 兩階段初始化

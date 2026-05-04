@@ -1,11 +1,11 @@
-# Sprint S33：趨勢資料補零、排序序號補全與容器轉型
+# Sprint S33：趨勢資料補零、排序序號補全與容器轉型 (v2)
 tracking_label: P2-3
 
 ## 任務目標
 修正 Search_5/6 的趨勢圖輸出（補零），加入 `rankingNo`，並將主結構改為單一物件。
 
 ## 需求背景
-金標顯示趨勢圖需維持時間軸完整性（補 0），且銷售排行需有 `rankingNo`。Search_5/6 的 `data` 節點應為單一物件。
+金標顯示趨勢圖需維持時間軸完整性（補 0），且銷售排行需有 `rankingNo`。Search_5/6 的回傳應為單一物件。
 
 ---
 
@@ -21,20 +21,20 @@ tracking_label: P2-3
 ## 任務清單
 - [ ] 修改 `OrderSearchDal.AggregateHelpers` 的趨勢圖解析，對缺失的時段進行補 0 (Zero Padding)
 - [ ] 在 `ProductSalesRanking` 模型加入 `RankingNo` 屬性，並在 BLL 解析時依序填入
-- [ ] 修改 Search_5/6 BLL 回傳值，將 `ApiResponseWrapper<List<AppSalesMetricsResultModel>>` 改為 `ApiResponseWrapper<AppSalesMetricsResultModel>` (單一物件)
+- [ ] 修改 Search_5/6 BLL 回傳值，改為回傳單一 `AppSalesMetricsResultModel` 物件 (不包 Wrapper)
 
 ---
 
 ## PM 驗收項目 (VCP)
 
 ### 1. 趨勢長度驗證 (Today vs Week)
-- **S5 (Today)**：執行 `dump-s5`，驗證 `jq '.data.salesTrendData | length'` 應為 `24`
-- **S6 (Week)**：執行 `dump-s6`，驗證 `jq '.data.salesTrendData | length'` 應為 `7`
+- **S5 (Today)**：執行 `dump-s5`，驗證 `jq '.salesTrendData | length'` 應為 `24`
+- **S6 (Week)**：執行 `dump-s6`，驗證 `jq '.salesTrendData | length'` 應為 `7`
 
 ### 2. 序號與容器驗證
 - 執行 `dump-s6`
-- 驗證 `data` 型態：`jq '.data | type'` 應為 `"object"`
-- 驗證排行序號：`jq '.data.productSalesRanking[0].rankingNo'` 應為 `1`
+- 驗證根節點型態：`jq '. | type'` 應為 `"object"`
+- 驗證排行序號：`jq '.productSalesRanking[0].rankingNo'` 應為 `1`
 
 ---
 
