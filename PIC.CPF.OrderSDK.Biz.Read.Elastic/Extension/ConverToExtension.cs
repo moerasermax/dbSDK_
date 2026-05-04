@@ -128,10 +128,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
         {
             return new PublicModels.SearchOrderInfoResultModel
             {
-                OrderInfos = model.Documents.Select(d => new PublicModels.OrderInfoModel
-                {
-                    CoomNo = d.CoomNo
-                }).ToArray(),
+                OrderInfos = model.Documents,
                 Total = model.Total,
                 Took = model.Took,
             };
@@ -227,5 +224,22 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
             }).ToArray();
         }
         #endregion
+
+        // ==========================================
+        // Flow 4: Search 7 GetUserCgdmData
+        // ==========================================
+        internal static PublicModels.UserCgdmDataResultModel ConvertToUserCgdmDataResultModel(
+            this InternalModels.UserCgdmDataAggregateModel[] models, int cuamCid)
+        {
+            return new PublicModels.UserCgdmDataResultModel
+            {
+                CuamCid = cuamCid,
+                Cgdm = models.Select(m => new PublicModels.CgdmDataModel
+                {
+                    CgdmId = m.CgdmId,
+                    CgdmUpdateDatetime = m.MaxModifyDate?.ToString("yyyy-MM-ddTHH:mm:ss.fff") ?? string.Empty,
+                }).ToArray(),
+            };
+        }
     }
 }

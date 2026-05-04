@@ -1,22 +1,29 @@
-﻿using PIC.CPF.OrderSDK.Biz.Read.Elastic.Models;
-// ⚠️ 記得引用正確的 Models 命名空間
-// 如果你決定共用舊版的 Model，這裡就是 using PIC.CPF.OrderSDK.Biz.Read.OpenSearch.Models;
-// 如果你把 Model 搬到新專案了，這裡就是 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Models;
+using NO3._dbSDK_Imporve.Core.Interface;
+using PIC.CPF.OrderSDK.Biz.Read.Elastic.Models;
 
 namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Services
 {
     public interface IElasticOrderSearchService
     {
-        // Flow 1: Web 網頁端代辦事項總覽
-        Task<AggregateOrderInfoResultModel> AggregateOrderInfoAsync(AggregateOrderInfoModel model);
+        // Search 1: 首頁待辦事項總覽
+        Task<IResult<AggregateOrderInfoResultModel>> GetHomeToDoOverViewAsync(OrderSearchRequest req);
 
-        // Flow 2: 一般賣家訂單搜尋
-        Task<SearchOrderInfoResultModel> SearchOrderInfoAsync(SearchOrderInfoModel model);
+        // Search 2: 賣家視角訂單搜尋
+        Task<IResult<SearchOrderInfoResultModel>> SearchBySellerAsync(OrderSearchRequest req);
 
-        // Flow 3: App 儀表板總覽
-        Task<AppDashboardAggregateResultModel> AppAggregateOrderInfoAsync(AppAggregateOrderInfoModel model);
+        // Search 3: 買家視角訂單搜尋
+        Task<IResult<SearchOrderInfoResultModel>> SearchByBuyerAsync(OrderSearchRequest req);
 
-        // Flow 3: App 銷售指標
-        Task<AppSalesMetricsResultModel[]> AppSalesMetricsInfoAsync(AppSalesMetricsModel[] model);
+        // Search 4: App 儀表板總覽
+        Task<IResult<AppDashboardAggregateResultModel>> GetAppDashboardAsync(OrderSearchRequest req);
+
+        // Search 5: App 銷售指標（本日）
+        Task<IResult<AppSalesMetricsResultModel[]>> GetAppSalesTodayAsync(OrderSearchRequest req);
+
+        // Search 6: App 銷售指標（本週）
+        Task<IResult<AppSalesMetricsResultModel[]>> GetAppSalesWeekAsync(OrderSearchRequest req);
+
+        // Search 7: 取得賣家 cgdm 資料
+        Task<IResult<UserCgdmDataResultModel>> GetUserCgdmDataAsync(OrderSearchRequest req);
     }
 }

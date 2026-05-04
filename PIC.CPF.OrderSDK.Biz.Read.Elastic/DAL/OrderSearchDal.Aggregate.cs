@@ -6,6 +6,7 @@ using Elastic.Clients.Elasticsearch.QueryDsl;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Elastic;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Enum;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal;
+using System.Text.Json;
 namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
 {
     public partial class OrderSearchDal
@@ -209,6 +210,13 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             var sellerOverviewName = (int i) => $"SO_{i}";
             var sellerPerformanceName = (int i) => $"SP_{i}";
 
+            var datePairs = new List<(DateTime? Start, DateTime? End)>();
+            if (buyerOverview    != null) foreach (var m in buyerOverview)    datePairs.Add((m.OrderDateStart, m.OrderDateEnd));
+            if (buyerPerformance != null) foreach (var m in buyerPerformance) datePairs.Add((m.OrderDateStart, m.OrderDateEnd));
+            if (sellerOverview   != null) foreach (var m in sellerOverview)   datePairs.Add((m.OrderDateStart, m.OrderDateEnd));
+            if (sellerPerformance!= null) foreach (var m in sellerPerformance)datePairs.Add((m.OrderDateStart, m.OrderDateEnd));
+            var aggregateIndices = OrderIndexRouter.Resolve([.. datePairs]);
+
             // 1. 呼叫 dbSDK 的 AdvancedSearchAsync 進行查詢與聚合掛載
             var searchResponse = await _elasticRepository.AdvancedSearchAsync(s => s
                 .Size(0) // 統計不回傳文件內容
@@ -246,7 +254,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                             SellerPerformanceAggregates(sellerPerformanceName(i), sellerPerformance[i])(aggs);
                         }
                     }
-                })
+                }), aggregateIndices
             );
 
             // 2. 確保有取得回應資料
@@ -325,42 +333,26 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             OrderInfoQueryModel query,
             OrderInfoSortModel sort)
         {
-            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-
-            // 呼叫 dbSDK，移除 indices 參數 (交由 Repository 內部處理)
+            var searchIndices = OrderIndexRouter.Resolve((query.OrderDateStart, query.OrderDateEnd));
             var searchResponse = await _elasticRepository.AdvancedSearchAsync(s => s
                 .From(from)
                 .Size(size)
-                // 1. 直接掛載我們之前寫好的 Query Action
                 .Query(OrderInfoQuery(query))
-
-                // 2. 這裡假設你已經把 OrderInfoSort 轉寫為 Action<SortDescriptor<OrderDocument>> 
                 .Sort(OrderInfoSort(sort))
-
-                // 3. v8 的 Source 寫法 (加入 Filter 層)
-                .Source(src => src.Filter(f => f.Includes(new[] { "coomNo" })))
-
-                // 4. v8 的 TrackTotalHits 寫法 (需要明確使用 TrackHits 物件)
                 .TrackTotalHits(new TrackHits(true))
-            );
+            , searchIndices);
 
-            stopwatch.Stop();
-
-            // 5. 確保防呆，避免 NullReferenceException
             if (searchResponse == null)
             {
-                return new SearchOrderInfoResultModel
-                {
-                    Documents = Array.Empty<OrderDocument>(),
-                    Total = 0,
-                    Took = 0
-                };
+                return new SearchOrderInfoResultModel { Documents = [], Total = 0, Took = 0 };
             }
 
             return new SearchOrderInfoResultModel
             {
-                Documents = searchResponse.Documents?.ToArray() ?? Array.Empty<OrderDocument>(),
-                Total = searchResponse.Total, // 取得符合條件的總筆數
+                Documents = searchResponse.Documents?
+                    .Select(doc => JsonSerializer.SerializeToElement(doc))
+                    .ToArray() ?? [],
+                Total = searchResponse.Total,
                 Took = searchResponse.Took,
             };
         }
@@ -377,6 +369,11 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
         {
             var appSellerOverviewName = (int i) => $"ASO_{i}";
             var appSellerPerformanceName = (int i) => $"ASP_{i}";
+
+            var appDatePairs = new List<(DateTime? Start, DateTime? End)>();
+            if (appSellerOverview    != null) foreach (var m in appSellerOverview)    appDatePairs.Add((m.OrderDateStart, m.OrderDateEnd));
+            if (appSellerPerformance != null) foreach (var m in appSellerPerformance) appDatePairs.Add((m.OrderDateStart, m.OrderDateEnd));
+            var appIndices = OrderIndexRouter.Resolve([.. appDatePairs]);
 
             // 1. 執行非同步搜尋與聚合掛載
             var searchResponse = await _elasticRepository.AdvancedSearchAsync(s => s
@@ -398,7 +395,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                             AppSellerPerformanceAggregates(appSellerPerformanceName(i), appSellerPerformance[i])(aggs);
                         }
                     }
-                })
+                }), appIndices
             );
 
             if (searchResponse == null || searchResponse.Aggregations == null)
@@ -490,6 +487,14 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             var appSalesMetricsTrendName = (int i) => $"ASMT_{i}";
             var appSalesMetricsProductRankingName = (int i) => $"ASMPR_{i}";
 
+            var smDatePairs = appSalesMetricsModel?
+                .SelectMany(m => new (DateTime? Start, DateTime? End)[]
+                {
+                    (m.SearchStartDate, m.SearchEndDate),
+                    (m.StartDatePoP,    m.EndDatePoP)
+                }).ToArray() ?? [];
+            var smIndices = OrderIndexRouter.Resolve(smDatePairs);
+
             // 1. 執行搜尋與聚合掛載 (dbSDK 對接點)
             var searchResponse = await _elasticRepository.AdvancedSearchAsync(s => s
                 .Size(0)
@@ -506,7 +511,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                             AppSalesMetricsProductRanking(appSalesMetricsProductRankingName(i), appSalesMetricsModel[i])(aggs);
                         }
                     }
-                })
+                }), smIndices
             );
 
             if (searchResponse == null || searchResponse.Aggregations == null)
@@ -547,6 +552,80 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                         Took = searchResponse.Took // 直接把搜尋耗時塞進去
                     });
                 }
+            }
+
+            return results.ToArray();
+        }
+
+        private const string UserCgdmNestedAgg = "cgdm_nested";
+        private const string UserCgdmTermsAgg = "cgdm_ids";
+        private const string UserCgdmReverseAgg = "to_parent";
+        private const string UserCgdmMaxAgg = "max_modify_date";
+
+        /// <summary>
+        /// Search 7：取得賣家所有去重 cgdmId 及其最大訂單更新時間。
+        /// 核心 DSL：Nested(cood_items) → Terms(cgdd_cgdmid) → ReverseNested → Max(_ord_modify_date)
+        /// </summary>
+        public async Task<UserCgdmDataAggregateModel[]> GetUserCgdmDataAsync(int cuamCid)
+        {
+            var searchResponse = await _elasticRepository.AdvancedSearchAsync(s => s
+                .Size(0)
+                .Query(CoomCuamCidQuery(cuamCid))
+                .Aggregations(aggs => aggs
+
+                    .Add(UserCgdmNestedAgg, nested => nested
+                        .Nested(n => n.Path("cood_items"))
+                        .Aggregations(nestedAggs => nestedAggs
+                            .Add(UserCgdmTermsAgg, terms => terms
+                                .Terms(t => t.Field("cood_items.cgdd_cgdmid").Size(10000))
+                                .Aggregations(termAggs => termAggs
+                                    .Add(UserCgdmReverseAgg, rev => rev
+                                        .ReverseNested()
+                                        .Aggregations(revAggs => revAggs
+                                            .Add(UserCgdmMaxAgg, max => max
+                                                .Max(m => m.Field(o => o.OrdModifyDate))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ), new[] { OrderIndexRouter.Wildcard }
+            );
+
+            if (searchResponse?.Aggregations == null) return Array.Empty<UserCgdmDataAggregateModel>();
+
+            if (!searchResponse.Aggregations.TryGetValue(UserCgdmNestedAgg, out var nestedAgg)
+                || nestedAgg is not NestedAggregate nested
+                || nested.Aggregations == null)
+                return Array.Empty<UserCgdmDataAggregateModel>();
+
+            if (!nested.Aggregations.TryGetValue(UserCgdmTermsAgg, out var termsAgg)
+                || termsAgg is not StringTermsAggregate termsResult)
+                return Array.Empty<UserCgdmDataAggregateModel>();
+
+            var results = new List<UserCgdmDataAggregateModel>();
+            foreach (var bucket in termsResult.Buckets)
+            {
+                if (bucket.Aggregations == null) continue;
+                if (!bucket.Aggregations.TryGetValue(UserCgdmReverseAgg, out var revAgg)
+                    || revAgg is not ReverseNestedAggregate revNested
+                    || revNested.Aggregations == null) continue;
+
+                DateTime? maxDate = null;
+                if (revNested.Aggregations.TryGetValue(UserCgdmMaxAgg, out var maxAgg)
+                    && maxAgg is MaxAggregate maxResult
+                    && maxResult.Value.HasValue)
+                {
+                    maxDate = DateTimeOffset.FromUnixTimeMilliseconds((long)maxResult.Value.Value).LocalDateTime;
+                }
+
+                results.Add(new UserCgdmDataAggregateModel
+                {
+                    CgdmId = bucket.Key.ToString() ?? string.Empty,
+                    MaxModifyDate = maxDate,
+                });
             }
 
             return results.ToArray();

@@ -45,5 +45,6 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal
         /// </summary>
         [JsonPropertyName("cood_image_path")]
         public string? CoodImagePath { get; set; }
+
     }
 }

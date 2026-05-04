@@ -10,6 +10,9 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal
     /// </summary>
     public class OrderDocument
     {
+        [JsonIgnore]
+        public string Id => CoomNo ?? string.Empty;
+
         /// <summary>
         /// 訂購單編號
         /// </summary>
@@ -165,6 +168,12 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal
         /// </summary>
         [JsonPropertyName("esmm_leavestoredate_b")]
         public DateTime? EsmmLeaveStoreDateB { get; set; } = null;
+
+        /// <summary>
+        /// 訂單最後更新時間 (epoch_millis；Search 7 Reverse Nested Max 聚合使用)
+        /// </summary>
+        [JsonPropertyName("_ord_modify_date")]
+        public long? OrdModifyDate { get; set; } = null;
 
         /// <summary>
         /// 商品明細 (Nested)

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
 {
-    internal class OrderInfoModel
+    public class OrderInfoModel
     {
+        public string CoomNo { get; set; } = string.Empty;
     }
 }

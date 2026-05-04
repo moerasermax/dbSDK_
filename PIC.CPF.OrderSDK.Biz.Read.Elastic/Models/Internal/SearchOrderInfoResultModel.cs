@@ -1,11 +1,10 @@
-﻿namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal
+﻿using System.Text.Json;
+
+namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal
 {
     public class SearchOrderInfoResultModel
     {
-        /// <summary>
-        /// 訂單資訊
-        /// </summary>
-        public OrderDocument[] Documents { get; set; } = null!;
+        public JsonElement[] Documents { get; set; } = [];
 
         /// <summary>
         /// 符合條件的訂單數量
