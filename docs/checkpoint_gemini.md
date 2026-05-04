@@ -27,10 +27,13 @@
 - ✅ **S19 取號資料修正**：MongoDB (含 Redis) 實測完畢，欄位結構對齊 ✅。
 
 ### 進行中 (Active)
-- 🛠️ **S18 環境集成**：MongoDB 部分已完成測試；**ElasticSearch 因帳號更換需重新佈署環境，目前尚未測試 ⚠️**。
-- 🧹 **S20 移除付款更新**：清理 `UpdatePaymentUpdateEvent` 相關實作 (進行中)。
+- 🛠️ **S23 OrderSearchRequest 建立**：PM 已正式簽入 (ACTIVE)，工程師 Claude 已完成膠囊簽署，準備實作。
+- 🛠️ **S18 環境集成**：ElasticSearch 環境待佈署 ⚠️。
+- 🧹 **S20 移除付款更新**：清理進行中。
 
 ---
 
-## 接續指令
-下次 Session 請讀取 `kiro-sync-point-08.md`，開始執行 S18 的具體程式碼重構。
+## 治理更新 (2026-05-01)
+- **AgentCharter 遷移**：完成。根目錄 `GEMINI.md` 已移至 `management/` 並標記廢棄。
+- **權威來源**：轉移至 `agent-commons/`。
+

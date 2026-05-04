@@ -16,4 +16,4 @@
 - 🧹 **S20 移除付款更新**：清理 `UpdatePaymentUpdateEvent` 相關實作。
 
 ## 4. 同步資訊
-- 最新同步節點：`docs/checkpoints/kiro-sync-point-10.md`
+- 最新同步節點：`docs/checkpoints/kiro-sync-point-11.md`
