@@ -49,6 +49,30 @@ switch (mode)
         }
         break;
 
+    // ── dotnet run --project CPF.Sandbox dump-s1 ~ dump-s7 ───
+    // 偵錯入口：跑單一 Search method 並輸出 JSON, 用以對比客戶 GoldenRecipe Out
+    case "dump-s1":
+        await DumpScenarios.DumpAsync(1);
+        break;
+    case "dump-s2":
+        await DumpScenarios.DumpAsync(2);
+        break;
+    case "dump-s3":
+        await DumpScenarios.DumpAsync(3);
+        break;
+    case "dump-s4":
+        await DumpScenarios.DumpAsync(4);
+        break;
+    case "dump-s5":
+        await DumpScenarios.DumpAsync(5);
+        break;
+    case "dump-s6":
+        await DumpScenarios.DumpAsync(6);
+        break;
+    case "dump-s7":
+        await DumpScenarios.DumpAsync(7);
+        break;
+
     // ── dotnet run --project CPF.Sandbox (預設離線驗證) ────────
     default:
         MockValidationScenario.Run();
