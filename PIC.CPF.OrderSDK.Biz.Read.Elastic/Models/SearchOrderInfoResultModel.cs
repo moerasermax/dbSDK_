@@ -6,6 +6,5 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
     {
         public JsonElement[]? OrderInfos { get; set; }
         public long Total { get; set; }
-        public long Took { get; set; }
     }
 }

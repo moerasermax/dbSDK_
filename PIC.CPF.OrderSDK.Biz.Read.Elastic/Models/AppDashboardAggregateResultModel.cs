@@ -11,10 +11,5 @@
         /// 當下日期取得本周區間(周1到周日)為條件
         /// </summary>
         public AppSellerPerformanceAggregateResultModel[]? appSellerPerformance { get; set; } = null;
-
-        /// <summary>
-        /// 查詢時間
-        /// </summary>
-        public long Took { get; set; }
     }
 }

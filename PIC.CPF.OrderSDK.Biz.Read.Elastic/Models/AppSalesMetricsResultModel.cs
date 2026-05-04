@@ -46,11 +46,6 @@
         /// 商品銷售排名：以查詢類型為依據對訂單明細的cood_name做Group By後取出數量最多的前五名
         /// </summary>
         public IEnumerable<ProductSalesRanking>? ProductSalesRanking { get; set; } = null;
-
-        /// <summary>
-        /// 查詢時間
-        /// </summary>
-        public long Took { get; set; }
     }
 
     public class OrderTrendData

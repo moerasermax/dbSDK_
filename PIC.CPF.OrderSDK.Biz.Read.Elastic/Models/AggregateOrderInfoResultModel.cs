@@ -21,10 +21,5 @@
         /// 賣家表現資訊-統計結果
         /// </summary>
         public SellerPerformanceAggregateResultModel[]? SellerPerformance { get; set; } = null;
-
-        /// <summary>
-        /// 查詢時間
-        /// </summary>
-        public long Took { get; set; }
     }
 }

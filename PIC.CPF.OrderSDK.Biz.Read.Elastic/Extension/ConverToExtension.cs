@@ -88,7 +88,6 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
                     SendCount = b.SendCount,
                     SalesAmt = b.SalesAmt,
                 })?.ToArray(),
-                Took = model.Took,
             };
         }
         // ==========================================
@@ -130,7 +129,6 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
             {
                 OrderInfos = model.Documents,
                 Total = model.Total,
-                Took = model.Took,
             };
         }
         #region ESAPP
@@ -173,7 +171,6 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
                     SalesAmount = b.SalesAmount,
                     TotalOrderQty = b.TotalOrderQty,
                 })?.ToArray(),
-                Took = model.Took,
             };
         }
 
@@ -220,7 +217,6 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
                     ProductTotalSales = p.ProductTotalSales,
                     ProductImgPath = p.ProductImgPath
                 }),
-                Took = b.Took,
             }).ToArray();
         }
         #endregion
