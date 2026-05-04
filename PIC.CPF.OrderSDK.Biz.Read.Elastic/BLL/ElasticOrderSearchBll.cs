@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Logging;
+using NO3._dbSDK_Imporve.Core.Interface;
+using NO3._dbSDK_Imporve.Core.Models;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension;
 using PublicModels = PIC.CPF.OrderSDK.Biz.Read.Elastic.Models;
@@ -20,7 +22,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         // ==========================================
         // Search 1：首頁待辦事項總覽（買家 + 賣家雙視角）
         // ==========================================
-        public async Task<PublicModels.ApiResponseWrapper<PublicModels.AggregateOrderInfoResultModel>> GetHomeToDoOverViewAsync(
+        public async Task<IResult<PublicModels.AggregateOrderInfoResultModel>> GetHomeToDoOverViewAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
@@ -35,19 +37,19 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                     sellerOverview: [new InternalModels.SellerOverviewAggregateModel { CoomCuamCid = cid, OrderDateStart = start, OrderDateEnd = end }],
                     sellerPerformance: [new InternalModels.SellerPerformanceAggregateModel { CoomCuamCid = cid, OrderDateStart = start, OrderDateEnd = end }]
                 );
-                return new PublicModels.ApiResponseWrapper<PublicModels.AggregateOrderInfoResultModel> { Data = internalResult.ConvertToAggregateOrderInfoResultModel() };
+                return Result<PublicModels.AggregateOrderInfoResultModel>.SetResult("成功", internalResult.ConvertToAggregateOrderInfoResultModel());
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(GetHomeToDoOverViewAsync));
-                return new PublicModels.ApiResponseWrapper<PublicModels.AggregateOrderInfoResultModel> { Code = "99", Message = "失敗", ErrorMsg = ex.Message };
+                return Result<PublicModels.AggregateOrderInfoResultModel>.SetErrorResult(nameof(GetHomeToDoOverViewAsync), ex.Message);
             }
         }
 
         // ==========================================
         // Search 2：訂單搜尋（賣家視角）
         // ==========================================
-        public async Task<PublicModels.ApiResponseWrapper<PublicModels.SearchOrderInfoResultModel>> SearchBySellerAsync(
+        public async Task<IResult<PublicModels.SearchOrderInfoResultModel>> SearchBySellerAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
@@ -75,19 +77,19 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 var sort = new InternalModels.OrderInfoSortModel { OrderSorts = req.Sorts };
 
                 var internalResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
-                return new PublicModels.ApiResponseWrapper<PublicModels.SearchOrderInfoResultModel> { Data = internalResult.ConvertToSearchOrderInfoResultModel() };
+                return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", internalResult.ConvertToSearchOrderInfoResultModel());
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(SearchBySellerAsync));
-                return new PublicModels.ApiResponseWrapper<PublicModels.SearchOrderInfoResultModel> { Code = "99", Message = "失敗", ErrorMsg = ex.Message };
+                return Result<PublicModels.SearchOrderInfoResultModel>.SetErrorResult(nameof(SearchBySellerAsync), ex.Message);
             }
         }
 
         // ==========================================
-        // Search 3:訂單搜尋（買家視角）
+        // Search 3：訂單搜尋（買家視角）
         // ==========================================
-        public async Task<PublicModels.ApiResponseWrapper<PublicModels.SearchOrderInfoResultModel>> SearchByBuyerAsync(
+        public async Task<IResult<PublicModels.SearchOrderInfoResultModel>> SearchByBuyerAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
@@ -115,19 +117,19 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 var sort = new InternalModels.OrderInfoSortModel { OrderSorts = req.Sorts };
 
                 var internalResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
-                return new PublicModels.ApiResponseWrapper<PublicModels.SearchOrderInfoResultModel> { Data = internalResult.ConvertToSearchOrderInfoResultModel() };
+                return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", internalResult.ConvertToSearchOrderInfoResultModel());
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(SearchByBuyerAsync));
-                return new PublicModels.ApiResponseWrapper<PublicModels.SearchOrderInfoResultModel> { Code = "99", Message = "失敗", ErrorMsg = ex.Message };
+                return Result<PublicModels.SearchOrderInfoResultModel>.SetErrorResult(nameof(SearchByBuyerAsync), ex.Message);
             }
         }
 
         // ==========================================
         // Search 4：App 儀表板總覽（固定 90 天區間）
         // ==========================================
-        public async Task<PublicModels.ApiResponseWrapper<PublicModels.AppDashboardAggregateResultModel>> GetAppDashboardAsync(
+        public async Task<IResult<PublicModels.AppDashboardAggregateResultModel>> GetAppDashboardAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
@@ -140,19 +142,19 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                     appSellerOverview: [new InternalModels.AppSellerOverViewAggregateModel { CoomCuamCid = cid, OrderDateStart = start, OrderDateEnd = end }],
                     appSellerPerformance: [new InternalModels.AppSellerPerformanceAggregateModel { CoomCuamCid = cid, OrderDateStart = start, OrderDateEnd = end }]
                 );
-                return new PublicModels.ApiResponseWrapper<PublicModels.AppDashboardAggregateResultModel> { Data = internalResult.ConvertToAppDashboardAggregateResultModel() };
+                return Result<PublicModels.AppDashboardAggregateResultModel>.SetResult("成功", internalResult.ConvertToAppDashboardAggregateResultModel());
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(GetAppDashboardAsync));
-                return new PublicModels.ApiResponseWrapper<PublicModels.AppDashboardAggregateResultModel> { Code = "99", Message = "失敗", ErrorMsg = ex.Message };
+                return Result<PublicModels.AppDashboardAggregateResultModel>.SetErrorResult(nameof(GetAppDashboardAsync), ex.Message);
             }
         }
 
         // ==========================================
         // Search 5：App 銷售指標（本日）
         // ==========================================
-        public async Task<PublicModels.ApiResponseWrapper<PublicModels.AppSalesMetricsResultModel[]>> GetAppSalesTodayAsync(
+        public async Task<IResult<PublicModels.AppSalesMetricsResultModel[]>> GetAppSalesTodayAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
@@ -167,19 +169,19 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                     DateRangeType = req.DateRangeType,
                 };
                 var internalResults = await _dal.AppSalesMetricsInfoAsync([model]);
-                return new PublicModels.ApiResponseWrapper<PublicModels.AppSalesMetricsResultModel[]> { Data = internalResults.ConvertToAppSalesMetricsResultModel() };
+                return Result<PublicModels.AppSalesMetricsResultModel[]>.SetResult("成功", internalResults.ConvertToAppSalesMetricsResultModel());
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(GetAppSalesTodayAsync));
-                return new PublicModels.ApiResponseWrapper<PublicModels.AppSalesMetricsResultModel[]> { Code = "99", Message = "失敗", ErrorMsg = ex.Message };
+                return Result<PublicModels.AppSalesMetricsResultModel[]>.SetErrorResult(nameof(GetAppSalesTodayAsync), ex.Message);
             }
         }
 
         // ==========================================
         // Search 6：App 銷售指標（本週）
         // ==========================================
-        public async Task<PublicModels.ApiResponseWrapper<PublicModels.AppSalesMetricsResultModel[]>> GetAppSalesWeekAsync(
+        public async Task<IResult<PublicModels.AppSalesMetricsResultModel[]>> GetAppSalesWeekAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
@@ -194,31 +196,31 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                     DateRangeType = req.DateRangeType,
                 };
                 var internalResults = await _dal.AppSalesMetricsInfoAsync([model]);
-                return new PublicModels.ApiResponseWrapper<PublicModels.AppSalesMetricsResultModel[]> { Data = internalResults.ConvertToAppSalesMetricsResultModel() };
+                return Result<PublicModels.AppSalesMetricsResultModel[]>.SetResult("成功", internalResults.ConvertToAppSalesMetricsResultModel());
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(GetAppSalesWeekAsync));
-                return new PublicModels.ApiResponseWrapper<PublicModels.AppSalesMetricsResultModel[]> { Code = "99", Message = "失敗", ErrorMsg = ex.Message };
+                return Result<PublicModels.AppSalesMetricsResultModel[]>.SetErrorResult(nameof(GetAppSalesWeekAsync), ex.Message);
             }
         }
 
         // ==========================================
         // Search 7：取得賣家 cgdm 資料
         // ==========================================
-        public async Task<PublicModels.ApiResponseWrapper<PublicModels.UserCgdmDataResultModel>> GetUserCgdmDataAsync(
+        public async Task<IResult<PublicModels.UserCgdmDataResultModel>> GetUserCgdmDataAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
             {
                 var cid = req.CuamCid ?? 0;
                 var internalResults = await _dal.GetUserCgdmDataAsync(cid);
-                return new PublicModels.ApiResponseWrapper<PublicModels.UserCgdmDataResultModel> { Data = internalResults.ConvertToUserCgdmDataResultModel(cid) };
+                return Result<PublicModels.UserCgdmDataResultModel>.SetResult("成功", internalResults.ConvertToUserCgdmDataResultModel(cid));
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(GetUserCgdmDataAsync));
-                return new PublicModels.ApiResponseWrapper<PublicModels.UserCgdmDataResultModel> { Code = "99", Message = "失敗", ErrorMsg = ex.Message };
+                return Result<PublicModels.UserCgdmDataResultModel>.SetErrorResult(nameof(GetUserCgdmDataAsync), ex.Message);
             }
         }
     }
