@@ -10,10 +10,11 @@
 
 | 系列標籤 | Sprint 編號 | 任務名稱 | 負責人 | 狀態 | VCP 快速摘要 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **P2-1** | **S31** | 撤銷 Wrapper 與偵錯工具恢復 | Claude | [ ] Todo | 移除 BLL Wrapper 回傳，恢復 `dump-sN` |
-| **P2-2** | **S32** | 內層容器結構與 Casing 修正 | Claude | [ ] Todo | S1/S4 改單一物件 + 全面對齊 camelCase |
-| **P2-3** | **S33** | 趨勢補零與 RankingNo | Claude | [ ] Todo | S5/S6 補足 24h/7d bucket 與序號 |
-| **P2-4** | **S34** | Mongo 深度整合 (S2/S3) | Claude | [ ] Todo | 二階段查詢：ES 篩選 -> Mongo 補強 12 表深度資料 |
+| **P2-1** | **S31** | 撤銷 Wrapper 與偵錯工具恢復 | Claude | [x] Cancelled | 移除 BLL Wrapper 回傳，恢復 `dump-sN` |
+| **P2-2** | **S32** | 內層容器結構與 Casing 修正 | Claude | [x] Done | S1/S4 改單一物件 + 全面對齊 camelCase |
+| **P2-3** | **S33** | 趨勢補零與 RankingNo | Claude | [x] Done | S5/S6 補足 24h/7d bucket 與序號 |
+| **P2-V1** | **S35** | 整合測試腳本對齊 | Claude | [ ] Todo | 更新 E2E_S1~S7 測試腳本以符合新結構 |
+| **P2-4** | **S34** | Mongo 深度整合 (S2/S3) | Claude | [ ] On Hold | 二階段查詢：ES 篩選 -> Mongo 補強 12 表深度資料 |
 | **P2-5** | **V2** | PM 最終驗收 (內層資料對齊版) | Gemini | [ ] Todo | 驗證內層 JSON Schema 與 數值對齊 |
 
 ---

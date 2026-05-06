@@ -28,10 +28,10 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Services
         public Task<IResult<AppDashboardAggregateResultModel>> GetAppDashboardAsync(OrderSearchRequest req)
             => _orderSearchBll.GetAppDashboardAsync(req);
 
-        public Task<IResult<AppSalesMetricsResultModel[]>> GetAppSalesTodayAsync(OrderSearchRequest req)
+        public Task<IResult<AppSalesMetricsResultModel>> GetAppSalesTodayAsync(OrderSearchRequest req)
             => _orderSearchBll.GetAppSalesTodayAsync(req);
 
-        public Task<IResult<AppSalesMetricsResultModel[]>> GetAppSalesWeekAsync(OrderSearchRequest req)
+        public Task<IResult<AppSalesMetricsResultModel>> GetAppSalesWeekAsync(OrderSearchRequest req)
             => _orderSearchBll.GetAppSalesWeekAsync(req);
 
         public Task<IResult<UserCgdmDataResultModel>> GetUserCgdmDataAsync(OrderSearchRequest req)

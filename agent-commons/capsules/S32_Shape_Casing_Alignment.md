@@ -19,9 +19,9 @@ tracking_label: P2-2
 ---
 
 ## 任務清單
-- [ ] 修改 `AggregateOrderInfoResultModel` (S1) 與 `AppDashboardAggregateResultModel` (S4) 的 BLL 映射邏輯，將其內部的 sub-section (如 `BuyerOverview`, `AppSellerOverView`) 改為回傳單一物件而非陣列
-- [ ] 在 S1, S4, S5, S6, S7 相關的所有 ResultModel 屬性加上 `[JsonPropertyName("camelCase")]`
-- [ ] 修正 BLL 內部對這些模型的物件轉換邏輯，確保對應到正確的 camelCase 名稱
+- [x] 修改 `AggregateOrderInfoResultModel` (S1) 與 `AppDashboardAggregateResultModel` (S4) ... 改為回傳單一物件而非陣列
+- [x] 在 S1, S4, S5, S6, S7 相關的所有 ResultModel 屬性加上 `[JsonPropertyName("camelCase")]`
+- [x] 修正 BLL 內部對這些模型的物件轉換邏輯，確保對應到正確的 camelCase 名稱
 
 ---
 
@@ -30,13 +30,15 @@ tracking_label: P2-2
 ### 1. 容器型態驗證 (S1)
 - 執行 `dotnet run --project CPF.Sandbox -- dump-s1`
 - 驗證 `buyerOverView` 是 Object 而非 Array：`jq '.buyerOverView | type'` 應為 `"object"`
+- **驗收結果**：✅ 通過 (2026-05-04)
 
 ### 2. Casing 驗證 (S7)
 - 執行 `dotnet run --project CPF.Sandbox -- dump-s7`
 - 驗證欄位名：`jq 'has("cuamCid")'` 應為 `true`
+- **驗收結果**：✅ 通過 (2026-05-04)
 
 ---
 
 ## 技術檢核點
-- [ ] 所有 S1, S4, S5, S6, S7 涉及的 Model 均已完成屬性標註
-- [ ] 程式碼編譯通過 (不包 Wrapper，直接回傳業務 Model)
+- [x] 所有 S1, S4, S5, S6, S7 涉及的 Model 均已完成屬性標註
+- [x] 程式碼編譯通過 (不包 Wrapper，直接回傳業務 Model)

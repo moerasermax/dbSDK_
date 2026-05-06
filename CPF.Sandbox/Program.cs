@@ -4,12 +4,12 @@ using CPF.Sandbox.IntegrationTests.Scenarios;
 using CPF.Sandbox.Scenarios;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo.Serialization;
+using System.Security.Cryptography.X509Certificates;
 
 MongoSerializationConfig.Register();
 MongoMap.EnsureClassMapsRegistered();
 
 var mode = args.Length > 0 ? args[0].ToLower() : "offline";
-
 switch (mode)
 {
     // ── dotnet run --project CPF.Sandbox seed ─────────────────
@@ -17,15 +17,21 @@ switch (mode)
         await ElasticDataSeedScenario.RunAsync();
         break;
 
+    // ── dotnet run --project CPF.Sandbox seed-golden ───────────
+    // [S37] Golden Data 數據導入：植入客戶正式測試資料
+    case "seed-golden":
+        await GoldenSeeder.SeedAsync();
+        break;
+
     // ── dotnet run --project CPF.Sandbox validate ─────────────
     case "validate":
-        await S23_GetHomeToDoOverViewScenario.RunAsync();
-        await S24_SearchBySellerScenario.RunAsync();
-        await S25_SearchByBuyerScenario.RunAsync();
-        await S26_GetAppDashboardScenario.RunAsync();
-        await S27_GetAppSalesTodayScenario.RunAsync();
-        await S28_GetAppSalesWeekScenario.RunAsync();
-        await S29_GetUserCgdmDataScenario.RunAsync();
+        await P2_SearchScenarioSuite.RunSearch1Async();
+        await P2_SearchScenarioSuite.RunSearch2Async();
+        await P2_SearchScenarioSuite.RunSearch3Async();
+        await P2_SearchScenarioSuite.RunSearch4Async();
+        await P2_SearchScenarioSuite.RunSearch5Async();
+        await P2_SearchScenarioSuite.RunSearch6Async();
+        await P2_SearchScenarioSuite.RunSearch7Async();
         break;
 
     // ── dotnet run --project CPF.Sandbox inttest seed/validate ─
@@ -52,25 +58,25 @@ switch (mode)
     // ── dotnet run --project CPF.Sandbox dump-s1 ~ dump-s7 ───
     // 偵錯入口：跑單一 Search method 並輸出 JSON, 用以對比客戶 GoldenRecipe Out
     case "dump-s1":
-        await DumpScenarios.DumpAsync(1);
+        await P2_SearchScenarioSuite.RunSearch1Async(verbose: true);
         break;
     case "dump-s2":
-        await DumpScenarios.DumpAsync(2);
+        await P2_SearchScenarioSuite.RunSearch2Async();
         break;
     case "dump-s3":
-        await DumpScenarios.DumpAsync(3);
+        await P2_SearchScenarioSuite.RunSearch3Async();
         break;
     case "dump-s4":
-        await DumpScenarios.DumpAsync(4);
+        await P2_SearchScenarioSuite.RunSearch4Async();
         break;
     case "dump-s5":
-        await DumpScenarios.DumpAsync(5);
+        await P2_SearchScenarioSuite.RunSearch5Async();
         break;
     case "dump-s6":
-        await DumpScenarios.DumpAsync(6);
+        await P2_SearchScenarioSuite.RunSearch6Async();
         break;
     case "dump-s7":
-        await DumpScenarios.DumpAsync(7);
+        await P2_SearchScenarioSuite.RunSearch7Async();
         break;
 
     // ── dotnet run --project CPF.Sandbox (預設離線驗證) ────────

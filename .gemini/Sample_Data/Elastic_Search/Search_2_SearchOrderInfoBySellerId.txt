@@ -1,0 +1,3333 @@
+In-1：
+{
+    "PageIndex": 0,
+    "PageSize": 50,
+    "CuamCid": 528672,
+    "OrderDateStart": "2026-05-04T16:00:00Z",
+    "OrderDateEnd": "2026-05-05T15:59:59.999Z",
+    "DeliverMethodSearchKind": null,
+    "OrdChannelKindSearchKind": null,
+    "TempTypeSearchKind": null,
+    "CoomNo": null,
+    "CoomName": null,
+    "EsmmShipNo": null,
+    "CoodName": null,
+    "CoocNo": null,
+    "OrderState": "DealWith",
+    "OrderSorts": [
+        1,
+        3
+    ],
+    "IsQaList": false
+}
+
+
+
+Out-1：
+{
+  "data": [
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044040",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.773",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": true,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單取號前關轉",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077720",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.777",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044039",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.77",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單已付款",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077719",
+        "coocPaymentType": "4",
+        "coocPaymentPayDatetime": "2026-05-05T20:54:00.77",
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.77",
+        "coocMemSid": 528672,
+        "coocPaymentCode": "111111*****2222",
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": "26050077000000001",
+        "coocPaymentNote": "111111",
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": "2026-05-07T00:00:00"
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044034",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單合併",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.107",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": "CM2605050044032,CM2605050044033",
+        "coomSellerMemo": "測試訂單合併",
+        "coomSellerGoodsTotalAmt": 238,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077714",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "6",
+        "coocCreateDatetime": "2026-05-05T20:54:00.107",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 2,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 200,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044031",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.09",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單買賣家訂單提問",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077711",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.093",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 1,
+        "buyerQaNeverReplyCount": 1
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044030",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.083",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單可取消",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077710",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.087",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    }
+  ],
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 5
+}
+
+In-2：
+{
+    "PageIndex": 0,
+    "PageSize": 50,
+    "CuamCid": 528672,
+    "OrderDateStart": "2026-05-04T16:00:00Z",
+    "OrderDateEnd": "2026-05-05T15:59:59.999Z",
+    "DeliverMethodSearchKind": null,
+    "OrdChannelKindSearchKind": null,
+    "TempTypeSearchKind": null,
+    "CoomNo": null,
+    "CoomName": null,
+    "EsmmShipNo": null,
+    "CoodName": null,
+    "CoocNo": null,
+    "OrderState": null,
+    "OrderSorts": [
+        1,
+        3
+    ],
+    "IsQaList": false
+}
+
+
+
+Out-2：
+{
+  "data": [
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044053",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.877",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件配達逾期未取件退貨已拋棄",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077733",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.88",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036454",
+        "esmmShipNo": "L0505877",
+        "esmmStatus": "31",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8770",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.88Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.88Z"
+        },
+        {
+          "esmlEsmmStatus": "20",
+          "esmlStatusDatetime": "2026-05-05T12:54:15.88Z"
+        },
+        {
+          "esmlEsmmStatus": "31",
+          "esmlStatusDatetime": "2026-05-05T12:54:20.88Z"
+        },
+        {
+          "esmlEsmmStatus": "D2",
+          "esmlStatusDatetime": "2026-05-05T12:54:25.88Z"
+        },
+        {
+          "esmlEsmmStatus": "D4",
+          "esmlStatusDatetime": "2026-05-05T12:54:30.88Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": "SM2605050036454",
+        "ecdhProcessCode": "SD"
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044052",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.87",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件配達逾期未取件退貨退貨宅回詳情",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077732",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.87",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036453",
+        "esmmShipNo": "L0505870",
+        "esmmStatus": "31",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8700",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.87Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.87Z"
+        },
+        {
+          "esmlEsmmStatus": "20",
+          "esmlStatusDatetime": "2026-05-05T12:54:15.87Z"
+        },
+        {
+          "esmlEsmmStatus": "31",
+          "esmlStatusDatetime": "2026-05-05T12:54:20.87Z"
+        },
+        {
+          "esmlEsmmStatus": "D2",
+          "esmlStatusDatetime": "2026-05-05T12:54:25.87Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": "SM2605050036453",
+        "ecdhProcessCode": "SW"
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": "AR"
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044051",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.863",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件配達逾期未取件退貨退貨宅回申請",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077731",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.863",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036452",
+        "esmmShipNo": "L0505863",
+        "esmmStatus": "31",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8630",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.867Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.867Z"
+        },
+        {
+          "esmlEsmmStatus": "20",
+          "esmlStatusDatetime": "2026-05-05T12:54:15.867Z"
+        },
+        {
+          "esmlEsmmStatus": "31",
+          "esmlStatusDatetime": "2026-05-05T12:54:20.867Z"
+        },
+        {
+          "esmlEsmmStatus": "D2",
+          "esmlStatusDatetime": "2026-05-05T12:54:25.867Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": "SM2605050036452",
+        "ecdhProcessCode": "SW"
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044050",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.86",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件配達取件",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077730",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": "2026-05-05T20:54:20.86",
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.86",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036451",
+        "esmmShipNo": "L0505860",
+        "esmmStatus": "30",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8600",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.86Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.86Z"
+        },
+        {
+          "esmlEsmmStatus": "20",
+          "esmlStatusDatetime": "2026-05-05T12:54:15.86Z"
+        },
+        {
+          "esmlEsmmStatus": "30",
+          "esmlStatusDatetime": "2026-05-05T12:54:20.86Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044049",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.853",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件配達",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077729",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.853",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036450",
+        "esmmShipNo": "L0505857",
+        "esmmStatus": "20",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8570",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.857Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.857Z"
+        },
+        {
+          "esmlEsmmStatus": "20",
+          "esmlStatusDatetime": "2026-05-05T12:54:15.857Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044048",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.847",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件門市關轉",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077728",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.847",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036449",
+        "esmmShipNo": "L0505847",
+        "esmmStatus": "10",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8470",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.85Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.85Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": 122,
+        "eccsStoreType": "01",
+        "eccsRechoiceStoreStatus": "0",
+        "eccsCreateDatetime": "2026-05-05T20:54:00.85"
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044047",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.84",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件寄件異常",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077727",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.84",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036448",
+        "esmmShipNo": "L0505843",
+        "esmmStatus": "11",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8430",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": "1",
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.843Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.843Z"
+        },
+        {
+          "esmlEsmmStatus": "11",
+          "esmlStatusDatetime": "2026-05-05T12:54:15.843Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044046",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.833",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077726",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.837",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036447",
+        "esmmShipNo": "L0505837",
+        "esmmStatus": "10",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8370",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.84Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.84Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044045",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "11",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.827",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨訂單取消",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": "CN2605050050360"
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077725",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.83",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036446",
+        "esmmShipNo": "L0505833",
+        "esmmStatus": "05",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8330",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": "3",
+        "cccmCancelPeople": "3",
+        "cccmConfirmDatetime": "2026-05-05T20:54:10.833",
+        "cccmCreateDatetime": "2026-05-05T20:54:10.833",
+        "cccmRefundFlag": "0",
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.833Z"
+        },
+        {
+          "esmlEsmmStatus": "05",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.833Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044044",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "20",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.81",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077724",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.81",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036445",
+        "esmmShipNo": "L0505820",
+        "esmmStatus": "01",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8200",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.823Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044043",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "11",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.8",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單退款填寫退款帳號",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": "CN2605050050359"
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077723",
+        "coocPaymentType": "4",
+        "coocPaymentPayDatetime": "2026-05-05T20:54:00.8",
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.8",
+        "coocMemSid": 528672,
+        "coocPaymentCode": "111111*****2222",
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": "26050080000000001",
+        "coocPaymentNote": "111111",
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": "3",
+        "cccmCancelPeople": "3",
+        "cccmConfirmDatetime": "2026-05-05T20:54:00.803",
+        "cccmCreateDatetime": "2026-05-05T20:54:00.803",
+        "cccmRefundFlag": "2",
+        "cccmErfmNo": "RM2605050000754"
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044042",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "11",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.787",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單退款詳情",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": "CN2605050050358"
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077722",
+        "coocPaymentType": "4",
+        "coocPaymentPayDatetime": "2026-05-05T20:54:00.787",
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.787",
+        "coocMemSid": 528672,
+        "coocPaymentCode": "111111*****2222",
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": "26050078700000001",
+        "coocPaymentNote": "111111",
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": "3",
+        "cccmCancelPeople": "3",
+        "cccmConfirmDatetime": "2026-05-05T20:54:00.79",
+        "cccmCreateDatetime": "2026-05-05T20:54:00.79",
+        "cccmRefundFlag": "2",
+        "cccmErfmNo": "RM2605050000753"
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044041",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "11",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.777",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單取消詳情",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": "CN2605050050357"
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077721",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.78",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": "3",
+        "cccmCancelPeople": "3",
+        "cccmConfirmDatetime": "2026-05-05T20:54:00.78",
+        "cccmCreateDatetime": "2026-05-05T20:54:00.78",
+        "cccmRefundFlag": "0",
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044040",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.773",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": true,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單取號前關轉",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077720",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.777",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044039",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.77",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單已付款",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077719",
+        "coocPaymentType": "4",
+        "coocPaymentPayDatetime": "2026-05-05T20:54:00.77",
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.77",
+        "coocMemSid": 528672,
+        "coocPaymentCode": "111111*****2222",
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": "26050077000000001",
+        "coocPaymentNote": "111111",
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": "2026-05-07T00:00:00"
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044038",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.13",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單未付款",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077718",
+        "coocPaymentType": "4",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.13",
+        "coocMemSid": 528672,
+        "coocPaymentCode": "111111*****2222",
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": "26050013000000001",
+        "coocPaymentNote": "111111",
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": "2026-05-07T00:00:00"
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044037",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單合併",
+        "coomStatus": "11",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.12",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": "CM2605050044035,CM2605050044036",
+        "coomSellerMemo": "測試訂單合併取消",
+        "coomSellerGoodsTotalAmt": 238,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": "CN2605050050356"
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077717",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "6",
+        "coocCreateDatetime": "2026-05-05T20:54:00.12",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 2,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 200,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": "3",
+        "cccmCancelPeople": "3",
+        "cccmConfirmDatetime": "2026-05-05T20:54:00.123",
+        "cccmCreateDatetime": "2026-05-05T20:54:00.123",
+        "cccmRefundFlag": "0",
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044036",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "1X",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.117",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單被合併取消",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077716",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.117",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044035",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "1X",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.11",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單被合併取消",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077715",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.113",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044034",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單合併",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.107",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": "CM2605050044032,CM2605050044033",
+        "coomSellerMemo": "測試訂單合併",
+        "coomSellerGoodsTotalAmt": 238,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077714",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "6",
+        "coocCreateDatetime": "2026-05-05T20:54:00.107",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 2,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 200,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044033",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "12",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.103",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單被合併",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077713",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.107",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044032",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "12",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.1",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單被合併",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077712",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.103",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044031",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.09",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單買賣家訂單提問",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077711",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.093",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 1,
+        "buyerQaNeverReplyCount": 1
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044030",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.083",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單可取消",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077710",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.087",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    }
+  ],
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 24
+}
+
+
+In-3：
+{
+    "PageIndex": 0,
+    "PageSize": 50,
+    "CuamCid": 528672,
+    "OrderDateStart": "2026-05-04T16:00:00Z",
+    "OrderDateEnd": "2026-05-05T15:59:59.999Z",
+    "DeliverMethodSearchKind": null,
+    "OrdChannelKindSearchKind": null,
+    "TempTypeSearchKind": null,
+    "CoomNo": null,
+    "CoomName": null,
+    "EsmmShipNo": null,
+    "CoodName": "測試",
+    "CoocNo": null,
+    "OrderState": null,
+    "OrderSorts": [
+        1,
+        3
+    ],
+    "IsQaList": false
+}
+
+
+
+Out-3：
+{
+  "data": [
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044050",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "30",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.86",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨寄件配達取件",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077730",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": "2026-05-05T20:54:20.86",
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.86",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036451",
+        "esmmShipNo": "L0505860",
+        "esmmStatus": "30",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8600",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.86Z"
+        },
+        {
+          "esmlEsmmStatus": "10",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.86Z"
+        },
+        {
+          "esmlEsmmStatus": "20",
+          "esmlStatusDatetime": "2026-05-05T12:54:15.86Z"
+        },
+        {
+          "esmlEsmmStatus": "30",
+          "esmlStatusDatetime": "2026-05-05T12:54:20.86Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044045",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "11",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.827",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單備貨訂單取消",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": "CN2605050050360"
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077725",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.83",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": "SM2605050036446",
+        "esmmShipNo": "L0505833",
+        "esmmStatus": "05",
+        "esmmShipMethod": "1",
+        "esmmShipNoAuthCode": "8330",
+        "esmmShipNoA": "7M0",
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": "0",
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": "3",
+        "cccmCancelPeople": "3",
+        "cccmConfirmDatetime": "2026-05-05T20:54:10.833",
+        "cccmCreateDatetime": "2026-05-05T20:54:10.833",
+        "cccmRefundFlag": "0",
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": [
+        {
+          "esmlEsmmStatus": "01",
+          "esmlStatusDatetime": "2026-05-05T12:54:05.833Z"
+        },
+        {
+          "esmlEsmmStatus": "05",
+          "esmlStatusDatetime": "2026-05-05T12:54:10.833Z"
+        }
+      ],
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044040",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.773",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": true,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單取號前關轉",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077720",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.777",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044031",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.09",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單買賣家訂單提問",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077711",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.093",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 1,
+        "buyerQaNeverReplyCount": 1
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    },
+    {
+      "c_Order_M": {
+        "coomNo": "CM2605050044030",
+        "coomOrderDate": "2026-05-05T00:00:00",
+        "coomName": "訂單匯入",
+        "coomStatus": "10",
+        "coomTempType": "01",
+        "coomCreateDatetime": "2026-05-05T20:54:00.083",
+        "coomCuamCid": 528672,
+        "coomReChoiceFlag": false,
+        "coomMergeListCoomNo": null,
+        "coomSellerMemo": "測試訂單可取消",
+        "coomSellerGoodsTotalAmt": 138,
+        "coomGoodsItemNum": 1,
+        "coomGoodsTotalNum": 1,
+        "coomRcvTotalAmt": 138,
+        "coomCgdmId": null,
+        "coomShipPrintFlag": null,
+        "coomCccmNo": null
+      },
+      "c_Order_C": {
+        "coocNo": "CC2605050077710",
+        "coocPaymentType": "1",
+        "coocPaymentPayDatetime": null,
+        "coocDeliverMethod": "1",
+        "coocOrdChannelKind": "4",
+        "coocCreateDatetime": "2026-05-05T20:54:00.087",
+        "coocMemSid": 528672,
+        "coocPaymentCode": null,
+        "coocOrdNameEnc": "kYVa/0OXwpJW9nPGlpRkjg==",
+        "coocRcvNameEnc": "cwZmSuYsdvYY6LozbmRgDQ==",
+        "coocRcvMobileEnc": "cWGJ4rSPcMM5rk22koYkhg==",
+        "coocPaymentTradeNo": null,
+        "coocPaymentNote": null,
+        "coocPaymentBankCode": null,
+        "coocPaymentDueday": null
+      },
+      "c_Order_D": [
+        {
+          "coodName": "測試商品",
+          "coodQty": 1,
+          "coodOriginalPrice": 100,
+          "coodDiscountPrice": 100,
+          "coodReceivePrice": 100,
+          "coodImagePath": null
+        }
+      ],
+      "c_Goods_Item": {
+        "cgdiNumberColumn1": null
+      },
+      "e_Shipment_M": {
+        "esmmNo": null,
+        "esmmShipNo": null,
+        "esmmStatus": null,
+        "esmmShipMethod": null,
+        "esmmShipNoAuthCode": null,
+        "esmmShipNoA": null,
+        "esmmLeaveStoreDateB": null,
+        "esmmIbonAppFlag": null,
+        "esmmOddReason": null,
+        "esmmConfirmExtpayDatetime": null
+      },
+      "c_Question_M": {
+        "sellerQaNeverReplyCount": 0,
+        "buyerQaNeverReplyCount": 0
+      },
+      "c_Cancel_M": {
+        "cccmStatus": null,
+        "cccmCancelPeople": null,
+        "cccmConfirmDatetime": null,
+        "cccmCreateDatetime": null,
+        "cccmRefundFlag": null,
+        "cccmErfmNo": null
+      },
+      "e_Shipment_L": null,
+      "e_Shipment_S": null,
+      "e_CCDHL": {
+        "ecdhEsmmNo": null,
+        "ecdhProcessCode": null
+      },
+      "e_CCCS": {
+        "eccsId": null,
+        "eccsStoreType": null,
+        "eccsRechoiceStoreStatus": null,
+        "eccsCreateDatetime": null
+      },
+      "e_RtnDHL_Apply": {
+        "erdaApplyStatus": null
+      }
+    }
+  ],
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 5
+}

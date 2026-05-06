@@ -1,19 +1,13 @@
-[command]
 name = "charter-init"
 description = "Execute AgentCharter initialization Phase 1-5b"
 
-[[command.args]]
-name = "preset"
-description = "Preset profile (standard/minimal/strict)"
-default = "standard"
+prompt = """
+我現在以 PM (Gemini) 身份執行初始化 (charter-init)。
 
-[command.steps]
-phase1 = "Verify directory structure in agent-commons/"
-phase2 = "Update _config/profile.yaml and mapping.yaml"
-phase3 = "Verify protocols and roles status"
-phase4 = "Run charter-doctor diagnostic"
-phase5b = "Trigger sub-agent for fresh-context validation"
-
-[command.env]
-AGENTCHARTER_HOME = "~/.agentcharter"
-COMMON_MEMORY_ROOT = "agent-commons"
+依據 ~/.agentcharter/tools/init-spec.md 執行：
+1. 驗證目錄結構：確認 agent-commons/ 下的基礎目錄存在。
+2. 更新配置：同步 _config/profile.yaml 與 mapping.yaml 至最新規範。
+3. 驗證公理與角色：確認 protocols/DBSDK.md 與角色 Status。
+4. 執行健康檢查：執行 /charter-doctor 確認初始化成功。
+5. Phase 5b：觸發 sub-agent 進行 Fresh-Context 驗證。
+"""

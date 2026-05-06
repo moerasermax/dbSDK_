@@ -18,10 +18,10 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Services
         Task<IResult<AppDashboardAggregateResultModel>> GetAppDashboardAsync(OrderSearchRequest req);
 
         // Search 5: App 銷售指標（本日）
-        Task<IResult<AppSalesMetricsResultModel[]>> GetAppSalesTodayAsync(OrderSearchRequest req);
+        Task<IResult<AppSalesMetricsResultModel>> GetAppSalesTodayAsync(OrderSearchRequest req);
 
         // Search 6: App 銷售指標（本週）
-        Task<IResult<AppSalesMetricsResultModel[]>> GetAppSalesWeekAsync(OrderSearchRequest req);
+        Task<IResult<AppSalesMetricsResultModel>> GetAppSalesWeekAsync(OrderSearchRequest req);
 
         // Search 7: 取得賣家 cgdm 資料
         Task<IResult<UserCgdmDataResultModel>> GetUserCgdmDataAsync(OrderSearchRequest req);

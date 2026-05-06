@@ -34,9 +34,9 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
 
             var result = await svc.GetAppSalesTodayAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
-            if (result.Data is not { Length: > 0 }) { Console.WriteLine("  ❌ ERROR: Data 為空"); return; }
+            if (result.Data == null) { Console.WriteLine("  ❌ ERROR: Data 為空"); return; }
 
-            var data = result.Data[0];
+            var data = result.Data;
             var trendActual = data.SalesTrendData?
                 .Where(t => t.TimePane != null)
                 .ToDictionary(t => t.TimePane!, t => t.Value)

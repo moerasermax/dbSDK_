@@ -1,4 +1,4 @@
-charter_version: "0.9.4"
+﻿charter_version: "0.10.1"
 preset: "standard"
 project_name: "dbSDK"
 domain_axioms:
@@ -9,6 +9,6 @@ enabled_roles:
   engineer: true
 parameters:
   failure-modes:
-    enable_modes: ["F1", "F2", "F3", "F4", "F5", "F6"]
+    enable_modes: ["F1", "F2", "F3", "F4", "F5"]
   audit-rights:
     level: "standard"

@@ -154,7 +154,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         // ==========================================
         // Search 5：App 銷售指標（本日）
         // ==========================================
-        public async Task<IResult<PublicModels.AppSalesMetricsResultModel[]>> GetAppSalesTodayAsync(
+        public async Task<IResult<PublicModels.AppSalesMetricsResultModel>> GetAppSalesTodayAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
@@ -169,19 +169,25 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                     DateRangeType = req.DateRangeType,
                 };
                 var internalResults = await _dal.AppSalesMetricsInfoAsync([model]);
-                return Result<PublicModels.AppSalesMetricsResultModel[]>.SetResult("成功", internalResults.ConvertToAppSalesMetricsResultModel());
+                var resultArray = internalResults.ConvertToAppSalesMetricsResultModel();
+                var result = resultArray.Length > 0 ? resultArray[0] : new PublicModels.AppSalesMetricsResultModel();
+                
+                // 套用趨勢資料補零
+                result = result.ApplyZeroPadding(req.DateRangeType);
+                
+                return Result<PublicModels.AppSalesMetricsResultModel>.SetResult("成功", result);
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(GetAppSalesTodayAsync));
-                return Result<PublicModels.AppSalesMetricsResultModel[]>.SetErrorResult(nameof(GetAppSalesTodayAsync), ex.Message);
+                return Result<PublicModels.AppSalesMetricsResultModel>.SetErrorResult(nameof(GetAppSalesTodayAsync), ex.Message);
             }
         }
 
         // ==========================================
         // Search 6：App 銷售指標（本週）
         // ==========================================
-        public async Task<IResult<PublicModels.AppSalesMetricsResultModel[]>> GetAppSalesWeekAsync(
+        public async Task<IResult<PublicModels.AppSalesMetricsResultModel>> GetAppSalesWeekAsync(
             PublicModels.OrderSearchRequest req)
         {
             try
@@ -196,12 +202,18 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                     DateRangeType = req.DateRangeType,
                 };
                 var internalResults = await _dal.AppSalesMetricsInfoAsync([model]);
-                return Result<PublicModels.AppSalesMetricsResultModel[]>.SetResult("成功", internalResults.ConvertToAppSalesMetricsResultModel());
+                var resultArray = internalResults.ConvertToAppSalesMetricsResultModel();
+                var result = resultArray.Length > 0 ? resultArray[0] : new PublicModels.AppSalesMetricsResultModel();
+                
+                // 套用趨勢資料補零
+                result = result.ApplyZeroPadding(req.DateRangeType);
+                
+                return Result<PublicModels.AppSalesMetricsResultModel>.SetResult("成功", result);
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, nameof(GetAppSalesWeekAsync));
-                return Result<PublicModels.AppSalesMetricsResultModel[]>.SetErrorResult(nameof(GetAppSalesWeekAsync), ex.Message);
+                return Result<PublicModels.AppSalesMetricsResultModel>.SetErrorResult(nameof(GetAppSalesWeekAsync), ex.Message);
             }
         }
 

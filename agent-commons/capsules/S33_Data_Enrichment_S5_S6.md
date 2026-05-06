@@ -19,9 +19,9 @@ tracking_label: P2-3
 ---
 
 ## 任務清單
-- [ ] 修改 `OrderSearchDal.AggregateHelpers` 的趨勢圖解析，對缺失的時段進行補 0 (Zero Padding)
-- [ ] 在 `ProductSalesRanking` 模型加入 `RankingNo` 屬性，並在 BLL 解析時依序填入
-- [ ] 修改 Search_5/6 BLL 回傳值，改為回傳單一 `AppSalesMetricsResultModel` 物件 (不包 Wrapper)
+- [x] 修改 `OrderSearchDal.AggregateHelpers` 的趨勢圖解析，對缺失的時段進行補 0 (Zero Padding)
+- [x] 在 `ProductSalesRanking` 模型加入 `RankingNo` 屬性，並在 BLL 解析時依序填入
+- [x] 修改 Search_5/6 BLL 回傳值，改為回傳單一 `AppSalesMetricsResultModel` 物件 (不包 Wrapper)
 
 ---
 
@@ -30,14 +30,16 @@ tracking_label: P2-3
 ### 1. 趨勢長度驗證 (Today vs Week)
 - **S5 (Today)**：執行 `dump-s5`，驗證 `jq '.salesTrendData | length'` 應為 `24`
 - **S6 (Week)**：執行 `dump-s6`，驗證 `jq '.salesTrendData | length'` 應為 `7`
+- **驗收結果**：✅ 通過 (2026-05-04)
 
 ### 2. 序號與容器驗證
 - 執行 `dump-s6`
 - 驗證根節點型態：`jq '. | type'` 應為 `"object"`
 - 驗證排行序號：`jq '.productSalesRanking[0].rankingNo'` 應為 `1`
+- **驗收結果**：✅ 通過 (2026-05-04)
 
 ---
 
 ## 技術檢核點
-- [ ] 補零邏輯需處理 Today (24 buckets) 與 Week (7 buckets) 不同場景
-- [ ] 確保 `RankingNo` 正確對應 camelCase
+- [x] 補零邏輯需處理 Today (24 buckets) 與 Week (7 buckets) 不同場景
+- [x] 確保 `RankingNo` 正確對應 camelCase

@@ -1,12 +1,26 @@
 common_memory_root: "agent-commons"
-working_stack_discipline:
-  shared:
-    draft_context: "management/DRAFT_CONTEXT.md"
-    archive: "management/history/archive"
-layout:
-  protocols: "protocols"
+shared:
   capsules: "capsules"
   handoffs: "handoffs"
-  institutional-memory: "institutional-memory"
-  state: "state"
-  roles: "roles"
+  protocols: "protocols"
+  institutional_memory:
+    - "institutional-memory/ARCHITECTURE.md"
+    - "institutional-memory/DEVELOPMENT_CHARTER.md"
+  nextwork: "nextwork.md"
+  draft_context: "DRAFT_CONTEXT.md"
+  archive: "handoffs/archive"
+roles:
+  pm:
+    sessions: "roles/pm/sessions"
+    drafts: "roles/pm/drafts"
+    reflections: "roles/pm/reflections"
+  engineer:
+    sessions: "roles/engineer/sessions"
+    drafts: "roles/engineer/drafts"
+    reflections: "roles/engineer/reflections"
+domain_axioms:
+  primary: "protocols/DBSDK.md"
+  alias: "DBSDK"
+state:
+  output_mode_file: "state/output_mode"
+  failure_mode_log: "state/failure_mode_log.md"

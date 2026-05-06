@@ -316,10 +316,10 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             // 4. 組合並回傳最終結果
             return new AggregateOrderInfoResultModel
             {
-                BuyerOverview = buyerOverviewResult?.ToArray(),
-                SellerOverview = sellerOverviewResult?.ToArray(),
-                BuyerPerformance = buyerPerformanceResult?.ToArray(),
-                SellerPerformance = sellerPerformanceResult?.ToArray(),
+                BuyerOverview = buyerOverviewResult?.FirstOrDefault(),
+                SellerOverview = sellerOverviewResult?.FirstOrDefault(),
+                BuyerPerformance = buyerPerformanceResult?.FirstOrDefault(),
+                SellerPerformance = sellerPerformanceResult?.FirstOrDefault(),
                 Took = searchResponse.Took, // v8 依然支援 Took 屬性
             };
         }
@@ -431,8 +431,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
 
             return new AppDashboardAggregateResultModel
             {
-                AppDashboard = appSellerOverviewResult?.ToArray(),
-                AppPerformance = appSellerPerformanceResult?.ToArray(),
+                AppDashboard = appSellerOverviewResult?.FirstOrDefault(),
+                AppPerformance = appSellerPerformanceResult?.FirstOrDefault(),
                 Took = searchResponse.Took,
             };
         }

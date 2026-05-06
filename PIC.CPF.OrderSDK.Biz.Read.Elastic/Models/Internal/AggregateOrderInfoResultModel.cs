@@ -5,22 +5,22 @@
         /// <summary>
         /// 買家總覽資訊-統計結果
         /// </summary>
-        public BuyerOverviewAggregateResultModel[]? BuyerOverview { get; set; } = null;
+        public BuyerOverviewAggregateResultModel? BuyerOverview { get; set; }
 
         /// <summary>
         /// 買家表現資訊-統計結果
         /// </summary>
-        public BuyerPerformanceAggregateResultModel[]? BuyerPerformance { get; set; } = null;
+        public BuyerPerformanceAggregateResultModel? BuyerPerformance { get; set; }
 
         /// <summary>
         /// 賣家總覽資訊-統計結果
         /// </summary>
-        public SellerOverviewAggregateResultModel[]? SellerOverview { get; set; } = null;
+        public SellerOverviewAggregateResultModel? SellerOverview { get; set; }
 
         /// <summary>
         /// 賣家表現資訊-統計結果
         /// </summary>
-        public SellerPerformanceAggregateResultModel[]? SellerPerformance { get; set; } = null;
+        public SellerPerformanceAggregateResultModel? SellerPerformance { get; set; }
 
         /// <summary>
         /// 查詢時間

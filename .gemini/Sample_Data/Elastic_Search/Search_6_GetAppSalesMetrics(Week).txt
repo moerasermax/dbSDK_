@@ -1,0 +1,96 @@
+In：
+{
+  "cuamCid": 528672,
+  "searchStartDate": "2026-04-27T16:00:00Z",
+  "searchEndDate": "2026-05-05T15:59:59Z",
+  "startDatePoP": "2026-04-27T16:00:00Z",
+  "endDatePoP": "2026-05-05T15:59:59Z",
+  "dateRangeType": "SetWeek"
+}
+
+
+
+Out：
+{
+  "data": {
+    "totalAmount": 8659,
+    "totalOrderCnt": 15,
+    "shipmentsCnt": 8,
+    "totalAmountPoP": 8659,
+    "totalOrderCntPoP": 15,
+    "shipmentsCntPoP": 8,
+    "salesTrendData": [
+      {
+        "timePane": "04/28",
+        "value": 0
+      },
+      {
+        "timePane": "04/29",
+        "value": 0
+      },
+      {
+        "timePane": "04/30",
+        "value": 0
+      },
+      {
+        "timePane": "05/01",
+        "value": 0
+      },
+      {
+        "timePane": "05/02",
+        "value": 0
+      },
+      {
+        "timePane": "05/03",
+        "value": 0
+      },
+      {
+        "timePane": "05/04",
+        "value": 0
+      },
+      {
+        "timePane": "05/05",
+        "value": 13499
+      }
+    ],
+    "orderTrendData": [
+      {
+        "timePane": "04/28",
+        "value": 0
+      },
+      {
+        "timePane": "04/29",
+        "value": 0
+      },
+      {
+        "timePane": "04/30",
+        "value": 0
+      },
+      {
+        "timePane": "05/01",
+        "value": 0
+      },
+      {
+        "timePane": "05/02",
+        "value": 0
+      },
+      {
+        "timePane": "05/03",
+        "value": 0
+      },
+      {
+        "timePane": "05/04",
+        "value": 0
+      },
+      {
+        "timePane": "05/05",
+        "value": 24
+      }
+    ],
+    "productSalesRanking": []
+  },
+  "code": "00",
+  "message": "成功",
+  "errorMsg": "",
+  "total": 1
+}

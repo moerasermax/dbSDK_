@@ -22,8 +22,8 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
             var result = await svc.GetAppDashboardAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
 
-            var ov   = result.Data!.appSellerOverView?[0];
-            var perf = result.Data!.appSellerPerformance?[0];
+            var ov   = result.Data!.AppSellerOverView;
+            var perf = result.Data!.AppSellerPerformance;
 
             Console.WriteLine($"  Out — OverView: NewOrder={ov?.NewOrderCnt}, Ship={ov?.ShippedCnt}, Replied={ov?.RepliedCnt}, Pickup={ov?.PickupCnt}");
             Console.WriteLine($"  Out — Perf: Sales={perf?.SalesAmount}, Qty={perf?.TotalOrderQty}");

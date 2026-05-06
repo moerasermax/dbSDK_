@@ -1,25 +1,31 @@
-﻿namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
+﻿using System.Text.Json.Serialization;
+
+namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
 {
     public class AggregateOrderInfoResultModel
     {
         /// <summary>
         /// 買家總覽資訊-統計結果
         /// </summary>
-        public BuyerOverviewAggregateResultModel[]? BuyerOverview { get; set; } = null;
+        [JsonPropertyName("buyerOverView")]
+        public BuyerOverviewAggregateResultModel? BuyerOverview { get; set; }
 
         /// <summary>
         /// 買家表現資訊-統計結果
         /// </summary>
-        public BuyerPerformanceAggregateResultModel[]? BuyerPerformance { get; set; } = null;
+        [JsonPropertyName("buyerPerformance")]
+        public BuyerPerformanceAggregateResultModel? BuyerPerformance { get; set; }
 
         /// <summary>
         /// 賣家總覽資訊-統計結果
         /// </summary>
-        public SellerOverviewAggregateResultModel[]? SellerOverview { get; set; } = null;
+        [JsonPropertyName("sellerOverView")]
+        public SellerOverviewAggregateResultModel? SellerOverview { get; set; }
 
         /// <summary>
         /// 賣家表現資訊-統計結果
         /// </summary>
-        public SellerPerformanceAggregateResultModel[]? SellerPerformance { get; set; } = null;
+        [JsonPropertyName("sellerPerformance")]
+        public SellerPerformanceAggregateResultModel? SellerPerformance { get; set; }
     }
 }

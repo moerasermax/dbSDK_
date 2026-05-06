@@ -1,0 +1,902 @@
+[
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1181" },
+    "coom_no": "CM2605050044030",
+    "cooc_no": "CC2605050077710",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "10", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.083Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單可取消",
+      "coom_seller_goods_total_amt": 138, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 138,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.087Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "測試商品", "cood_qty": 1, "cood_price": 100, "cood_discount_price": 100, "cood_receive_price": 100, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1185" },
+    "coom_no": "CM2605050044031",
+    "cooc_no": "CC2605050077711",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "10", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.090Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單買賣家訂單提問",
+      "coom_seller_goods_total_amt": 138, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 138,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.093Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "測試商品", "cood_qty": 1, "cood_price": 100, "cood_discount_price": 100, "cood_receive_price": 100, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null,
+    "c_question_m": { "seller_qa_never_reply_count": 1, "buyer_qa_never_reply_count": 1 },
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b117d" },
+    "coom_no": "CM2605050044032",
+    "cooc_no": "CC2605050077712",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "12", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.100Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單被合併",
+      "coom_seller_goods_total_amt": 337, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 337,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.103Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "無線藍牙耳機", "cood_qty": 1, "cood_price": 299, "cood_discount_price": 299, "cood_receive_price": 299, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b1174" },
+    "coom_no": "CM2605050044033",
+    "cooc_no": "CC2605050077713",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "12", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.103Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單被合併",
+      "coom_seller_goods_total_amt": 337, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 337,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.107Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "無線藍牙耳機", "cood_qty": 1, "cood_price": 299, "cood_discount_price": 299, "cood_receive_price": 299, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1189" },
+    "coom_no": "CM2605050044034",
+    "cooc_no": "CC2605050077714",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單合併", "coom_status": "10", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.107Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": "CM2605050044032,CM2605050044033",
+      "coom_seller_memo": "測試訂單合併",
+      "coom_seller_goods_total_amt": 636, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 2, "coom_rcv_total_amt": 337,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "6",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.107Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "無線藍牙耳機", "cood_qty": 2, "cood_price": 299, "cood_discount_price": 299, "cood_receive_price": 598, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b1177" },
+    "coom_no": "CM2605050044035",
+    "cooc_no": "CC2605050077715",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "1X", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.110Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單被合併取消",
+      "coom_seller_goods_total_amt": 618, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 618,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.113Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "時尚運動外套", "cood_qty": 1, "cood_price": 580, "cood_discount_price": 580, "cood_receive_price": 580, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b117a" },
+    "coom_no": "CM2605050044036",
+    "cooc_no": "CC2605050077716",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "1X", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.117Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單被合併取消",
+      "coom_seller_goods_total_amt": 618, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 618,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.117Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "時尚運動外套", "cood_qty": 1, "cood_price": 580, "cood_discount_price": 580, "cood_receive_price": 580, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1182" },
+    "coom_no": "CM2605050044037",
+    "cooc_no": "CC2605050077717",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單合併", "coom_status": "11", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.120Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": "CM2605050044035,CM2605050044036",
+      "coom_seller_memo": "測試訂單合併取消",
+      "coom_seller_goods_total_amt": 1198, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 2, "coom_rcv_total_amt": 618,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": "CN2605050050356"
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "6",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.120Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "時尚運動外套", "cood_qty": 2, "cood_price": 580, "cood_discount_price": 580, "cood_receive_price": 1160, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": {
+      "cccm_status": "3", "cccm_cancel_people": "3",
+      "cccm_confirm_datetime": { "$date": "2026-05-05T12:54:00.123Z" },
+      "cccm_create_datetime": { "$date": "2026-05-05T12:54:00.123Z" },
+      "cccm_refund_flag": "0", "cccm_erfm_no": null
+    },
+    "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1186" },
+    "coom_no": "CM2605050044038",
+    "cooc_no": "CC2605050077718",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "10", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.130Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單未付款",
+      "coom_seller_goods_total_amt": 488, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 488,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "4", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.130Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": "111111*****2222",
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": "26050013000000001",
+      "cooc_payment_note": "111111", "cooc_payment_bank_code": null,
+      "cooc_payment_dueday": { "$date": "2026-05-06T16:00:00.000Z" }
+    },
+    "c_order_d": [{ "cood_name": "保溫不鏽鋼水壺", "cood_qty": 1, "cood_price": 450, "cood_discount_price": 450, "cood_receive_price": 450, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b117e" },
+    "coom_no": "CM2605050044039",
+    "cooc_no": "CC2605050077719",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "10", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.770Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單已付款",
+      "coom_seller_goods_total_amt": 488, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 488,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "4",
+      "cooc_payment_pay_datetime": { "$date": "2026-05-05T12:54:00.770Z" },
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.770Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": "111111*****2222",
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": "26050077000000001",
+      "cooc_payment_note": "111111", "cooc_payment_bank_code": null,
+      "cooc_payment_dueday": { "$date": "2026-05-06T16:00:00.000Z" }
+    },
+    "c_order_d": [{ "cood_name": "保溫不鏽鋼水壺", "cood_qty": 1, "cood_price": 450, "cood_discount_price": 450, "cood_receive_price": 450, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b1175" },
+    "coom_no": "CM2605050044040",
+    "cooc_no": "CC2605050077720",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "10", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.773Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": true,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單取號前關轉",
+      "coom_seller_goods_total_amt": 138, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 138,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.777Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "測試商品", "cood_qty": 1, "cood_price": 100, "cood_discount_price": 100, "cood_receive_price": 100, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": null, "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b118a" },
+    "coom_no": "CM2605050044041",
+    "cooc_no": "CC2605050077721",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "11", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.777Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單取消詳情",
+      "coom_seller_goods_total_amt": 718, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 718,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": "CN2605050050357"
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.780Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "韓版休閒後背包", "cood_qty": 1, "cood_price": 680, "cood_discount_price": 680, "cood_receive_price": 680, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": {
+      "cccm_status": "3", "cccm_cancel_people": "3",
+      "cccm_confirm_datetime": { "$date": "2026-05-05T12:54:00.780Z" },
+      "cccm_create_datetime": { "$date": "2026-05-05T12:54:00.780Z" },
+      "cccm_refund_flag": "0", "cccm_erfm_no": null
+    },
+    "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b1178" },
+    "coom_no": "CM2605050044042",
+    "cooc_no": "CC2605050077722",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "11", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.787Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單退款詳情",
+      "coom_seller_goods_total_amt": 718, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 718,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": "CN2605050050358"
+    },
+    "c_order_c": {
+      "cooc_payment_type": "4",
+      "cooc_payment_pay_datetime": { "$date": "2026-05-05T12:54:00.787Z" },
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.787Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": "111111*****2222",
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": "26050078700000001",
+      "cooc_payment_note": "111111", "cooc_payment_bank_code": null,
+      "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "韓版休閒後背包", "cood_qty": 1, "cood_price": 680, "cood_discount_price": 680, "cood_receive_price": 680, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": {
+      "cccm_status": "3", "cccm_cancel_people": "3",
+      "cccm_confirm_datetime": { "$date": "2026-05-05T12:54:00.790Z" },
+      "cccm_create_datetime": { "$date": "2026-05-05T12:54:00.790Z" },
+      "cccm_refund_flag": "2", "cccm_erfm_no": "RM2605050000753"
+    },
+    "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b117b" },
+    "coom_no": "CM2605050044043",
+    "cooc_no": "CC2605050077723",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "11", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.800Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單退款填寫退款帳號",
+      "coom_seller_goods_total_amt": 738, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 2, "coom_rcv_total_amt": 738,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": "CN2605050050359"
+    },
+    "c_order_c": {
+      "cooc_payment_type": "4",
+      "cooc_payment_pay_datetime": { "$date": "2026-05-05T12:54:00.800Z" },
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.800Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": "111111*****2222",
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": "26050080000000001",
+      "cooc_payment_note": "111111", "cooc_payment_bank_code": null,
+      "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "有機綠茶禮盒", "cood_qty": 2, "cood_price": 350, "cood_discount_price": 350, "cood_receive_price": 700, "cood_image_path": null }],
+    "c_goods_item": null, "e_shipment_m": null, "c_question_m": null,
+    "c_cancel_m": {
+      "cccm_status": "3", "cccm_cancel_people": "3",
+      "cccm_confirm_datetime": { "$date": "2026-05-05T12:54:00.803Z" },
+      "cccm_create_datetime": { "$date": "2026-05-05T12:54:00.803Z" },
+      "cccm_refund_flag": "2", "cccm_erfm_no": "RM2605050000754"
+    },
+    "e_shipment_l": null, "e_shipment_s": null,
+    "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1183" },
+    "coom_no": "CM2605050044044",
+    "cooc_no": "CC2605050077724",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "20", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.810Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單備貨",
+      "coom_seller_goods_total_amt": 388, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 388,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.810Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "有機綠茶禮盒", "cood_qty": 1, "cood_price": 350, "cood_discount_price": 350, "cood_receive_price": 350, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036445", "esmm_ship_no": "L0505820",
+      "esmm_status": "01", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8200", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.823Z" } }
+    ],
+    "e_shipment_s": null, "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1187" },
+    "coom_no": "CM2605050044045",
+    "cooc_no": "CC2605050077725",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "11", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.827Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單備貨訂單取消",
+      "coom_seller_goods_total_amt": 138, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 138,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": "CN2605050050360"
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.830Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "測試商品", "cood_qty": 1, "cood_price": 100, "cood_discount_price": 100, "cood_receive_price": 100, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036446", "esmm_ship_no": "L0505833",
+      "esmm_status": "05", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8330", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null,
+    "c_cancel_m": {
+      "cccm_status": "3", "cccm_cancel_people": "3",
+      "cccm_confirm_datetime": { "$date": "2026-05-05T12:54:10.833Z" },
+      "cccm_create_datetime": { "$date": "2026-05-05T12:54:10.833Z" },
+      "cccm_refund_flag": "0", "cccm_erfm_no": null
+    },
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.833Z" } },
+      { "esml_esmm_status": "05", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.833Z" } }
+    ],
+    "e_shipment_s": null, "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b117f" },
+    "coom_no": "CM2605050044046",
+    "cooc_no": "CC2605050077726",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "30", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.833Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單備貨寄件",
+      "coom_seller_goods_total_amt": 1318, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 1318,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.837Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "智能運動手錶", "cood_qty": 1, "cood_price": 1280, "cood_discount_price": 1280, "cood_receive_price": 1280, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036447", "esmm_ship_no": "L0505837",
+      "esmm_status": "10", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8370", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.840Z" } },
+      { "esml_esmm_status": "10", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.840Z" } }
+    ],
+    "e_shipment_s": null, "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b1176" },
+    "coom_no": "CM2605050044047",
+    "cooc_no": "CC2605050077727",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "30", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.840Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單備貨寄件寄件異常",
+      "coom_seller_goods_total_amt": 1318, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 1318,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.840Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "智能運動手錶", "cood_qty": 1, "cood_price": 1280, "cood_discount_price": 1280, "cood_receive_price": 1280, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036448", "esmm_ship_no": "L0505843",
+      "esmm_status": "11", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8430", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": "1", "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.843Z" } },
+      { "esml_esmm_status": "10", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.843Z" } },
+      { "esml_esmm_status": "11", "esml_status_datetime": { "$date": "2026-05-05T12:54:15.843Z" } }
+    ],
+    "e_shipment_s": null, "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b118b" },
+    "coom_no": "CM2605050044048",
+    "cooc_no": "CC2605050077728",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "30", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.847Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單備貨寄件門市關轉",
+      "coom_seller_goods_total_amt": 928, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 928,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.847Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "多功能料理機", "cood_qty": 1, "cood_price": 890, "cood_discount_price": 890, "cood_receive_price": 890, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036449", "esmm_ship_no": "L0505847",
+      "esmm_status": "10", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8470", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.850Z" } },
+      { "esml_esmm_status": "10", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.850Z" } }
+    ],
+    "e_shipment_s": null, "e_ccdhl": null,
+    "e_cccs": {
+      "eccs_id": 122, "eccs_store_type": "01",
+      "eccs_rechoice_store_status": "0",
+      "eccs_create_datetime": { "$date": "2026-05-05T12:54:00.850Z" }
+    },
+    "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b1179" },
+    "coom_no": "CM2605050044049",
+    "cooc_no": "CC2605050077729",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "30", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.853Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單備貨寄件配達",
+      "coom_seller_goods_total_amt": 928, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 928,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.853Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "多功能料理機", "cood_qty": 1, "cood_price": 890, "cood_discount_price": 890, "cood_receive_price": 890, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036450", "esmm_ship_no": "L0505857",
+      "esmm_status": "20", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8570", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.857Z" } },
+      { "esml_esmm_status": "10", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.857Z" } },
+      { "esml_esmm_status": "20", "esml_status_datetime": { "$date": "2026-05-05T12:54:15.857Z" } }
+    ],
+    "e_shipment_s": null, "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1e90721638c87b117c" },
+    "coom_no": "CM2605050044050",
+    "cooc_no": "CC2605050077730",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "30", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.860Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null, "coom_seller_memo": "測試訂單備貨寄件配達取件",
+      "coom_seller_goods_total_amt": 138, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 138,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1",
+      "cooc_payment_pay_datetime": { "$date": "2026-05-05T12:54:20.860Z" },
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.860Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "測試商品", "cood_qty": 1, "cood_price": 100, "cood_discount_price": 100, "cood_receive_price": 100, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036451", "esmm_ship_no": "L0505860",
+      "esmm_status": "30", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8600", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.860Z" } },
+      { "esml_esmm_status": "10", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.860Z" } },
+      { "esml_esmm_status": "20", "esml_status_datetime": { "$date": "2026-05-05T12:54:15.860Z" } },
+      { "esml_esmm_status": "30", "esml_status_datetime": { "$date": "2026-05-05T12:54:20.860Z" } }
+    ],
+    "e_shipment_s": null, "e_ccdhl": null, "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1184" },
+    "coom_no": "CM2605050044051",
+    "cooc_no": "CC2605050077731",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "30", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.863Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null,
+      "coom_seller_memo": "測試訂單備貨寄件配達逾期未取件退貨退貨宅回申請",
+      "coom_seller_goods_total_amt": 558, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 558,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.863Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "防曬乳液套組", "cood_qty": 1, "cood_price": 520, "cood_discount_price": 520, "cood_receive_price": 520, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036452", "esmm_ship_no": "L0505863",
+      "esmm_status": "31", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8630", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.867Z" } },
+      { "esml_esmm_status": "10", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.867Z" } },
+      { "esml_esmm_status": "20", "esml_status_datetime": { "$date": "2026-05-05T12:54:15.867Z" } },
+      { "esml_esmm_status": "31", "esml_status_datetime": { "$date": "2026-05-05T12:54:20.867Z" } },
+      { "esml_esmm_status": "D2", "esml_status_datetime": { "$date": "2026-05-05T12:54:25.867Z" } }
+    ],
+    "e_shipment_s": null,
+    "e_ccdhl": { "ecdh_esmm_no": "SM2605050036452", "ecdh_process_code": "SW" },
+    "e_cccs": null, "e_rtn_dhl_apply": null
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1188" },
+    "coom_no": "CM2605050044052",
+    "cooc_no": "CC2605050077732",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "30", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.870Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null,
+      "coom_seller_memo": "測試訂單備貨寄件配達逾期未取件退貨退貨宅回詳情",
+      "coom_seller_goods_total_amt": 558, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 558,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.870Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "防曬乳液套組", "cood_qty": 1, "cood_price": 520, "cood_discount_price": 520, "cood_receive_price": 520, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036453", "esmm_ship_no": "L0505870",
+      "esmm_status": "31", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8700", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.870Z" } },
+      { "esml_esmm_status": "10", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.870Z" } },
+      { "esml_esmm_status": "20", "esml_status_datetime": { "$date": "2026-05-05T12:54:15.870Z" } },
+      { "esml_esmm_status": "31", "esml_status_datetime": { "$date": "2026-05-05T12:54:20.870Z" } },
+      { "esml_esmm_status": "D2", "esml_status_datetime": { "$date": "2026-05-05T12:54:25.870Z" } }
+    ],
+    "e_shipment_s": null,
+    "e_ccdhl": { "ecdh_esmm_no": "SM2605050036453", "ecdh_process_code": "SW" },
+    "e_cccs": null,
+    "e_rtn_dhl_apply": { "erda_apply_status": "AR" }
+  },
+  {
+    "_id": { "$oid": "69f9ea1f90721638c87b1180" },
+    "coom_no": "CM2605050044053",
+    "cooc_no": "CC2605050077733",
+    "c_order_m": {
+      "coom_order_date": { "$date": "2026-05-04T16:00:00.000Z" },
+      "coom_name": "訂單匯入", "coom_status": "30", "coom_temp_type": "01",
+      "coom_create_datetime": { "$date": "2026-05-05T12:54:00.877Z" },
+      "coom_cuam_cid": 528672, "coom_rechoice_flag": false,
+      "coom_merge_list_coom_no": null,
+      "coom_seller_memo": "測試訂單備貨寄件配達逾期未取件退貨已拋棄",
+      "coom_seller_goods_total_amt": 798, "coom_goods_item_num": 1,
+      "coom_goods_total_num": 1, "coom_rcv_total_amt": 798,
+      "coom_cgdm_id": null, "coom_ship_print_flag": null, "coom_cccm_no": null
+    },
+    "c_order_c": {
+      "cooc_payment_type": "1", "cooc_payment_pay_datetime": null,
+      "cooc_deliver_method": "1", "cooc_ord_channel_kind": "4",
+      "cooc_create_datetime": { "$date": "2026-05-05T12:54:00.880Z" },
+      "cooc_mem_sid": 528672, "cooc_payment_code": null,
+      "cooc_ord_name_enc": "kYVa/0OXwpJW9nPGlpRkjg==",
+      "cooc_rcv_name_enc": "cwZmSuYsdvYY6LozbmRgDQ==",
+      "cooc_rcv_mobile_enc": "cWGJ4rSPcMM5rk22koYkhg==",
+      "cooc_payment_trade_no": null, "cooc_payment_note": null,
+      "cooc_payment_bank_code": null, "cooc_payment_dueday": null
+    },
+    "c_order_d": [{ "cood_name": "氣墊粉餅組合", "cood_qty": 1, "cood_price": 760, "cood_discount_price": 760, "cood_receive_price": 760, "cood_image_path": null }],
+    "c_goods_item": null,
+    "e_shipment_m": {
+      "esmm_no": "SM2605050036454", "esmm_ship_no": "L0505877",
+      "esmm_status": "31", "esmm_ship_method": "1",
+      "esmm_ship_no_auth_code": "8770", "esmm_ship_no_a": "7M0",
+      "esmm_leave_store_date_b": null, "esmm_ibon_app_flag": "0",
+      "esmm_odd_reason": null, "esmm_confirm_extpay_datetime": null
+    },
+    "c_question_m": null, "c_cancel_m": null,
+    "e_shipment_l": [
+      { "esml_esmm_status": "01", "esml_status_datetime": { "$date": "2026-05-05T12:54:05.880Z" } },
+      { "esml_esmm_status": "10", "esml_status_datetime": { "$date": "2026-05-05T12:54:10.880Z" } },
+      { "esml_esmm_status": "20", "esml_status_datetime": { "$date": "2026-05-05T12:54:15.880Z" } },
+      { "esml_esmm_status": "31", "esml_status_datetime": { "$date": "2026-05-05T12:54:20.880Z" } },
+      { "esml_esmm_status": "D2", "esml_status_datetime": { "$date": "2026-05-05T12:54:25.880Z" } },
+      { "esml_esmm_status": "D4", "esml_status_datetime": { "$date": "2026-05-05T12:54:30.880Z" } }
+    ],
+    "e_shipment_s": null,
+    "e_ccdhl": { "ecdh_esmm_no": "SM2605050036454", "ecdh_process_code": "SD" },
+    "e_cccs": null, "e_rtn_dhl_apply": null
+  }
+]

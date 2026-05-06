@@ -38,8 +38,8 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
 
             var data = result.Data!;
-            var bp   = data.BuyerPerformance?[0];
-            var sp   = data.SellerPerformance?[0];
+            var bp   = data.BuyerPerformance;
+            var sp   = data.SellerPerformance;
 
             Console.WriteLine($"  Out — BuyerPerformance: orderCount={bp?.OrderCount}, pickupCount={bp?.PickupCount}");
             Console.WriteLine($"  Out — SellerPerformance: orderCount={sp?.OrderCount}, sendCount={sp?.SendCount}, salesAmt={sp?.SalesAmt}");

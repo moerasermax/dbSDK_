@@ -1,0 +1,18 @@
+name = "checkpoints"
+description = "Manage project checkpoints (save, status, load, config, deactivate_all_active)."
+
+prompt = """
+我現在以 PM (Gemini) 身份執行 /checkpoints 指令。
+
+依據 ~/.agentcharter/tools/vendor/commons/checkpoints_handler.sh 執行：
+1. Action: {{arg1}} (預設 status)
+2. Sub-action: {{arg2}} (若適用)
+
+操作說明：
+- save: 將 DRAFT_CONTEXT 同步至 handoffs 並執行 git commit。
+- status: 查看目前 Draft 狀態與最新 HANDOFF 編號。
+- deactivate_all_active: 將所有 ACTIVE 角色退回 PROVISIONAL 並提交 git。
+
+執行結果：
+{{stdout}}
+"""
