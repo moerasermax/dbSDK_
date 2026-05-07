@@ -25,7 +25,7 @@ namespace CPF.Sandbox.IntegrationTests.PipelineSeeders
 
         public static async Task SeedAsync(
             string esEndpoint = "http://localhost:9200",
-            string mongoUri = "mongodb://localhost:27017")
+            string mongoUri = "mongodb://root:example@localhost:27017")
         {
             Console.WriteLine("\n========================================");
             Console.WriteLine("=== [S37] Golden Data 數據導入 ===");

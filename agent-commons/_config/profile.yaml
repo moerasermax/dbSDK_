@@ -9,6 +9,6 @@ enabled_roles:
   engineer: true
 parameters:
   failure-modes:
-    enable_modes: ["F1", "F2", "F3", "F4", "F5"]
+    enable_modes: ["F1", "F2", "F3", "F4", "F5", "F6"]
   audit-rights:
     level: "standard"
