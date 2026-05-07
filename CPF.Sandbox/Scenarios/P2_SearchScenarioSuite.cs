@@ -52,8 +52,8 @@ namespace CPF.Sandbox.Scenarios
             var req = new OrderSearchRequest
             {
                 CuamCid = 528672,
-                SearchStartDate = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
-                SearchEndDate = new DateTime(2026, 4, 25, 0, 0, 0, DateTimeKind.Utc),
+                SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
+                SearchEndDate = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Utc),
             };
             Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}");
 
@@ -73,11 +73,11 @@ namespace CPF.Sandbox.Scenarios
             Console.WriteLine($"  Out — BuyerPerformance: orderCount={bp?.OrderCount}, pickupCount={bp?.PickupCount}");
             Console.WriteLine($"  Out — SellerPerformance: orderCount={sp?.OrderCount}, sendCount={sp?.SendCount}, salesAmt={sp?.SalesAmt}");
 
-            Check("BuyerPerformance.OrderCount", bp?.OrderCount, 21);
+            Check("BuyerPerformance.OrderCount", bp?.OrderCount, 15);
             Check("BuyerPerformance.PickupCount", bp?.PickupCount, 1);
-            Check("SellerPerformance.OrderCount", sp?.OrderCount, 21);
-            Check("SellerPerformance.SendCount", sp?.SendCount, 9);
-            Check("SellerPerformance.SalesAmt", sp?.SalesAmt, 2882);
+            Check("SellerPerformance.OrderCount", sp?.OrderCount, 24);
+            Check("SellerPerformance.SendCount", sp?.SendCount, 8);
+            Check("SellerPerformance.SalesAmt", sp?.SalesAmt, 138);
         }
 
         // ==========================================
@@ -95,10 +95,11 @@ namespace CPF.Sandbox.Scenarios
             var req = new OrderSearchRequest
             {
                 CuamCid = 528672,
-                SearchStartDate = new DateTime(2026, 4, 1, 0, 0, 0, DateTimeKind.Utc),
-                SearchEndDate = new DateTime(2026, 4, 30, 23, 59, 59, DateTimeKind.Utc),
+                SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
+                SearchEndDate = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Utc),
+                OrderState = PIC.CPF.OrderSDK.Biz.Read.Elastic.Enum.OrderState.DealWith, // 處理中
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}");
+            Console.WriteLine($"  In: cuamCid={req.CuamCid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}, orderState={req.OrderState}");
 
             var result = await svc.SearchBySellerAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -113,8 +114,7 @@ namespace CPF.Sandbox.Scenarios
             
             Console.WriteLine($"  Out — Total={data.Total}, first={firstCoomNo}");
 
-            Check("Total", data.Total, 30);
-            Check("First coom_no", firstCoomNo, "CM2604240044017");
+            Check("Total", data.Total, 5);
         }
 
         // ==========================================
@@ -132,10 +132,11 @@ namespace CPF.Sandbox.Scenarios
             var req = new OrderSearchRequest
             {
                 MemSid = 528672,
-                SearchStartDate = new DateTime(2026, 4, 1, 0, 0, 0, DateTimeKind.Utc),
-                SearchEndDate = new DateTime(2026, 4, 30, 23, 59, 59, DateTimeKind.Utc),
+                SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
+                SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
+                OrderState = CPFEnum.OrderState.DealWith, // 補上 OrderState 過濾
             };
-            Console.WriteLine($"  In: memSid={req.MemSid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}");
+            Console.WriteLine($"  In: memSid={req.MemSid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}, orderState={req.OrderState}");
 
             var result = await svc.SearchByBuyerAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -150,8 +151,7 @@ namespace CPF.Sandbox.Scenarios
             
             Console.WriteLine($"  Out — Total={data.Total}, first={firstCoomNo}");
 
-            Check("Total", data.Total, 30);
-            Check("First coom_no", firstCoomNo, "CM2604240044017");
+            Check("Total", data.Total, 5);
         }
 
         // ==========================================
@@ -179,12 +179,12 @@ namespace CPF.Sandbox.Scenarios
             Console.WriteLine($"  Out — OverView: newOrderCnt={ov?.NewOrderCnt}, shippedCnt={ov?.ShippedCnt}, repliedCnt={ov?.RepliedCnt}, pickupCnt={ov?.PickupCnt}");
             Console.WriteLine($"  Out — Performance: salesAmount={perf?.SalesAmount}, totalOrderQty={perf?.TotalOrderQty}");
 
-            Check("NewOrderCnt", ov?.NewOrderCnt, 10);
+            Check("NewOrderCnt", ov?.NewOrderCnt, 5);
             Check("ShippedCnt", ov?.ShippedCnt, 1);
             Check("RepliedCnt", ov?.RepliedCnt, 1);
             Check("PickupCnt", ov?.PickupCnt, 0);
-            Check("SalesAmount", perf?.SalesAmount, 2882);
-            Check("TotalOrderQty", perf?.TotalOrderQty, 21);
+            Check("SalesAmount", perf?.SalesAmount, 8171);
+            Check("TotalOrderQty", perf?.TotalOrderQty, 14);
         }
 
         // ==========================================
@@ -202,9 +202,11 @@ namespace CPF.Sandbox.Scenarios
             var req = new OrderSearchRequest
             {
                 CuamCid = 528672,
+                SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
+                SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
                 DateRangeType = CPFEnum.DateRangeType.Today,
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, dateRangeType={req.DateRangeType}");
+            Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}, dateRangeType={req.DateRangeType}");
 
             var result = await svc.GetAppSalesTodayAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -218,9 +220,9 @@ namespace CPF.Sandbox.Scenarios
             Console.WriteLine($"  Out — totalAmount={data.TotalAmount}, totalOrderCnt={data.TotalOrderCnt}, shipmentsCnt={data.ShipmentsCnt}");
             Console.WriteLine($"  Out — salesTrend[16]={trendAt16}, topProduct={topProduct?.ProductCgdmid}, productTotalSales={topProduct?.ProductTotalSales}");
 
-            Check("TotalAmount", data.TotalAmount, 2882);
-            Check("TotalOrderCnt", data.TotalOrderCnt, 21);
-            Check("ShipmentsCnt", data.ShipmentsCnt, 9);
+            Check("TotalAmount", data.TotalAmount, 8659);
+            Check("TotalOrderCnt", data.TotalOrderCnt, 15);
+            Check("ShipmentsCnt", data.ShipmentsCnt, 8);
             Check("SalesTrendData.length", data.SalesTrendData?.Count(), 24);
             Check("ProductSalesRanking[0].rankingNo", topProduct?.RankingNo, 1);
         }

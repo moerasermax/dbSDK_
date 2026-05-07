@@ -133,10 +133,20 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             return aggs => aggs.Add(name, agg => agg
                 .Filter(OrderInfoQuery(query))
                 .Aggregations(childAggs => childAggs
+                    // [S39] SellerPerformance.OrderCount: 不套用 PurchaseOrderQuery，改用 MatchAll 統計全量
                     .Add($"{name}_{SP_OrderCount}", f => f
-                        .Filter(PurchaseOrderQuery())
+                        .Filter(q => q.MatchAll())
                         .Aggregations(sa => sa
                             .Add($"{name}_{SP_SalesAmt}", sum => sum
+                                .Sum(s => s.Field(o => o.CoomRcvTotalAmt))
+                            )
+                        )
+                    )
+                    // [S39] SellerPerformance.SalesAmt: 套用 OrderStateFinishQuery 只計算已完成訂單
+                    .Add($"{name}_{SP_SalesAmt}_Finished", f => f
+                        .Filter(OrderStateFinishQuery())
+                        .Aggregations(sa => sa
+                            .Add($"{name}_{SP_SalesAmt}_Sum", sum => sum
                                 .Sum(s => s.Field(o => o.CoomRcvTotalAmt))
                             )
                         )
@@ -356,12 +366,21 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             if (!aggs.TryGetValue(name, out var outerAgg) || outerAgg is not FilterAggregate outer || outer.Aggregations == null)
                 return null;
             var sub = outer.Aggregations;
+            
+            // [S39] SP_OrderCount: MatchAll (全量統計)
             sub.TryGetValue($"{name}_{SP_OrderCount}", out var orderAgg);
             var orderFilter = orderAgg as FilterAggregate;
+            
+            // [S39] SP_SalesAmt_Finished: 只計算已完成訂單 (OrderStateFinishQuery)
+            sub.TryGetValue($"{name}_{SP_SalesAmt}_Finished", out var salesAgg);
+            var salesFilter = salesAgg as FilterAggregate;
+            
             return new SellerPerformanceAggregateResultModel
             {
+                // OrderCount: 使用 MatchAll 統計全量 (含取消單)
                 OrderCount = (int)(orderFilter?.DocCount ?? 0),
-                SalesAmt = GetNestedSum(orderFilter?.Aggregations, $"{name}_{SP_SalesAmt}"),
+                // SalesAmt: 使用 OrderStateFinishQuery 只計算已完成訂單
+                SalesAmt = GetNestedSum(salesFilter?.Aggregations, $"{name}_{SP_SalesAmt}_Sum"),
                 SendCount = GetFilterCount(sub, $"{name}_{SP_SendCount}"),
             };
         }
