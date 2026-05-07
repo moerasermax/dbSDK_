@@ -10,7 +10,7 @@ argument-hint: "(無參數)"
 > **設計原則**：把「會被對話稀釋的規範」一次注入。執行過程不省略 — init 期間自動視同 verbose 模式，完成後依模式狀態檔回到原模式。
 >
 > **AI Vendor**：Claude Code (Anthropic)
-> **Charter**：AgentCharter v0.9.0（依 `~/.agentcharter/`）
+> **Charter**：AgentCharter v0.10.1（依 `agent-commons/_config/profile.yaml` 宣告版本；framework 實裝位置 `~/.agentcharter/`）
 > **專案記憶根目錄**：`agent-commons/`
 
 ---
@@ -140,7 +140,7 @@ Read agent-commons/state/failure_mode_log.md
 ```
 ✅ engineer-init 完成
 - 領域公理：DBSDK v<版本>（六條鐵律）已載入
-- 通用條款：AgentCharter v0.9.0 已載入（standard preset）
+- 通用條款：AgentCharter v0.10.1 已載入（standard preset）
 - 模式：<eco|verbose>
 - 最近 HANDOFF：HANDOFF_<N>.md（若無則標記「無 HANDOFF」）
 - 抽驗模式：<正常 | 強化中（理由：...）>
@@ -157,4 +157,5 @@ Engineer 值機完成，待派任務。
 
 ## 變更歷史
 
+- **2026-05-07 v1.1** — 重新自我具象化（Claude Code self-instantiation 第 2 輪）。觸發：framework 升至 v0.10.4 / 專案 profile 升至 v0.10.1（v0.10.1 加 §3.3.2 step 0.5 charter version 比對 + 主動通知）。Charter 引用版本 v0.9.0 → v0.10.1；slash command 引用紀律仍採 `~/.agentcharter/` 相對 user home（無變動）。本輪 step 5 doctor schema 驗證 0 errors、step 6 簽名 PROVISIONAL（不寫 Sign-in Log、等 user explicit 授權）。
 - **2026-05-01 v1.0** — 初版，依 AgentCharter v0.9.0 `~/.agentcharter/core/init-template.md §3.3.2` 自我具象化生成（Claude Code self-instantiation）。實裝 step 0（v0.9.0 讀過去違反紀錄）+ step 5 doctor schema 驗證（v0.5.10 強制驗證點）+ PROVISIONAL/ACTIVE 二態紀律（v0.7.0）+ slash command 引用紀律（禁寫死絕對路徑，採 `~/.agentcharter/` 相對 user home + `agent-commons/` 相對採用方資產）。

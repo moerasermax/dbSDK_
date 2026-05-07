@@ -87,7 +87,7 @@ namespace CPF.Sandbox.Scenarios
         /// [S24] Search 2 - SearchBySeller
         /// 驗證賣家視角訂單搜尋與排序邏輯
         /// </summary>
-        public static async Task RunSearch2Async()
+        public static async Task RunSearch2Async(bool verbose = false)
         {
             PrintHeader("S24: Search 2 — SearchBySeller");
 
@@ -105,13 +105,15 @@ namespace CPF.Sandbox.Scenarios
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
 
             var data = result.Data!;
-            var firstOrder = data.OrderInfos?.FirstOrDefault() ?? default;
-            string? firstCoomNo = null;
-            if (firstOrder.ValueKind != JsonValueKind.Null && firstOrder.TryGetProperty("coom_no", out var coomNoProp))
+            var firstOrder = data.OrderInfos?.FirstOrDefault();
+            string? firstCoomNo = firstOrder?.COrderM?.CoomNo;
+
+            if (verbose)
             {
-                firstCoomNo = coomNoProp.GetString();
+                var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+                Console.WriteLine(json);
             }
-            
+
             Console.WriteLine($"  Out — Total={data.Total}, first={firstCoomNo}");
 
             Check("Total", data.Total, 5);
@@ -124,7 +126,7 @@ namespace CPF.Sandbox.Scenarios
         /// [S25] Search 3 - SearchByBuyer
         /// 驗證買家視角訂單搜尋與排序邏輯
         /// </summary>
-        public static async Task RunSearch3Async()
+        public static async Task RunSearch3Async(bool verbose = false)
         {
             PrintHeader("S25: Search 3 — SearchByBuyer");
 
@@ -142,13 +144,15 @@ namespace CPF.Sandbox.Scenarios
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
 
             var data = result.Data!;
-            var firstOrder = data.OrderInfos?.FirstOrDefault() ?? default;
-            string? firstCoomNo = null;
-            if (firstOrder.ValueKind != JsonValueKind.Null && firstOrder.TryGetProperty("coom_no", out var coomNoProp))
+            var firstOrder = data.OrderInfos?.FirstOrDefault();
+            string? firstCoomNo = firstOrder?.COrderM?.CoomNo;
+
+            if (verbose)
             {
-                firstCoomNo = coomNoProp.GetString();
+                var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+                Console.WriteLine(json);
             }
-            
+
             Console.WriteLine($"  Out — Total={data.Total}, first={firstCoomNo}");
 
             Check("Total", data.Total, 5);

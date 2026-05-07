@@ -42,7 +42,7 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
 
             var data = result.Data!;
             var firstCoomNo = data.OrderInfos?.Length > 0
-                ? data.OrderInfos[0].GetProperty("coom_no").GetString()
+                ? data.OrderInfos[0].COrderM?.CoomNo
                 : null;
 
             Console.WriteLine($"  Out — Total={data.Total}, first={firstCoomNo}");

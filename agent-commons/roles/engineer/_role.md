@@ -1,11 +1,13 @@
 # Role: Engineer
 
-- **Spec**: AgentCharter roles/engineer/_spec.md
-- **AI Vendor**: Kiro (MiniMax M2.5)
+- **Spec**: AgentCharter `roles/engineer/_spec.md`
+- **AI 實作版**: AgentCharter `roles/engineer/claude-code.md`
+- **AI Vendor**: Claude Code (Anthropic)
 - **Status**: PROVISIONAL
-- **Self-Instantiation**: 2026-05-04 - MiniMax M2.5 doctor schema 0 errors, E605 fix (removed F6), PROVISIONAL → ACTIVE
-- **Session**: Signed out by User request (2026-05-04) - Awaiting next Engineer.
-- **Sign-in**: 2026-05-04 - User explicit authorization "那請你先登入吧" → ACTIVE
+- **Self-Instantiation**: 2026-05-07 - Claude Code (Anthropic) re-self-instantiation, charter v0.10.1, doctor schema 0 errors (mode B minimal — §3.1/§3.3/§3.5/§3.7/§3.9/§3.11 全 PASS；E1103 經 user 授權補完 2026-05-04 reflection violations: [])
+- **Session**: 2026-05-07 - Signed out by user explicit「請登出」. Awaiting next Engineer.
+- **Sign-in**: 2026-05-07 - User explicit authorization「請登入」→ ACTIVE → 2026-05-07 sign-out.
+- **Prior Sign-in History**: 2026-05-06 sign-out (framework upgrade); 2026-05-04 Kiro ACTIVE; 2026-05-01 Claude Code (Anthropic) ACTIVE
 
 ---
 
@@ -17,6 +19,9 @@
 | 2026-05-01 | Claude Code (Anthropic) | Self-instantiation via /engineer-init, PROVISIONAL |
 | 2026-05-01 | Claude Code (Anthropic) | User explicit authorization → ACTIVE |
 | 2026-05-04 | Kiro (MiniMax M2.5) | Self-instantiation via /engineer-init, PROVISIONAL → ACTIVE |
+| 2026-05-07 | Claude Code (Anthropic) | Self-instantiation re-run via /engineer-init (charter framework v0.10.4 / project profile v0.10.1), doctor schema 0 errors (mode B minimal), E1103 fix (補完 2026-05-04 reflection violations: []), PROVISIONAL — pending user explicit authorization to ACTIVE |
+| 2026-05-07 | Claude Code (Anthropic) | User explicit authorization「請登入」→ ACTIVE; ready for S40 (公用模型重構, NextWork NEXT) |
+| 2026-05-07 | Claude Code (Anthropic) | S40 completed (CLOSED, capsule + dump shape + Casing all PASS); user explicit「請登出」→ PROVISIONAL. Session ended. |
 
 ---
 
@@ -24,6 +29,8 @@
 
 | Date | Event |
 |------|-------|
+| 2026-05-07 | Sign-out: User explicit「請登出」. S40 capsule CLOSED (4/4 PASS); PM-side F1 ×5 命中本 session 全經退稿循環補正完成 (capsule 狀態真升 CLOSED + PM _role.md 回退 PROVISIONAL); 強化抽驗模式跨 session 延續 (依 escalation §5). |
+| 2026-05-07 | Sign-in: User explicit authorization「請登入」→ ACTIVE. Charter v0.10.1, doctor schema 0 errors (mode B minimal), HANDOFF_8 read, S40 公用模型重構為 NextWork NEXT, 強化抽驗模式 against PM (累積 F3 同類偏差 ≥3 次 + F2-20260506-01 待處理). |
 | 2026-05-06 | Sign-out: User request: Revert all roles to PROVISIONAL during framework upgrade. |
 | 2026-05-04 | Sign-in: User explicit authorization "那請你先登入吧" → ACTIVE |
 | 2026-05-04 | Sign-out: User explicit request to log out Claude. Status reverted to PROVISIONAL. Session terminated. |

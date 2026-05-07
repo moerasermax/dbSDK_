@@ -61,10 +61,10 @@ switch (mode)
         await P2_SearchScenarioSuite.RunSearch1Async(verbose: true);
         break;
     case "dump-s2":
-        await P2_SearchScenarioSuite.RunSearch2Async();
+        await P2_SearchScenarioSuite.RunSearch2Async(verbose: true);
         break;
     case "dump-s3":
-        await P2_SearchScenarioSuite.RunSearch3Async();
+        await P2_SearchScenarioSuite.RunSearch3Async(verbose: true);
         break;
     case "dump-s4":
         await P2_SearchScenarioSuite.RunSearch4Async();

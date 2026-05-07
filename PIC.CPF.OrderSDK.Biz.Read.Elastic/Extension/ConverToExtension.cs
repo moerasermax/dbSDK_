@@ -7,6 +7,7 @@ using PublicModels = PIC.CPF.OrderSDK.Biz.Read.Elastic.Models;
 using InternalModels = PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal;
 
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Enum;
+using System.Text.Json;
 
 namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
 {
@@ -127,12 +128,132 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
 
         internal static PublicModels.SearchOrderInfoResultModel ConvertToSearchOrderInfoResultModel(this InternalModels.SearchOrderInfoResultModel model)
         {
+            var orderInfos = model.Documents
+                .Select(ConvertToSearchOrderInfoDataModel)
+                .Where(d => d is not null)
+                .Select(d => d!)
+                .ToArray();
+
             return new PublicModels.SearchOrderInfoResultModel
             {
-                OrderInfos = model.Documents,
+                OrderInfos = orderInfos.Length > 0 ? orderInfos : null,
                 Total = model.Total,
             };
         }
+
+        private static PublicModels.SearchOrderInfoDataModel? ConvertToSearchOrderInfoDataModel(JsonElement je)
+        {
+            if (je.ValueKind == JsonValueKind.Null || je.ValueKind == JsonValueKind.Undefined)
+                return null;
+
+            InternalModels.OrderDocument? doc;
+            try
+            {
+                doc = JsonSerializer.Deserialize<InternalModels.OrderDocument>(je.GetRawText());
+            }
+            catch (JsonException)
+            {
+                return null;
+            }
+            if (doc is null) return null;
+
+            return new PublicModels.SearchOrderInfoDataModel
+            {
+                COrderM = MapOrderMaster(doc),
+                COrderC = MapOrderCart(doc),
+                COrderD = MapOrderItems(doc),
+                CGoodsItem = new PublicModels.GoodsItemModel(),
+                EShipmentM = MapShipmentMaster(doc),
+                CQuestionM = MapQuestionMaster(doc),
+                CCancelM = new PublicModels.CancelMasterModel(),
+                EShipmentL = null,
+                EShipmentS = null,
+                ECCDHL = new PublicModels.CCDHLModel(),
+                ECCCS = new PublicModels.CCCSModel(),
+                ERtnDHLApply = new PublicModels.RtnDHLApplyModel(),
+            };
+        }
+
+        private static PublicModels.OrderMasterModel MapOrderMaster(InternalModels.OrderDocument doc) => new()
+        {
+            CoomNo = doc.CoomNo,
+            CoomOrderDate = null,
+            CoomName = doc.CoomName,
+            CoomStatus = doc.CoomStatus,
+            CoomTempType = doc.CoomTempType,
+            CoomCreateDatetime = doc.CoomCreateDatetime,
+            CoomCuamCid = doc.CoomCuamCid,
+            CoomReChoiceFlag = null,
+            CoomMergeListCoomNo = null,
+            CoomSellerMemo = null,
+            CoomSellerGoodsTotalAmt = null,
+            CoomGoodsItemNum = null,
+            CoomGoodsTotalNum = null,
+            CoomRcvTotalAmt = doc.CoomRcvTotalAmt,
+            CoomCgdmId = null,
+            CoomShipPrintFlag = null,
+            CoomCccmNo = null,
+        };
+
+        private static PublicModels.OrderCartModel MapOrderCart(InternalModels.OrderDocument doc) => new()
+        {
+            CoocNo = doc.CoocNo,
+            CoocPaymentType = doc.CoocPaymentType,
+            CoocPaymentPayDatetime = doc.CoocPaymentPayDatetime,
+            CoocDeliverMethod = doc.CoocDeliverMethod,
+            CoocOrdChannelKind = doc.CoocOrdChannelKind,
+            CoocCreateDatetime = null,
+            CoocMemSid = doc.CoocMemSid,
+            CoocPaymentCode = null,
+            CoocOrdNameEnc = null,
+            CoocRcvNameEnc = null,
+            CoocRcvMobileEnc = null,
+            CoocPaymentTradeNo = null,
+            CoocPaymentNote = null,
+            CoocPaymentBankCode = null,
+            CoocPaymentDueday = null,
+        };
+
+        private static PublicModels.OrderItemModel[]? MapOrderItems(InternalModels.OrderDocument doc)
+        {
+            if (doc.CoodItems is { Length: > 0 } items)
+            {
+                return items.Select(ci => new PublicModels.OrderItemModel
+                {
+                    CoodName = ci.CoodName,
+                    CoodQty = ci.CoodQty,
+                    CoodOriginalPrice = null,
+                    CoodDiscountPrice = null,
+                    CoodReceivePrice = null,
+                    CoodImagePath = ci.CoodImagePath,
+                }).ToArray();
+            }
+            if (doc.CoodNames is { Length: > 0 } names)
+            {
+                return names.Select(n => new PublicModels.OrderItemModel { CoodName = n }).ToArray();
+            }
+            return null;
+        }
+
+        private static PublicModels.ShipmentMasterModel MapShipmentMaster(InternalModels.OrderDocument doc) => new()
+        {
+            EsmmNo = null,
+            EsmmShipNo = doc.EsmmShipNo,
+            EsmmStatus = doc.EsmmStatus,
+            EsmmShipMethod = null,
+            EsmmShipNoAuthCode = null,
+            EsmmShipNoA = null,
+            EsmmLeaveStoreDateB = doc.EsmmLeaveStoreDateB,
+            EsmmIbonAppFlag = null,
+            EsmmOddReason = null,
+            EsmmConfirmExtpayDatetime = null,
+        };
+
+        private static PublicModels.QuestionMasterModel MapQuestionMaster(InternalModels.OrderDocument doc) => new()
+        {
+            SellerQaNeverReplyCount = doc.SellerQaNeverReplyCount,
+            BuyerQaNeverReplyCount = doc.BuyerQaNeverReplyCount,
+        };
         #region ESAPP
         // ==========================================
         // Flow 3: App 統計相關轉換
