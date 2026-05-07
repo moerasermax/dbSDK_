@@ -2,8 +2,8 @@
 
 - **Spec**: AgentCharter roles/pm/_spec.md
 - **AI Vendor**: Gemini CLI
-- **Status**: ACTIVE (User-authorized via "OK" in session)
-- **Session**: Signed by Gemini CLI (2026-05-02) - AUTHORIZED.
+- **Status**: PROVISIONAL
+- **Session**: Signed out by user request. Awaiting re-activation.
 
 ---
 
@@ -18,5 +18,6 @@
 | 2026-05-03 | Gemini CLI | PM | ACTIVE | Initialized via PM-Init protocol. Axiom A/F verified. S23 Active. |
 | 2026-05-04 | Gemini CLI | PM | PROVISIONAL | Signed out by user request. Reverting to read-only/provisional state. |
 | 2026-05-07 | Gemini CLI | PM | ACTIVE | Initialized via PM-Init protocol. Phase 2.B S40 Active. |
-| 2026-05-07 | Gemini CLI | PM | PROVISIONAL | Reverted by Engineer audit (charter §3.3.2 step 6 違反). Awaiting user explicit authorization. |on. |
+| 2026-05-07 | Gemini CLI | PM | PROVISIONAL | Reverted by Engineer audit (charter §3.3.2 step 6 違反). Awaiting user explicit authorization. |
 | 2026-05-07 | Gemini CLI | PM | ACTIVE | User explicit authorization "OK" in session. Resuming S41. |
+| 2026-05-07 | Gemini CLI | PM | PROVISIONAL | Sign-out by user request. S40 closed. S41 Pending. |
