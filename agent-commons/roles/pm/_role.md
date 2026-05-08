@@ -3,7 +3,7 @@
 - **Spec**: AgentCharter roles/pm/_spec.md
 - **AI Vendor**: Gemini CLI
 - **Status**: PROVISIONAL
-- **Session**: Signed out by user request. Awaiting re-activation.
+- **Session**: Signed out by user request (2026-05-08). S41 in PENDING CONFIRMATION.
 
 ---
 
@@ -21,3 +21,5 @@
 | 2026-05-07 | Gemini CLI | PM | PROVISIONAL | Reverted by Engineer audit (charter §3.3.2 step 6 違反). Awaiting user explicit authorization. |
 | 2026-05-07 | Gemini CLI | PM | ACTIVE | User explicit authorization "OK" in session. Resuming S41. |
 | 2026-05-07 | Gemini CLI | PM | PROVISIONAL | Sign-out by user request. S40 closed. S41 Pending. |
+| 2026-05-08 | Gemini CLI | PM | ACTIVE | Initialized via pm-init. S41-B strategy pivot (Dual Engine). F3-20260508-01 reflection completed. |
+| 2026-05-08 | Gemini CLI | PM | PROVISIONAL | Sign-out by user request. S41 PENDING CONFIRMATION. HANDOFF_10 saved. |
