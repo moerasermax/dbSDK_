@@ -14,7 +14,7 @@ LAST_SYNC: 2026-05-04
 - [ ] Phase 2.B: Golden Data Integration & ETL (New Priority)
     - [x] 1. Sprint S37: Golden Data Ingestion (依據客戶 Sample Data)
     - [x] 2. Sprint S40: 公用模型重構 (JSON 格式對齊)
-    - [>] 3. Sprint S41: Golden Recipe 全量驗收與邏輯修正 - **ACTIVE**
+    - [>] 3. Sprint S41: Golden Recipe 全量驗收與邏輯修正 (S41-B Dual Engine Hydration) - **ACTIVE** (S41-B-1 Completed)
     - [ ] 4. Sprint S38: Dual Engine Integration (Elastic + Mongo Sync)
     - [ ] 5. Sprint S39: Golden Recipe Alignment (Automated Validation)
 
