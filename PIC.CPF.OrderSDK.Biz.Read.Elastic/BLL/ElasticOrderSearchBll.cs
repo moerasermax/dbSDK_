@@ -79,7 +79,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 };
                 var sort = new InternalModels.OrderInfoSortModel { OrderSorts = req.Sorts };
 
-                // mirror 客戶原 SDK Dual Engine: ① OPS 取 Total + KeyList ② DDB 取明細 ③ 轉 Public Model
+                // mirror 客戶原 SDK Dual Engine: ① OPS 取 Total + KeyList ② Mongo 取明細 (客戶端是 DDB/DynamoDB,dbSDK 用 MongoDB) ③ 轉 Public Model
                 var OPSResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
                 if (OPSResult.Total <= 0)
                 {
@@ -92,12 +92,12 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                         : null)
                     .ToList();
 
-                var DDBData = await _mongoSearchDal.SearchByDDBAsync(KeyList);
+                var MongoData = await _mongoSearchDal.SearchByMongoAsync(KeyList);
 
                 return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", new PublicModels.SearchOrderInfoResultModel
                 {
                     Total = OPSResult.Total,
-                    OrderInfos = DDBData.ConvertToOrderData(),
+                    OrderInfos = MongoData.ConvertToOrderData(),
                 });
             }
             catch (Exception ex)
@@ -137,7 +137,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 };
                 var sort = new InternalModels.OrderInfoSortModel { OrderSorts = req.Sorts };
 
-                // mirror 客戶原 SDK Dual Engine: ① OPS 取 Total + KeyList ② DDB 取明細 ③ 轉 Public Model
+                // mirror 客戶原 SDK Dual Engine: ① OPS 取 Total + KeyList ② Mongo 取明細 (客戶端是 DDB/DynamoDB,dbSDK 用 MongoDB) ③ 轉 Public Model
                 var OPSResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
                 if (OPSResult.Total <= 0)
                 {
@@ -150,12 +150,12 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                         : null)
                     .ToList();
 
-                var DDBData = await _mongoSearchDal.SearchByDDBAsync(KeyList);
+                var MongoData = await _mongoSearchDal.SearchByMongoAsync(KeyList);
 
                 return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", new PublicModels.SearchOrderInfoResultModel
                 {
                     Total = OPSResult.Total,
-                    OrderInfos = DDBData.ConvertToOrderData(),
+                    OrderInfos = MongoData.ConvertToOrderData(),
                 });
             }
             catch (Exception ex)

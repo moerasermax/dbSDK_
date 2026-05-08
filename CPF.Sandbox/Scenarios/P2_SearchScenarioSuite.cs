@@ -169,7 +169,7 @@ namespace CPF.Sandbox.Scenarios
         /// [S26] Search 4 - GetAppDashboard
         /// 驗證 App 儀表板總覽（固定 90 天區間）
         /// </summary>
-        public static async Task RunSearch4Async()
+        public static async Task RunSearch4Async(bool verbose = false)
         {
             PrintHeader("S26: Search 4 — GetAppDashboard");
 
@@ -190,6 +190,8 @@ namespace CPF.Sandbox.Scenarios
             var ov = data.AppSellerOverView;
             var perf = data.AppSellerPerformance;
 
+            if (verbose) WriteVerboseJson(data);
+
             Console.WriteLine($"  Out — OverView: newOrderCnt={ov?.NewOrderCnt}, shippedCnt={ov?.ShippedCnt}, repliedCnt={ov?.RepliedCnt}, pickupCnt={ov?.PickupCnt}");
             Console.WriteLine($"  Out — Performance: salesAmount={perf?.SalesAmount}, totalOrderQty={perf?.TotalOrderQty}");
 
@@ -208,7 +210,7 @@ namespace CPF.Sandbox.Scenarios
         /// [S27] Search 5 - GetAppSalesToday
         /// 驗證 App 銷售指標（本日）+ 趨勢補零 + 排行序號
         /// </summary>
-        public static async Task RunSearch5Async()
+        public static async Task RunSearch5Async(bool verbose = false)
         {
             PrintHeader("S27: Search 5 — GetAppSalesToday");
 
@@ -228,6 +230,9 @@ namespace CPF.Sandbox.Scenarios
             if (result.Data == null) return;
 
             var data = result.Data;
+
+            if (verbose) WriteVerboseJson(data);
+
             var trendAt16 = data.SalesTrendData?.FirstOrDefault(t => t.TimePane == "16")?.Value;
             var topProduct = data.ProductSalesRanking?.FirstOrDefault();
 
@@ -249,7 +254,7 @@ namespace CPF.Sandbox.Scenarios
         /// [S28] Search 6 - GetAppSalesWeek
         /// 驗證 App 銷售指標（本週）+ 趨勢補零 + 排行序號
         /// </summary>
-        public static async Task RunSearch6Async()
+        public static async Task RunSearch6Async(bool verbose = false)
         {
             PrintHeader("S28: Search 6 — GetAppSalesWeek");
 
@@ -270,6 +275,9 @@ namespace CPF.Sandbox.Scenarios
             if (result.Data == null) return;
 
             var data = result.Data;
+
+            if (verbose) WriteVerboseJson(data);
+
             var trend0505 = data.SalesTrendData?.FirstOrDefault(t => t.TimePane == "05/05")?.Value;
             var topProduct = data.ProductSalesRanking?.FirstOrDefault();
 
@@ -293,7 +301,7 @@ namespace CPF.Sandbox.Scenarios
         /// [S29] Search 7 - GetUserCgdmData
         /// 驗證取得賣家 cgdm 資料
         /// </summary>
-        public static async Task RunSearch7Async()
+        public static async Task RunSearch7Async(bool verbose = false)
         {
             PrintHeader("S29: Search 7 — GetUserCgdmData");
 
@@ -305,6 +313,9 @@ namespace CPF.Sandbox.Scenarios
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
 
             var data = result.Data!;
+
+            if (verbose) WriteVerboseJson(data);
+
             Console.WriteLine($"  Out — CuamCid={data.CuamCid}, Cgdm count={data.Cgdm?.Length}");
 
             for (int i = 0; i < (data.Cgdm?.Length ?? 0); i++)
@@ -328,6 +339,17 @@ namespace CPF.Sandbox.Scenarios
             Console.WriteLine("========================================");
             Console.WriteLine($"=== {title} ===");
             Console.WriteLine("========================================");
+        }
+
+        // verbose JSON 輸出 — 對齊 Golden Recipe 格式 (UnicodeRanges.All 中文非 escape, WriteIndented 排版)
+        private static void WriteVerboseJson(object data)
+        {
+            var json = JsonSerializer.Serialize(data, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All),
+            });
+            Console.WriteLine(json);
         }
     }
 }

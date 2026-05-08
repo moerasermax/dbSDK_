@@ -4,8 +4,9 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal
 {
     // Dual Engine 流程的 Mongo 端 Internal Model — 對齊客戶原 SDK 的 OrderData 結構
-    // 路徑：ES 取 CoomNo[] → MongoSearchDal.SearchByDDB(keyList) → IEnumerable<MongoOrder>
+    // 路徑:ES 取 CoomNo[] → MongoSearchDal.SearchByMongoAsync(keyList) → IEnumerable<MongoOrder>
     // → ConvertToOrderData → SearchOrderInfoDataModel
+    // (客戶原 SDK 用 DDB/DynamoDB,dbSDK 用 MongoDB,結構對齊 OrderData)
     [BsonIgnoreExtraElements]
     public class MongoOrder
     {

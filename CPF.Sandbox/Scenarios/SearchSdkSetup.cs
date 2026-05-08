@@ -28,7 +28,7 @@ namespace CPF.Sandbox.Scenarios
             var repo = new ElasticRepository<OrderDocument>(driver, map, "orders-*");
             var dal = new OrderSearchDal(repo);
 
-            // Mongo 端 (DDB) — Dual Engine hydration 用
+            // Mongo 端 — Dual Engine hydration 用 (對齊客戶原 SDK 的 DDB/DynamoDB pattern,dbSDK 改用 MongoDB)
             var mongoMap = new MongoMap();
             var mongoClient = new MongoClient(mongoUri);
             var mongoDatabase = mongoClient.GetDatabase(mongoDb);

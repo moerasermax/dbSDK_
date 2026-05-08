@@ -4,8 +4,8 @@ using PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal;
 namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
 {
     // Dual Engine 流程的 Mongo → Public Model 轉換層
-    // mirror 客戶原 SDK: result.Data = ConvertToExtension.ConvertToOrderData(DDBData);
-    // dbSDK caller: var orderInfos = ddbData.ConvertToOrderData();
+    // mirror 客戶原 SDK pattern: result.Data = ConvertToExtension.ConvertToOrderData(DDBData) — 客戶 DDB=DynamoDB
+    // dbSDK caller: var orderInfos = mongoData.ConvertToOrderData();
     internal static class MongoToOrderDataExtension
     {
         // dbSDK 全局註冊 MultiCultureDateTimeSerializer (NO3._dbSDK_Imporve.MongoMap)，

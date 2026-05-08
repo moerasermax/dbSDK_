@@ -50,10 +50,10 @@ static async Task DispatchAsync(string[] args)
         case "dump-s1":     await P2_SearchScenarioSuite.RunSearch1Async(verbose: true); break;
         case "dump-s2":     await P2_SearchScenarioSuite.RunSearch2Async(verbose: true); break;
         case "dump-s3":     await P2_SearchScenarioSuite.RunSearch3Async(verbose: true); break;
-        case "dump-s4":     await P2_SearchScenarioSuite.RunSearch4Async(); break;
-        case "dump-s5":     await P2_SearchScenarioSuite.RunSearch5Async(); break;
-        case "dump-s6":     await P2_SearchScenarioSuite.RunSearch6Async(); break;
-        case "dump-s7":     await P2_SearchScenarioSuite.RunSearch7Async(); break;
+        case "dump-s4":     await P2_SearchScenarioSuite.RunSearch4Async(verbose: true); break;
+        case "dump-s5":     await P2_SearchScenarioSuite.RunSearch5Async(verbose: true); break;
+        case "dump-s6":     await P2_SearchScenarioSuite.RunSearch6Async(verbose: true); break;
+        case "dump-s7":     await P2_SearchScenarioSuite.RunSearch7Async(verbose: true); break;
 
         // 離線驗證 (Mock + Shipping + Update tests)
         case "offline":
@@ -138,10 +138,10 @@ static async Task RunChoiceAsync(char choice)
         case '1': await P2_SearchScenarioSuite.RunSearch1Async(verbose: true); break;
         case '2': await P2_SearchScenarioSuite.RunSearch2Async(verbose: true); break;
         case '3': await P2_SearchScenarioSuite.RunSearch3Async(verbose: true); break;
-        case '4': await P2_SearchScenarioSuite.RunSearch4Async(); break;
-        case '5': await P2_SearchScenarioSuite.RunSearch5Async(); break;
-        case '6': await P2_SearchScenarioSuite.RunSearch6Async(); break;
-        case '7': await P2_SearchScenarioSuite.RunSearch7Async(); break;
+        case '4': await P2_SearchScenarioSuite.RunSearch4Async(verbose: true); break;
+        case '5': await P2_SearchScenarioSuite.RunSearch5Async(verbose: true); break;
+        case '6': await P2_SearchScenarioSuite.RunSearch6Async(verbose: true); break;
+        case '7': await P2_SearchScenarioSuite.RunSearch7Async(verbose: true); break;
         case 'a': await RunAllSearchSuiteAsync(); break;
 
         case 's': await ElasticDataSeedScenario.RunAsync(); break;
