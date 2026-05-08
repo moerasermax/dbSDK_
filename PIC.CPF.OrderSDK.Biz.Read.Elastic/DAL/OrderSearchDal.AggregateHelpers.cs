@@ -113,7 +113,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                 .Aggregations(childAggs => childAggs
                     .Add($"{name}_{SO_DealWith}", f => f.Filter(OrderStateDealWithQuery()))
                     .Add($"{name}_{SO_Toship}", f => f.Filter(OrderStateToshipForSellerQuery()))
-                    .Add($"{name}_{SO_Shipping}", f => f.Filter(OrderStateShippingQuery()))
+                    // 訂單總覽-已寄件: 用 coom_status=30 訂單級彙整 (對齊 SellerOverviewShippingQuery 的 V8 ACHU 註解,單筆 esmm=10 會漏聚合)
+                    .Add($"{name}_{SO_Shipping}", f => f.Filter(SellerOverviewShippingQuery()))
                     .Add($"{name}_{SO_WaitReturn}", f => f.Filter(SellerOverviewWaitReturnQuery()))
                     .Add($"{name}_{SO_BuyerQaNeverReply}", f => f.Filter(BuyerQaNeverReplyQuery()))
                     .Add($"{name}_{SO_SellerReturnReq}", f => f.Filter(OrderStateRtnShippingQuery()))

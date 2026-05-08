@@ -228,7 +228,8 @@ namespace CPF.Sandbox.Scenarios
             Check("TotalOrderCnt", data.TotalOrderCnt, 15);
             Check("ShipmentsCnt", data.ShipmentsCnt, 8);
             Check("SalesTrendData.length", data.SalesTrendData?.Count(), 24);
-            Check("ProductSalesRanking[0].rankingNo", topProduct?.RankingNo, 1);
+            // ES cood_items nested 無 cood_price 欄位 → 商品銷售排名為空（對齊 Golden Search_5 樣張 productSalesRanking: []）
+            Check("ProductSalesRanking.Count", data.ProductSalesRanking?.Count() ?? 0, 0);
         }
 
         // ==========================================
@@ -243,12 +244,15 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S28: Search 6 — GetAppSalesWeek");
 
             var svc = SearchSdkSetup.Build();
+            // 對齊 Golden Search_6 樣張 in:4/27 16:00Z ~ 5/05 15:59Z + DateRangeType=SetWeek
             var req = new OrderSearchRequest
             {
                 CuamCid = 528672,
-                DateRangeType = CPFEnum.DateRangeType.ThisWeek,
+                SearchStartDate = new DateTime(2026, 4, 27, 16, 0, 0, DateTimeKind.Utc),
+                SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
+                DateRangeType = CPFEnum.DateRangeType.SetWeek,
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, dateRangeType={req.DateRangeType}");
+            Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}, dateRangeType={req.DateRangeType}");
 
             var result = await svc.GetAppSalesWeekAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -256,17 +260,20 @@ namespace CPF.Sandbox.Scenarios
             if (result.Data == null) return;
 
             var data = result.Data;
-            var trend0423 = data.SalesTrendData?.FirstOrDefault(t => t.TimePane == "04/23")?.Value;
+            var trend0505 = data.SalesTrendData?.FirstOrDefault(t => t.TimePane == "05/05")?.Value;
             var topProduct = data.ProductSalesRanking?.FirstOrDefault();
 
-            Console.WriteLine($"  Out — totalAmount={data.TotalAmount}, totalOrderCnt={data.TotalOrderCnt}");
-            Console.WriteLine($"  Out — salesTrend[04/23]={trend0423}");
+            Console.WriteLine($"  Out — totalAmount={data.TotalAmount}, totalOrderCnt={data.TotalOrderCnt}, shipmentsCnt={data.ShipmentsCnt}");
+            Console.WriteLine($"  Out — salesTrend[05/05]={trend0505}");
             Console.WriteLine($"  Out — topProduct={topProduct?.ProductCgdmid}, productTotalSales={topProduct?.ProductTotalSales}");
 
-            Check("TotalAmount", data.TotalAmount, 2882);
-            Check("TotalOrderCnt", data.TotalOrderCnt, 21);
+            // 期望值對齊 Golden Search_6 樣張 (測試資料訂單只在 05/05,所以 SetWeek vs Today 同值)
+            Check("TotalAmount", data.TotalAmount, 8659);
+            Check("TotalOrderCnt", data.TotalOrderCnt, 15);
+            Check("ShipmentsCnt", data.ShipmentsCnt, 8);
             Check("SalesTrendData.length", data.SalesTrendData?.Count(), 7);
-            Check("ProductSalesRanking[0].rankingNo", topProduct?.RankingNo, 1);
+            // ES cood_items nested 無 cood_price 欄位 → 商品銷售排名為空(對齊 Golden Search_6 樣張)
+            Check("ProductSalesRanking.Count", data.ProductSalesRanking?.Count() ?? 0, 0);
         }
 
         // ==========================================

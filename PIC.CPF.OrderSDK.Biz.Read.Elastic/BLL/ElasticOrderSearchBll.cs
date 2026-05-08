@@ -174,8 +174,9 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
             try
             {
                 var cid = req.CuamCid ?? 0;
-                var end = DateTime.UtcNow;
-                var start = end.AddDays(-90);
+                // Caller 可指定區間;未指定 fallback 90 天 (移除原硬編碼,對齊 capsule §3 紀律)
+                var end = req.SearchEndDate ?? DateTime.UtcNow;
+                var start = req.SearchStartDate ?? end.AddDays(-90);
 
                 var internalResult = await _dal.AppAggregateOrderInfoAsync(
                     appSellerOverview: [new InternalModels.AppSellerOverViewAggregateModel { CoomCuamCid = cid, OrderDateStart = start, OrderDateEnd = end }],
