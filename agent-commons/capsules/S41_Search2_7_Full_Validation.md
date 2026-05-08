@@ -25,20 +25,43 @@ tracking_label: P2B-VALIDATE-1 / S41-B
     - 使用 `[BsonElement("snake_case")]` 對齊 Mongo 欄位名。
     - 加入 `[BsonIgnoreExtraElements]` 以防 Production 環境欄位變更。
 
-### 2. [ ] S41-B-2: 建置 Mongo DAL
-- 新增 `DAL/MongoSearchDal.cs`：
-    - 實作 `SearchByDDBAsync(List<string?> keyList)`，支援透過 `coom_no` 大量抓取資料。
+### 2. [x] S41-B-2: 建置 Mongo DAL
+- 新增 `DAL/MongoSearchDal.cs`：實作 `SearchByMongoAsync` (原 SearchByDDBAsync)。
 
-### 3. [ ] S41-B-3: 建置 Convert Helper
-- 於 `ConverToExtension.cs` 新增 `ConvertToOrderData` 方法：
-    - 負責將 `MongoOrder` (DDBData) 轉換為 Public Model。
-    - **時間格式修正 (IRON §B)**：移除 `Z` 後綴，格式統一為 `yyyy-MM-ddTHH:mm:ss.fff`。
+### 3. [x] S41-B-3: 建置 Convert Helper
+- 於 `ConverToExtension.cs` 新增 `ConvertToOrderData` 方法 (含 AsUtc 與 DateTimeNoZConverter 邏輯)。
 
-### 4. [ ] S41-B-4: BLL Hydration 串接
-- 修改 `SearchBy{Seller|Buyer}Async`：
-    - ① ES query → `OPSResult` / `KeyList`。
-    - ② Mongo find → `DDBData`。
-    - ③ `ConvertToOrderData(DDBData)` → Public Model。
+### 4. [x] S41-B-4: BLL Hydration 串接
+- 完成 `SearchBy{Seller|Buyer}Async` 之 OPS + Mongo 串接與命名對齊。
+
+### 5. [x] S41-C: 數值與邏輯校準 (Search 1/4/5/6)
+- 修正 Search 1/4/5/6 聚合邏輯，數值對齊 Golden Recipe。
+- 修正 Search 4 時間區間硬編碼議題。
+
+### 6. [x] S41-D: 格式與排序細節 (Search 2/3)
+- 修正 Search 2/3 排序邏輯 (Desc by Date + No)。
+- 修正 nested 結構為「殼結構 + null」以對齊 Golden。
+- 修正 datetime 位數 (ms=0 不補位, ms>0 補 3 位)。
+
+---
+
+## 🚦 待確認項 (Pending Specification Confirmation)
+
+| 優先級 | 項目 | 描述 | 根因 |
+|---|---|---|---|
+| **P1** | **Search 7 更新時間** | `cgdmUpdateDatetime` 輸出為空 | 測試資料缺 `_ord_modify_date` 欄位 |
+| **P2** | **Search 1 業務語義** | `buyerOverView.toship` 命中 6 筆 vs Golden 1 筆 | 需釐清「待出貨」之精確 Filter 條件 |
+| **P2** | **Search 4 預設區間** | Sandbox 目前傳 4/27~5/05 才對齊 | 需確認 SDK 在 Caller 不傳時間時的 Default 邏輯 |
+
+---
+
+## 命名對齊原則 (Refined)
+
+| 客戶原 SDK 字面 | dbSDK 實作 (Mongo 版) | 備註 |
+|---|---|---|
+| `_searchDal.SearchByDDB` | `_mongoSearchDal.SearchByMongoAsync` | 為免誤導為 DynamoDB，改用 Mongo 字面 |
+| `local var DDBData` | `var mongoData` (or `DDBData` in BLL) | BLL 內儘量保留 DDB 字面以利客戶對照 |
+
 
 ---
 
