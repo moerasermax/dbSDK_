@@ -174,8 +174,14 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S26: Search 4 — GetAppDashboard");
 
             var svc = SearchSdkSetup.Build();
-            var req = new OrderSearchRequest { CuamCid = 528672 };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}");
+            // 從測試資料反推:Search 4 newOrderCnt/shippedCnt/repliedCnt 對應 Search 1 dealWith/toship/sellerQaNeverReply 桶,該桶用 4/27~5/05 區間得 5/1/1 對齊 Golden
+            var req = new OrderSearchRequest
+            {
+                CuamCid = 528672,
+                SearchStartDate = new DateTime(2026, 4, 27, 16, 0, 0, DateTimeKind.Utc),
+                SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
+            };
+            Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}");
 
             var result = await svc.GetAppDashboardAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }

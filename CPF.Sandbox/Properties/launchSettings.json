@@ -1,0 +1,43 @@
+{
+  "profiles": {
+    "menu (互動式選單,F5 預設)": {
+      "commandName": "Project"
+    },
+    "dump-s1 (HomeToDoOverview)": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-s1"
+    },
+    "dump-s2 (SearchBySellerId)": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-s2"
+    },
+    "dump-s3 (SearchByBuyerId)": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-s3"
+    },
+    "dump-s4 (AppDashboard)": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-s4"
+    },
+    "dump-s5 (AppSalesToday)": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-s5"
+    },
+    "dump-s6 (AppSalesWeek)": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-s6"
+    },
+    "dump-s7 (UserCgdmData)": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-s7"
+    },
+    "validate (跑全 Search Suite)": {
+      "commandName": "Project",
+      "commandLineArgs": "validate"
+    },
+    "seed-golden (灌客戶 Sample Data)": {
+      "commandName": "Project",
+      "commandLineArgs": "seed-golden"
+    }
+  }
+}

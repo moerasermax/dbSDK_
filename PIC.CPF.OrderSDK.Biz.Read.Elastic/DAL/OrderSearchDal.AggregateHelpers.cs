@@ -189,8 +189,10 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             return aggs => aggs.Add(name, agg => agg
                 .Filter(OrderInfoQuery(query))
                 .Aggregations(childAggs => childAggs
+                    // 從測試資料反推:Golden Search 4 totalOrderQty=14 / salesAmount=8171 比 Search 5/6 totalAmount=8659/totalOrderCnt=15 少 488 元 1 筆 (CM..38 status=10 + payment_type=4 + pay_datetime=null = 未付款)
+                    // 改用 PaidPurchaseOrderQuery 排除未付款訂單 (Search 1 BuyerPerformance 仍用 PurchaseOrderQuery 不影響)
                     .Add($"{name}_{ASP_TotalOrderQty}", f => f
-                        .Filter(PurchaseOrderQuery())
+                        .Filter(PaidPurchaseOrderQuery())
                         .Aggregations(sa => sa
                             .Add($"{name}_{ASP_SalesAmount}", sum => sum
                                 .Sum(s => s.Field(o => o.CoomRcvTotalAmt))

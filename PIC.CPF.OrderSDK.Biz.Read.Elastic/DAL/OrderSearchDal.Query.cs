@@ -267,6 +267,27 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                 )
             ));
         }
+
+        /// <summary>
+        /// 已付款購買訂單查詢:PurchaseOrderQuery + (cooc_payment_pay_datetime exists OR cooc_payment_type=="1")
+        /// 給 Search 4 App Dashboard Performance 桶用 (Search 1 BuyerPerformance 仍用 PurchaseOrderQuery 不變)
+        /// 從測試資料反推:CM..38 status=10 / payment_type=4 / pay_datetime=null = 未付款應排除
+        /// </summary>
+        public static Action<QueryDescriptor<OrderDocument>> PaidPurchaseOrderQuery()
+        {
+            return q => q.Bool(b => b
+                .MustNot(mn => mn
+                    .Terms(t => t
+                        .Field(f => f.CoomStatus)
+                        .Terms(new TermsQueryField(new FieldValue[] { "00", "11", "12", "1X" }))
+                    )
+                )
+                .Must(m => m.Bool(innerB => innerB.Should(
+                    s => s.Exists(e => e.Field(f => f.CoocPaymentPayDatetime)),
+                    s => s.Term(t => t.Field(f => f.CoocPaymentType).Value("1"))
+                ).MinimumShouldMatch(1)))
+            );
+        }
         /// <summary>
         /// 有已取件時間，配送狀態為 [30: 已取件] 的時間戳記 (V8 版)
         /// </summary>
