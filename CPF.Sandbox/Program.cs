@@ -88,5 +88,8 @@ switch (mode)
 }
 
 Console.WriteLine();
-Console.WriteLine("按任意鍵結束...");
-Console.ReadKey();
+if (!Console.IsInputRedirected && Environment.UserInteractive)
+{
+    Console.WriteLine("按任意鍵結束...");
+    Console.ReadKey();
+}

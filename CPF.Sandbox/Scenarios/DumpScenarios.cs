@@ -1,5 +1,6 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Enum;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Models;
 
@@ -10,7 +11,7 @@ namespace CPF.Sandbox.Scenarios
         private static readonly JsonSerializerOptions JsonOpts = new()
         {
             WriteIndented = true,
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
         };
 
         internal static async Task DumpAsync(int searchNo)

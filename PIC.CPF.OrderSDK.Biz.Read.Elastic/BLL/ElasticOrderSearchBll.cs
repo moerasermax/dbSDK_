@@ -3,6 +3,7 @@ using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension;
+using System.Text.Json;
 using PublicModels = PIC.CPF.OrderSDK.Biz.Read.Elastic.Models;
 using InternalModels = PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal;
 
@@ -11,11 +12,13 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
     public class ElasticOrderSearchBll
     {
         private readonly OrderSearchDal _dal;
+        private readonly MongoSearchDal _mongoSearchDal;
         private readonly ILogger<ElasticOrderSearchBll>? _logger;
 
-        public ElasticOrderSearchBll(OrderSearchDal dal, ILogger<ElasticOrderSearchBll>? logger)
+        public ElasticOrderSearchBll(OrderSearchDal dal, MongoSearchDal mongoSearchDal, ILogger<ElasticOrderSearchBll>? logger)
         {
             _dal = dal;
+            _mongoSearchDal = mongoSearchDal;
             _logger = logger;
         }
 
@@ -76,8 +79,26 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 };
                 var sort = new InternalModels.OrderInfoSortModel { OrderSorts = req.Sorts };
 
-                var internalResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
-                return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", internalResult.ConvertToSearchOrderInfoResultModel());
+                // mirror 客戶原 SDK Dual Engine: ① OPS 取 Total + KeyList ② DDB 取明細 ③ 轉 Public Model
+                var OPSResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
+                if (OPSResult.Total <= 0)
+                {
+                    return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", new PublicModels.SearchOrderInfoResultModel { Total = 0, OrderInfos = null });
+                }
+
+                var KeyList = OPSResult.Documents
+                    .Select(je => je.ValueKind == JsonValueKind.Object && je.TryGetProperty("coom_no", out var v) && v.ValueKind == JsonValueKind.String
+                        ? v.GetString()
+                        : null)
+                    .ToList();
+
+                var DDBData = await _mongoSearchDal.SearchByDDBAsync(KeyList);
+
+                return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", new PublicModels.SearchOrderInfoResultModel
+                {
+                    Total = OPSResult.Total,
+                    OrderInfos = DDBData.ConvertToOrderData(),
+                });
             }
             catch (Exception ex)
             {
@@ -116,8 +137,26 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 };
                 var sort = new InternalModels.OrderInfoSortModel { OrderSorts = req.Sorts };
 
-                var internalResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
-                return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", internalResult.ConvertToSearchOrderInfoResultModel());
+                // mirror 客戶原 SDK Dual Engine: ① OPS 取 Total + KeyList ② DDB 取明細 ③ 轉 Public Model
+                var OPSResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
+                if (OPSResult.Total <= 0)
+                {
+                    return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", new PublicModels.SearchOrderInfoResultModel { Total = 0, OrderInfos = null });
+                }
+
+                var KeyList = OPSResult.Documents
+                    .Select(je => je.ValueKind == JsonValueKind.Object && je.TryGetProperty("coom_no", out var v) && v.ValueKind == JsonValueKind.String
+                        ? v.GetString()
+                        : null)
+                    .ToList();
+
+                var DDBData = await _mongoSearchDal.SearchByDDBAsync(KeyList);
+
+                return Result<PublicModels.SearchOrderInfoResultModel>.SetResult("成功", new PublicModels.SearchOrderInfoResultModel
+                {
+                    Total = OPSResult.Total,
+                    OrderInfos = DDBData.ConvertToOrderData(),
+                });
             }
             catch (Exception ex)
             {

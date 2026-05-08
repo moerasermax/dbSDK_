@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using PIC.CPF.OrderSDK.Biz.Read.Elastic.Serialization;
 
 namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
 {
@@ -44,11 +45,11 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
     public class OrderMasterModel
     {
         [JsonPropertyName("coomNo")] public string? CoomNo { get; set; }
-        [JsonPropertyName("coomOrderDate")] public DateTime? CoomOrderDate { get; set; }
+        [JsonPropertyName("coomOrderDate")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? CoomOrderDate { get; set; }
         [JsonPropertyName("coomName")] public string? CoomName { get; set; }
         [JsonPropertyName("coomStatus")] public string? CoomStatus { get; set; }
         [JsonPropertyName("coomTempType")] public string? CoomTempType { get; set; }
-        [JsonPropertyName("coomCreateDatetime")] public DateTime? CoomCreateDatetime { get; set; }
+        [JsonPropertyName("coomCreateDatetime")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? CoomCreateDatetime { get; set; }
         [JsonPropertyName("coomCuamCid")] public int? CoomCuamCid { get; set; }
         [JsonPropertyName("coomReChoiceFlag")] public bool? CoomReChoiceFlag { get; set; }
         [JsonPropertyName("coomMergeListCoomNo")] public string? CoomMergeListCoomNo { get; set; }
@@ -66,10 +67,10 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
     {
         [JsonPropertyName("coocNo")] public string? CoocNo { get; set; }
         [JsonPropertyName("coocPaymentType")] public string? CoocPaymentType { get; set; }
-        [JsonPropertyName("coocPaymentPayDatetime")] public DateTime? CoocPaymentPayDatetime { get; set; }
+        [JsonPropertyName("coocPaymentPayDatetime")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? CoocPaymentPayDatetime { get; set; }
         [JsonPropertyName("coocDeliverMethod")] public string? CoocDeliverMethod { get; set; }
         [JsonPropertyName("coocOrdChannelKind")] public string? CoocOrdChannelKind { get; set; }
-        [JsonPropertyName("coocCreateDatetime")] public DateTime? CoocCreateDatetime { get; set; }
+        [JsonPropertyName("coocCreateDatetime")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? CoocCreateDatetime { get; set; }
         [JsonPropertyName("coocMemSid")] public int? CoocMemSid { get; set; }
         [JsonPropertyName("coocPaymentCode")] public string? CoocPaymentCode { get; set; }
         [JsonPropertyName("coocOrdNameEnc")] public string? CoocOrdNameEnc { get; set; }
@@ -78,7 +79,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
         [JsonPropertyName("coocPaymentTradeNo")] public string? CoocPaymentTradeNo { get; set; }
         [JsonPropertyName("coocPaymentNote")] public string? CoocPaymentNote { get; set; }
         [JsonPropertyName("coocPaymentBankCode")] public string? CoocPaymentBankCode { get; set; }
-        [JsonPropertyName("coocPaymentDueday")] public DateTime? CoocPaymentDueday { get; set; }
+        [JsonPropertyName("coocPaymentDueday")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? CoocPaymentDueday { get; set; }
     }
 
     public class OrderItemModel
@@ -104,10 +105,10 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
         [JsonPropertyName("esmmShipMethod")] public string? EsmmShipMethod { get; set; }
         [JsonPropertyName("esmmShipNoAuthCode")] public string? EsmmShipNoAuthCode { get; set; }
         [JsonPropertyName("esmmShipNoA")] public string? EsmmShipNoA { get; set; }
-        [JsonPropertyName("esmmLeaveStoreDateB")] public DateTime? EsmmLeaveStoreDateB { get; set; }
+        [JsonPropertyName("esmmLeaveStoreDateB")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? EsmmLeaveStoreDateB { get; set; }
         [JsonPropertyName("esmmIbonAppFlag")] public bool? EsmmIbonAppFlag { get; set; }
         [JsonPropertyName("esmmOddReason")] public string? EsmmOddReason { get; set; }
-        [JsonPropertyName("esmmConfirmExtpayDatetime")] public DateTime? EsmmConfirmExtpayDatetime { get; set; }
+        [JsonPropertyName("esmmConfirmExtpayDatetime")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? EsmmConfirmExtpayDatetime { get; set; }
     }
 
     public class QuestionMasterModel
@@ -120,8 +121,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
     {
         [JsonPropertyName("cccmStatus")] public string? CccmStatus { get; set; }
         [JsonPropertyName("cccmCancelPeople")] public string? CccmCancelPeople { get; set; }
-        [JsonPropertyName("cccmConfirmDatetime")] public DateTime? CccmConfirmDatetime { get; set; }
-        [JsonPropertyName("cccmCreateDatetime")] public DateTime? CccmCreateDatetime { get; set; }
+        [JsonPropertyName("cccmConfirmDatetime")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? CccmConfirmDatetime { get; set; }
+        [JsonPropertyName("cccmCreateDatetime")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? CccmCreateDatetime { get; set; }
         [JsonPropertyName("cccmRefundFlag")] public bool? CccmRefundFlag { get; set; }
         [JsonPropertyName("cccmErfmNo")] public string? CccmErfmNo { get; set; }
     }
@@ -137,7 +138,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
         [JsonPropertyName("eccsId")] public string? EccsId { get; set; }
         [JsonPropertyName("eccsStoreType")] public string? EccsStoreType { get; set; }
         [JsonPropertyName("eccsRechoiceStoreStatus")] public string? EccsRechoiceStoreStatus { get; set; }
-        [JsonPropertyName("eccsCreateDatetime")] public DateTime? EccsCreateDatetime { get; set; }
+        [JsonPropertyName("eccsCreateDatetime")][JsonConverter(typeof(DateTimeNoZConverter))] public DateTime? EccsCreateDatetime { get; set; }
     }
 
     public class RtnDHLApplyModel

@@ -66,7 +66,7 @@ namespace CPF.Sandbox.Scenarios
 
             if (verbose)
             {
-                var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+                var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All) });
                 Console.WriteLine(json);
             }
 
@@ -110,7 +110,7 @@ namespace CPF.Sandbox.Scenarios
 
             if (verbose)
             {
-                var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+                var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All) });
                 Console.WriteLine(json);
             }
 
@@ -149,7 +149,7 @@ namespace CPF.Sandbox.Scenarios
 
             if (verbose)
             {
-                var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+                var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All) });
                 Console.WriteLine(json);
             }
 
