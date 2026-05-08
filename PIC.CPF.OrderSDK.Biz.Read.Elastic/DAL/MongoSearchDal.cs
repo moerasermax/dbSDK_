@@ -30,7 +30,15 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                 return Array.Empty<MongoOrder>();
 
             var filter = Builders<MongoOrder>.Filter.In(x => x.CoomNo, validKeys);
-            return await _collection.Find(filter).ToListAsync();
+            var docs = await _collection.Find(filter).ToListAsync();
+
+            // Mongo Find($in) 不保證 input keyList 順序;依 ES 給的 KeyList 重排對齊客戶排序合約
+            var lookup = docs
+                .Where(d => !string.IsNullOrEmpty(d.CoomNo))
+                .ToDictionary(d => d.CoomNo!, d => d);
+            return validKeys
+                .Where(k => lookup.ContainsKey(k))
+                .Select(k => lookup[k]);
         }
     }
 }

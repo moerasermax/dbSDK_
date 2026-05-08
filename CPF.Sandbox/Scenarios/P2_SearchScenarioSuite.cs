@@ -98,6 +98,8 @@ namespace CPF.Sandbox.Scenarios
                 SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
                 SearchEndDate = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Utc),
                 OrderState = PIC.CPF.OrderSDK.Biz.Read.Elastic.Enum.OrderState.DealWith, // 處理中
+                // 對齊 Golden Search_2 In 期望:OrderSorts=[1,3] = [CoomCreateDatetimeDesc, CoomNoDesc]
+                Sorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
             };
             Console.WriteLine($"  In: cuamCid={req.CuamCid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}, orderState={req.OrderState}");
 
@@ -137,6 +139,8 @@ namespace CPF.Sandbox.Scenarios
                 SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
                 SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
                 OrderState = CPFEnum.OrderState.DealWith, // 補上 OrderState 過濾
+                // 對齊 Golden Search_3 In 期望:OrderSorts=[1,3]
+                Sorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
             };
             Console.WriteLine($"  In: memSid={req.MemSid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}, orderState={req.OrderState}");
 

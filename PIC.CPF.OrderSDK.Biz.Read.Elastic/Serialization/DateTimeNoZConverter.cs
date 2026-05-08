@@ -12,7 +12,9 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Serialization
     // Kind=Unspecified 時假定為已是台北時間，直接格式化（避免重複轉換造成偏移 8 小時）。
     public sealed class DateTimeNoZConverter : JsonConverter<DateTime?>
     {
-        private const string Format = "yyyy-MM-ddTHH:mm:ss.fff";
+        // 對齊 Golden 規則:ms=0 → 省略 .fff;ms≠0 → variable 位數(FFF 自動 trim trailing zero,例 .773/.770→.77/.090→.09)
+        private const string FormatWithMs = "yyyy-MM-ddTHH:mm:ss.FFF";
+        private const string FormatNoMs = "yyyy-MM-ddTHH:mm:ss";
 
         private static readonly TimeZoneInfo TaipeiTz = ResolveTaipeiTz();
 
@@ -48,7 +50,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Serialization
                 DateTimeKind.Local => TimeZoneInfo.ConvertTime(dt, TaipeiTz),
                 _ => dt,
             };
-            writer.WriteStringValue(local.ToString(Format, CultureInfo.InvariantCulture));
+            var format = local.Millisecond == 0 ? FormatNoMs : FormatWithMs;
+            writer.WriteStringValue(local.ToString(format, CultureInfo.InvariantCulture));
         }
     }
 }

@@ -107,86 +107,62 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
             }).ToArray();
         }
 
-        private static GoodsItemModel? MapGoodsItem(CGoodsItem? g)
-        {
-            if (g is null) return null;
-            return new GoodsItemModel
-            {
-                CgdiNumberColumn1 = g.CgdiNumberColumn1,
-            };
-        }
+        // 對齊 Golden Recipe Search_2/3 樣張:即使 Mongo 端 nested 為 null,Public 端輸出殼結構(欄位 null)
+        // 例外 e_Shipment_L / e_Shipment_S 樣張為 null(非殼),由 MapMongoOrder 直接 null pass-through
 
-        private static ShipmentMasterModel? MapShipmentMaster(EShipmentM? s)
+        private static GoodsItemModel MapGoodsItem(CGoodsItem? g) => new()
         {
-            if (s is null) return null;
-            return new ShipmentMasterModel
-            {
-                EsmmNo = s.EsmmNo,
-                EsmmShipNo = s.EsmmShipNo,
-                EsmmStatus = s.EsmmStatus,
-                EsmmShipMethod = s.EsmmShipMethod,
-                EsmmShipNoAuthCode = s.EsmmShipNoAuthCode,
-                EsmmShipNoA = s.EsmmShipNoA,
-                EsmmLeaveStoreDateB = AsUtc(s.EsmmLeaveStoreDateB),
-                EsmmIbonAppFlag = s.EsmmIbonAppFlag,
-                EsmmOddReason = s.EsmmOddReason,
-                EsmmConfirmExtpayDatetime = AsUtc(s.EsmmConfirmExtpayDatetime),
-            };
-        }
+            CgdiNumberColumn1 = g?.CgdiNumberColumn1,
+        };
 
-        private static QuestionMasterModel? MapQuestionMaster(CQuestionM? q)
+        private static ShipmentMasterModel MapShipmentMaster(EShipmentM? s) => new()
         {
-            if (q is null) return null;
-            return new QuestionMasterModel
-            {
-                SellerQaNeverReplyCount = q.SellerQaNeverReplyCount,
-                BuyerQaNeverReplyCount = q.BuyerQaNeverReplyCount,
-            };
-        }
+            EsmmNo = s?.EsmmNo,
+            EsmmShipNo = s?.EsmmShipNo,
+            EsmmStatus = s?.EsmmStatus,
+            EsmmShipMethod = s?.EsmmShipMethod,
+            EsmmShipNoAuthCode = s?.EsmmShipNoAuthCode,
+            EsmmShipNoA = s?.EsmmShipNoA,
+            EsmmLeaveStoreDateB = AsUtc(s?.EsmmLeaveStoreDateB),
+            EsmmIbonAppFlag = s?.EsmmIbonAppFlag,
+            EsmmOddReason = s?.EsmmOddReason,
+            EsmmConfirmExtpayDatetime = AsUtc(s?.EsmmConfirmExtpayDatetime),
+        };
 
-        private static CancelMasterModel? MapCancelMaster(CCancelM? c)
+        // c_Question_M 殼預設 0(對齊 Golden 樣張「無問答」用 0 表示,非 null)
+        private static QuestionMasterModel MapQuestionMaster(CQuestionM? q) => new()
         {
-            if (c is null) return null;
-            return new CancelMasterModel
-            {
-                CccmStatus = c.CccmStatus,
-                CccmCancelPeople = c.CccmCancelPeople,
-                CccmConfirmDatetime = AsUtc(c.CccmConfirmDatetime),
-                CccmCreateDatetime = AsUtc(c.CccmCreateDatetime),
-                CccmRefundFlag = c.CccmRefundFlag,
-                CccmErfmNo = c.CccmErfmNo,
-            };
-        }
+            SellerQaNeverReplyCount = q?.SellerQaNeverReplyCount ?? 0,
+            BuyerQaNeverReplyCount = q?.BuyerQaNeverReplyCount ?? 0,
+        };
 
-        private static CCDHLModel? MapCCDHL(ECCDHL? d)
+        private static CancelMasterModel MapCancelMaster(CCancelM? c) => new()
         {
-            if (d is null) return null;
-            return new CCDHLModel
-            {
-                EcdhEsmmNo = d.EcdhEsmmNo,
-                EcdhProcessCode = d.EcdhProcessCode,
-            };
-        }
+            CccmStatus = c?.CccmStatus,
+            CccmCancelPeople = c?.CccmCancelPeople,
+            CccmConfirmDatetime = AsUtc(c?.CccmConfirmDatetime),
+            CccmCreateDatetime = AsUtc(c?.CccmCreateDatetime),
+            CccmRefundFlag = c?.CccmRefundFlag,
+            CccmErfmNo = c?.CccmErfmNo,
+        };
 
-        private static CCCSModel? MapCCCS(ECCCS? c)
+        private static CCDHLModel MapCCDHL(ECCDHL? d) => new()
         {
-            if (c is null) return null;
-            return new CCCSModel
-            {
-                EccsId = c.EccsId,
-                EccsStoreType = c.EccsStoreType,
-                EccsRechoiceStoreStatus = c.EccsRechoiceStoreStatus,
-                EccsCreateDatetime = AsUtc(c.EccsCreateDatetime),
-            };
-        }
+            EcdhEsmmNo = d?.EcdhEsmmNo,
+            EcdhProcessCode = d?.EcdhProcessCode,
+        };
 
-        private static RtnDHLApplyModel? MapRtnDHLApply(ERtnDHLApply? r)
+        private static CCCSModel MapCCCS(ECCCS? c) => new()
         {
-            if (r is null) return null;
-            return new RtnDHLApplyModel
-            {
-                ErdaApplyStatus = r.ErdaApplyStatus,
-            };
-        }
+            EccsId = c?.EccsId,
+            EccsStoreType = c?.EccsStoreType,
+            EccsRechoiceStoreStatus = c?.EccsRechoiceStoreStatus,
+            EccsCreateDatetime = AsUtc(c?.EccsCreateDatetime),
+        };
+
+        private static RtnDHLApplyModel MapRtnDHLApply(ERtnDHLApply? r) => new()
+        {
+            ErdaApplyStatus = r?.ErdaApplyStatus,
+        };
     }
 }
