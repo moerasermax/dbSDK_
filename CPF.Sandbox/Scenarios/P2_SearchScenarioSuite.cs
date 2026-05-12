@@ -55,7 +55,7 @@ namespace CPF.Sandbox.Scenarios
                 SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
                 SearchEndDate = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Utc),
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}");
+            WriteInJson(req);
 
             var result = await svc.GetHomeToDoOverViewAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -119,7 +119,7 @@ namespace CPF.Sandbox.Scenarios
                 OrderSorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
                 IsQaList = false,
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, range={req.OrderDateStart:yyyy-MM-dd}~{req.OrderDateEnd:yyyy-MM-dd}, orderState={req.OrderState}");
+            WriteInJson(req);
 
             var result = await svc.SearchBySellerAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -166,7 +166,7 @@ namespace CPF.Sandbox.Scenarios
                 IsQaList = false,
                 BindMembersArray = Array.Empty<int>(),
             };
-            Console.WriteLine($"  In: memSid={req.MemSid}, range={req.OrderDateStart:yyyy-MM-dd}~{req.OrderDateEnd:yyyy-MM-dd}, orderState={req.OrderState}");
+            WriteInJson(req);
 
             var result = await svc.SearchByBuyerAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -205,7 +205,8 @@ namespace CPF.Sandbox.Scenarios
             var fixedToday = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Local);
             var svc = SearchSdkSetup.Build(clock: new FixedClock(fixedToday));
             var req = new GetAppDashboardOverviewModel { CuamCid = 528672 };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid} (FixedClock today={fixedToday:O})");
+            WriteInJson(req);
+            Console.WriteLine($"  (FixedClock today={fixedToday:O})");
 
             var result = await svc.GetAppDashboardAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -249,7 +250,7 @@ namespace CPF.Sandbox.Scenarios
                 DateEndPoP = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
                 DateRangeType = CPFEnum.DateRangeType.Today,
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}, dateRangeType={req.DateRangeType}");
+            WriteInJson(req);
 
             var result = await svc.GetAppSalesTodayAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -306,7 +307,7 @@ namespace CPF.Sandbox.Scenarios
                 DateEndPoP = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
                 DateRangeType = CPFEnum.DateRangeType.SetWeek,
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}, dateRangeType={req.DateRangeType}");
+            WriteInJson(req);
 
             var result = await svc.GetAppSalesWeekAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -357,7 +358,7 @@ namespace CPF.Sandbox.Scenarios
 
             var svc = SearchSdkSetup.Build();
             var req = new SearchUserCGoodsMModel { CuamCid = 528672 };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}");
+            WriteInJson(req);
 
             var result = await svc.GetUserCgdmDataAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -400,6 +401,25 @@ namespace CPF.Sandbox.Scenarios
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All),
             });
             Console.WriteLine(json);
+        }
+
+        // In 完整 JSON 顯示 (含 null 欄位、enum 顯示字串名對齊 Golden In JSON 形狀、避免讀者誤判 Suite 漏設欄位)
+        private static readonly JsonSerializerOptions _inJsonOpts = CreateInJsonOpts();
+        private static JsonSerializerOptions CreateInJsonOpts()
+        {
+            var opts = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All),
+            };
+            opts.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+            return opts;
+        }
+        private static void WriteInJson(object req)
+        {
+            Console.WriteLine("  In:");
+            Console.WriteLine(JsonSerializer.Serialize(req, _inJsonOpts));
         }
     }
 }
