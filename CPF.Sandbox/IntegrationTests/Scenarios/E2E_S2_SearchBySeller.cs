@@ -17,10 +17,11 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
             var svc = SearchSdkSetup.Build();
             var req = new SearchOrderInfoBySellerIdModel
             {
+                PageIndex = 0,
+                PageSize = 50,
                 CuamCid = dataset.SellerCuamCid,
                 OrderDateStart = dataset.DateRangeStart,
                 OrderDateEnd   = dataset.DateRangeEnd,
-                PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 50 },
                 OrderSorts = new[] { OrderSort.CoomCreateDatetimeDesc, OrderSort.CoomNoDesc },
                 IsQaList = false,
             };

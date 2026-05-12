@@ -29,17 +29,19 @@ namespace CPF.Sandbox.Scenarios
                 }),
                 2 => await svc.SearchBySellerAsync(new SearchOrderInfoBySellerIdModel
                 {
+                    PageIndex = 0,
+                    PageSize = 10,
                     CuamCid = 528672,
                     OrderDateStart = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
                     OrderDateEnd = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
-                    PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 10 },
                 }),
                 3 => await svc.SearchByBuyerAsync(new SearchOrderInfoByBuyerIdModel
                 {
+                    PageIndex = 0,
+                    PageSize = 10,
                     MemSid = 528672,
                     OrderDateStart = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
                     OrderDateEnd = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
-                    PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 10 },
                 }),
                 4 => await svc.GetAppDashboardAsync(new GetAppDashboardOverviewModel
                 {

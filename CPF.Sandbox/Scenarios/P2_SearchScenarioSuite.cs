@@ -102,7 +102,8 @@ namespace CPF.Sandbox.Scenarios
             // S41-L: 完整對齊 Golden Search_2 In-1 樣張、null 欄位顯式列出 (對齊 Golden In JSON 形狀、避免誤判)
             var req = new SearchOrderInfoBySellerIdModel
             {
-                PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 50 },
+                PageIndex = 0,
+                PageSize = 50,
                 CuamCid = 528672,
                 OrderDateStart = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
                 OrderDateEnd = new DateTime(2026, 5, 5, 15, 59, 59, 999, DateTimeKind.Utc),
@@ -153,7 +154,8 @@ namespace CPF.Sandbox.Scenarios
             // S41-L: 完整對齊 Golden Search_3 In-1 樣張、null 欄位顯式列出 (對齊 Golden In JSON 形狀、避免誤判)
             var req = new SearchOrderInfoByBuyerIdModel
             {
-                PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 50 },
+                PageIndex = 0,
+                PageSize = 50,
                 MemSid = 528672,
                 OrderDateStart = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
                 OrderDateEnd = new DateTime(2026, 5, 5, 15, 59, 59, 999, DateTimeKind.Utc),

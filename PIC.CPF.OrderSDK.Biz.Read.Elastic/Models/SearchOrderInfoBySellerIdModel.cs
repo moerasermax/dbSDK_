@@ -9,7 +9,9 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Models
     /// </summary>
     public class SearchOrderInfoBySellerIdModel
     {
-        public OrderSearchPageInfo? PageInfo { get; init; }
+        // S41-M: flat 化 PageIndex/PageSize、對齊 Golden In JSON 形狀 + 客戶 Model pass-through 整合
+        public int? PageIndex { get; init; }
+        public int? PageSize { get; init; }
         public int? CuamCid { get; init; }
         public DateTime? OrderDateStart { get; init; }
         public DateTime? OrderDateEnd { get; init; }

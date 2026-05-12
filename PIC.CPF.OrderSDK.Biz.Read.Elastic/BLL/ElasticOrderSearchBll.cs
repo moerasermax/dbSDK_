@@ -74,8 +74,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         {
             try
             {
-                var pageSize = model.PageInfo?.PageSize ?? 10;
-                var pageIndex = model.PageInfo?.PageIndex ?? 0;
+                var pageSize = model.PageSize ?? 10;
+                var pageIndex = model.PageIndex ?? 0;
 
                 var query = new InternalModels.OrderInfoQueryModel
                 {
@@ -132,8 +132,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         {
             try
             {
-                var pageSize = model.PageInfo?.PageSize ?? 10;
-                var pageIndex = model.PageInfo?.PageIndex ?? 0;
+                var pageSize = model.PageSize ?? 10;
+                var pageIndex = model.PageIndex ?? 0;
 
                 var query = new InternalModels.OrderInfoQueryModel
                 {
