@@ -49,7 +49,7 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S23: Search 1 — GetHomeToDoOverView");
 
             var svc = SearchSdkSetup.Build();
-            var req = new OrderSearchRequest
+            var req = new GetHomeToDoOverviewModel
             {
                 CuamCid = 528672,
                 SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
@@ -92,16 +92,16 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S24: Search 2 — SearchBySeller");
 
             var svc = SearchSdkSetup.Build();
-            var req = new OrderSearchRequest
+            var req = new SearchOrderInfoBySellerIdModel
             {
                 CuamCid = 528672,
-                SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
-                SearchEndDate = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Utc),
-                OrderState = PIC.CPF.OrderSDK.Biz.Read.Elastic.Enum.OrderState.DealWith, // 處理中
+                OrderDateStart = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
+                OrderDateEnd = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Utc),
+                OrderState = CPFEnum.OrderState.DealWith, // 處理中
                 // 對齊 Golden Search_2 In 期望:OrderSorts=[1,3] = [CoomCreateDatetimeDesc, CoomNoDesc]
-                Sorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
+                OrderSorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}, orderState={req.OrderState}");
+            Console.WriteLine($"  In: cuamCid={req.CuamCid}, range={req.OrderDateStart:yyyy-MM-dd}~{req.OrderDateEnd:yyyy-MM-dd}, orderState={req.OrderState}");
 
             var result = await svc.SearchBySellerAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -133,16 +133,16 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S25: Search 3 — SearchByBuyer");
 
             var svc = SearchSdkSetup.Build();
-            var req = new OrderSearchRequest
+            var req = new SearchOrderInfoByBuyerIdModel
             {
                 MemSid = 528672,
-                SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
-                SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
+                OrderDateStart = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
+                OrderDateEnd = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
                 OrderState = CPFEnum.OrderState.DealWith, // 補上 OrderState 過濾
                 // 對齊 Golden Search_3 In 期望:OrderSorts=[1,3]
-                Sorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
+                OrderSorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
             };
-            Console.WriteLine($"  In: memSid={req.MemSid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}, orderState={req.OrderState}");
+            Console.WriteLine($"  In: memSid={req.MemSid}, range={req.OrderDateStart:yyyy-MM-dd}~{req.OrderDateEnd:yyyy-MM-dd}, orderState={req.OrderState}");
 
             var result = await svc.SearchByBuyerAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }
@@ -175,7 +175,8 @@ namespace CPF.Sandbox.Scenarios
 
             var svc = SearchSdkSetup.Build();
             // 從測試資料反推:Search 4 newOrderCnt/shippedCnt/repliedCnt 對應 Search 1 dealWith/toship/sellerQaNeverReply 桶,該桶用 4/27~5/05 區間得 5/1/1 對齊 Golden
-            var req = new OrderSearchRequest
+            // ⚠️ PENDING_BUSINESS_LOGIC:Golden In 只傳 cuamCid、Suite 為對齊 Golden Out 反推補 SearchStart/End 區間、待客戶確認真實 default 行為
+            var req = new GetAppDashboardOverviewModel
             {
                 CuamCid = 528672,
                 SearchStartDate = new DateTime(2026, 4, 27, 16, 0, 0, DateTimeKind.Utc),
@@ -215,7 +216,7 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S27: Search 5 — GetAppSalesToday");
 
             var svc = SearchSdkSetup.Build();
-            var req = new OrderSearchRequest
+            var req = new GetAppSalesMetricsModel
             {
                 CuamCid = 528672,
                 SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
@@ -272,7 +273,7 @@ namespace CPF.Sandbox.Scenarios
 
             var svc = SearchSdkSetup.Build();
             // 對齊 Golden Search_6 樣張 in:4/27 16:00Z ~ 5/05 15:59Z + DateRangeType=SetWeek
-            var req = new OrderSearchRequest
+            var req = new GetAppSalesMetricsModel
             {
                 CuamCid = 528672,
                 SearchStartDate = new DateTime(2026, 4, 27, 16, 0, 0, DateTimeKind.Utc),
@@ -332,7 +333,7 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S29: Search 7 — GetUserCgdmData");
 
             var svc = SearchSdkSetup.Build();
-            var req = new OrderSearchRequest { CuamCid = 528672 };
+            var req = new SearchUserCGoodsMModel { CuamCid = 528672 };
             Console.WriteLine($"  In: cuamCid={req.CuamCid}");
 
             var result = await svc.GetUserCgdmDataAsync(req);

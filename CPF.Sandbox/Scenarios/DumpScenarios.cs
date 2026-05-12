@@ -17,38 +17,63 @@ namespace CPF.Sandbox.Scenarios
         internal static async Task DumpAsync(int searchNo)
         {
             var svc = SearchSdkSetup.Build();
-            var req = BuildSampleRequest(searchNo);
 
+            // 對齊客戶 GoldenRecipe sample:cuamCid=528672 / 04-22~04-29 區間
             object payload = searchNo switch
             {
-                1 => await svc.GetHomeToDoOverViewAsync(req),
-                2 => await svc.SearchBySellerAsync(req),
-                3 => await svc.SearchByBuyerAsync(req),
-                4 => await svc.GetAppDashboardAsync(req),
-                5 => await svc.GetAppSalesTodayAsync(req),
-                6 => await svc.GetAppSalesWeekAsync(req),
-                7 => await svc.GetUserCgdmDataAsync(req),
+                1 => await svc.GetHomeToDoOverViewAsync(new GetHomeToDoOverviewModel
+                {
+                    CuamCid = 528672,
+                    SearchStartDate = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
+                    SearchEndDate = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
+                }),
+                2 => await svc.SearchBySellerAsync(new SearchOrderInfoBySellerIdModel
+                {
+                    CuamCid = 528672,
+                    OrderDateStart = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
+                    OrderDateEnd = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
+                    PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 10 },
+                }),
+                3 => await svc.SearchByBuyerAsync(new SearchOrderInfoByBuyerIdModel
+                {
+                    MemSid = 528672,
+                    OrderDateStart = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
+                    OrderDateEnd = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
+                    PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 10 },
+                }),
+                4 => await svc.GetAppDashboardAsync(new GetAppDashboardOverviewModel
+                {
+                    CuamCid = 528672,
+                    SearchStartDate = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
+                    SearchEndDate = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
+                }),
+                5 => await svc.GetAppSalesTodayAsync(new GetAppSalesMetricsModel
+                {
+                    CuamCid = 528672,
+                    SearchStartDate = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
+                    SearchEndDate = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
+                    DateStartPoP = new DateTime(2026, 4, 15, 0, 0, 0, DateTimeKind.Utc),
+                    DateEndPoP = new DateTime(2026, 4, 21, 23, 59, 59, DateTimeKind.Utc),
+                    DateRangeType = DateRangeType.Today,
+                }),
+                6 => await svc.GetAppSalesWeekAsync(new GetAppSalesMetricsModel
+                {
+                    CuamCid = 528672,
+                    SearchStartDate = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
+                    SearchEndDate = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
+                    DateStartPoP = new DateTime(2026, 4, 15, 0, 0, 0, DateTimeKind.Utc),
+                    DateEndPoP = new DateTime(2026, 4, 21, 23, 59, 59, DateTimeKind.Utc),
+                    DateRangeType = DateRangeType.SetWeek,
+                }),
+                7 => await svc.GetUserCgdmDataAsync(new SearchUserCGoodsMModel
+                {
+                    CuamCid = 528672,
+                }),
                 _ => throw new ArgumentOutOfRangeException(nameof(searchNo), $"Search_{searchNo} 不存在 (僅支援 1-7)")
             };
 
             Console.WriteLine($"=== dump-s{searchNo} ({DescribeMethod(searchNo)}) ===");
             Console.WriteLine(JsonSerializer.Serialize(payload, JsonOpts));
-        }
-
-        private static OrderSearchRequest BuildSampleRequest(int searchNo)
-        {
-            // 對齊客戶 CUN9101 GoldenRecipe sample: cuamCid=528672 / 04-22~04-29 區間
-            return new OrderSearchRequest
-            {
-                CuamCid = 528672,
-                MemSid = 528672,
-                SearchStartDate = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
-                SearchEndDate = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
-                DateStartPoP = new DateTime(2026, 4, 15, 0, 0, 0, DateTimeKind.Utc),
-                DateEndPoP = new DateTime(2026, 4, 21, 23, 59, 59, DateTimeKind.Utc),
-                DateRangeType = searchNo == 6 ? DateRangeType.ThisWeek : DateRangeType.Today,
-                PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 10 },
-            };
         }
 
         private static string DescribeMethod(int n) => n switch

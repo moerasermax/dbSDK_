@@ -13,7 +13,7 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
             Console.WriteLine("========================================");
 
             var svc = SearchSdkSetup.Build();
-            var req = new OrderSearchRequest { CuamCid = dataset.SellerCuamCid };
+            var req = new SearchUserCGoodsMModel { CuamCid = dataset.SellerCuamCid };
             var expected = ExpectedValueCalculator.Calculate_Search7(dataset, dataset.SellerCuamCid);
 
             var result = await svc.GetUserCgdmDataAsync(req);

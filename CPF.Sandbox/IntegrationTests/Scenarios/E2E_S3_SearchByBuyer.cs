@@ -15,13 +15,13 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
             Console.WriteLine("========================================");
 
             var svc = SearchSdkSetup.Build();
-            var req = new OrderSearchRequest
+            var req = new SearchOrderInfoByBuyerIdModel
             {
                 MemSid = dataset.BuyerMemSid,
-                SearchStartDate = dataset.DateRangeStart,
-                SearchEndDate   = dataset.DateRangeEnd,
+                OrderDateStart = dataset.DateRangeStart,
+                OrderDateEnd   = dataset.DateRangeEnd,
                 PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 50 },
-                Sorts = new[] { OrderSort.CoomCreateDatetimeDesc, OrderSort.CoomNoDesc },
+                OrderSorts = new[] { OrderSort.CoomCreateDatetimeDesc, OrderSort.CoomNoDesc },
                 IsQaList = false,
                 BindMembersArray = Array.Empty<int>(),
             };

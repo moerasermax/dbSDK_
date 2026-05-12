@@ -19,7 +19,7 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
             var start = new DateTime(2026, 4, 28, 16, 0, 0, DateTimeKind.Utc);
             var end   = new DateTime(2026, 4, 29, 15, 59, 59, 999, DateTimeKind.Utc);
 
-            var req = new OrderSearchRequest
+            var req = new GetAppSalesMetricsModel
             {
                 CuamCid         = dataset.SellerCuamCid,
                 SearchStartDate = start,

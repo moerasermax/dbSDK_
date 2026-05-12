@@ -16,25 +16,25 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Services
             _orderSearchBll = orderSearchBll;
         }
 
-        public Task<IResult<AggregateOrderInfoResultModel>> GetHomeToDoOverViewAsync(OrderSearchRequest req)
-            => _orderSearchBll.GetHomeToDoOverViewAsync(req);
+        public Task<IResult<AggregateOrderInfoResultModel>> GetHomeToDoOverViewAsync(GetHomeToDoOverviewModel model)
+            => _orderSearchBll.GetHomeToDoOverViewAsync(model);
 
-        public Task<IResult<SearchOrderInfoResultModel>> SearchBySellerAsync(OrderSearchRequest req)
-            => _orderSearchBll.SearchBySellerAsync(req);
+        public Task<IResult<SearchOrderInfoResultModel>> SearchBySellerAsync(SearchOrderInfoBySellerIdModel model)
+            => _orderSearchBll.SearchBySellerAsync(model);
 
-        public Task<IResult<SearchOrderInfoResultModel>> SearchByBuyerAsync(OrderSearchRequest req)
-            => _orderSearchBll.SearchByBuyerAsync(req);
+        public Task<IResult<SearchOrderInfoResultModel>> SearchByBuyerAsync(SearchOrderInfoByBuyerIdModel model)
+            => _orderSearchBll.SearchByBuyerAsync(model);
 
-        public Task<IResult<AppDashboardAggregateResultModel>> GetAppDashboardAsync(OrderSearchRequest req)
-            => _orderSearchBll.GetAppDashboardAsync(req);
+        public Task<IResult<AppDashboardAggregateResultModel>> GetAppDashboardAsync(GetAppDashboardOverviewModel model)
+            => _orderSearchBll.GetAppDashboardAsync(model);
 
-        public Task<IResult<AppSalesMetricsResultModel>> GetAppSalesTodayAsync(OrderSearchRequest req)
-            => _orderSearchBll.GetAppSalesTodayAsync(req);
+        public Task<IResult<AppSalesMetricsResultModel>> GetAppSalesTodayAsync(GetAppSalesMetricsModel model)
+            => _orderSearchBll.GetAppSalesTodayAsync(model);
 
-        public Task<IResult<AppSalesMetricsResultModel>> GetAppSalesWeekAsync(OrderSearchRequest req)
-            => _orderSearchBll.GetAppSalesWeekAsync(req);
+        public Task<IResult<AppSalesMetricsResultModel>> GetAppSalesWeekAsync(GetAppSalesMetricsModel model)
+            => _orderSearchBll.GetAppSalesWeekAsync(model);
 
-        public Task<IResult<UserCgdmDataResultModel>> GetUserCgdmDataAsync(OrderSearchRequest req)
-            => _orderSearchBll.GetUserCgdmDataAsync(req);
+        public Task<IResult<UserCgdmDataResultModel>> GetUserCgdmDataAsync(SearchUserCGoodsMModel model)
+            => _orderSearchBll.GetUserCgdmDataAsync(model);
     }
 }

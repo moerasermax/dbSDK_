@@ -9,6 +9,12 @@ using InternalModels = PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal;
 
 namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
 {
+    /// <summary>
+    /// Order Search BLL — 7 個 Search method、各自接 6 個對齊客戶 Controller 命名的 Public Input Model。
+    /// Clean Architecture 分層:
+    ///   Public Input (客戶端傳入) → BLL (本層) → Internal Aggregate Model → DAL → ES/Mongo
+    ///   業務規則 (PoP defaulting、fallback 區間、Dual Engine flow) 收斂於本層、DAL 保持 dumb。
+    /// </summary>
     public class ElasticOrderSearchBll
     {
         private readonly OrderSearchDal _dal;
@@ -24,15 +30,16 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
 
         // ==========================================
         // Search 1：首頁待辦事項總覽（買家 + 賣家雙視角）
+        // 客戶 Controller: GetHomeToDoOverview(GetHomeToDoOverviewModel)
         // ==========================================
         public async Task<IResult<PublicModels.AggregateOrderInfoResultModel>> GetHomeToDoOverViewAsync(
-            PublicModels.OrderSearchRequest req)
+            PublicModels.GetHomeToDoOverviewModel model)
         {
             try
             {
-                var start = req.SearchStartDate ?? DateTime.MinValue;
-                var end = req.SearchEndDate ?? DateTime.MaxValue;
-                var cid = req.CuamCid ?? 0;
+                var start = model.SearchStartDate ?? DateTime.MinValue;
+                var end = model.SearchEndDate ?? DateTime.MaxValue;
+                var cid = model.CuamCid ?? 0;
 
                 var internalResult = await _dal.AggregateOrderInfoAsync(
                     buyerOverview: [new InternalModels.BuyerOverviewAggregateModel { CoocMemSid = cid, OrderDateStart = start, OrderDateEnd = end }],
@@ -51,33 +58,33 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
 
         // ==========================================
         // Search 2：訂單搜尋（賣家視角）
+        // 客戶 Controller: SearchOrderInfoBySellerId(SearchOrderInfoBySellerIdModel)
         // ==========================================
         public async Task<IResult<PublicModels.SearchOrderInfoResultModel>> SearchBySellerAsync(
-            PublicModels.OrderSearchRequest req)
+            PublicModels.SearchOrderInfoBySellerIdModel model)
         {
             try
             {
-                var pageSize = req.PageInfo?.PageSize ?? 10;
-                var pageIndex = req.PageInfo?.PageIndex ?? 0;
+                var pageSize = model.PageInfo?.PageSize ?? 10;
+                var pageIndex = model.PageInfo?.PageIndex ?? 0;
 
                 var query = new InternalModels.OrderInfoQueryModel
                 {
-                    CoomCuamCid = req.CuamCid,
-                    OrderDateStart = req.SearchStartDate,
-                    OrderDateEnd = req.SearchEndDate,
-                    CoomNo = req.CoomNo,
-                    CoomName = req.CoomName,
-                    EsmmShipNo = req.EsmmShipNo,
-                    CoodName = req.CoodName,
-                    CoocNo = req.CoocNo,
-                    OrderState = req.OrderState,
-                    DeliverMethodSearchKind = req.DeliverMethodSearchKind,
-                    OrdChannelKindSearchKind = req.OrdChannelKindSearchKind,
-                    TempTypeSearchKind = req.TempTypeSearchKind,
-                    IsQaList = req.IsQaList,
-                    BindMembersArray = req.BindMembersArray,
+                    CoomCuamCid = model.CuamCid,
+                    OrderDateStart = model.OrderDateStart,
+                    OrderDateEnd = model.OrderDateEnd,
+                    CoomNo = model.CoomNo,
+                    CoomName = model.CoomName,
+                    EsmmShipNo = model.EsmmShipNo,
+                    CoodName = model.CoodName,
+                    CoocNo = model.CoocNo,
+                    OrderState = model.OrderState,
+                    DeliverMethodSearchKind = model.DeliverMethodSearchKind,
+                    OrdChannelKindSearchKind = model.OrdChannelKindSearchKind,
+                    TempTypeSearchKind = model.TempTypeSearchKind,
+                    IsQaList = model.IsQaList,
                 };
-                var sort = new InternalModels.OrderInfoSortModel { OrderSorts = req.Sorts };
+                var sort = new InternalModels.OrderInfoSortModel { OrderSorts = model.OrderSorts };
 
                 // mirror 客戶原 SDK Dual Engine: ① OPS 取 Total + KeyList ② Mongo 取明細 (客戶端是 DDB/DynamoDB,dbSDK 用 MongoDB) ③ 轉 Public Model
                 var OPSResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
@@ -109,35 +116,30 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
 
         // ==========================================
         // Search 3：訂單搜尋（買家視角）
+        // 客戶 Controller: SearchOrderInfoByBuyerId(SearchOrderInfoByBuyerIdModel)
         // ==========================================
         public async Task<IResult<PublicModels.SearchOrderInfoResultModel>> SearchByBuyerAsync(
-            PublicModels.OrderSearchRequest req)
+            PublicModels.SearchOrderInfoByBuyerIdModel model)
         {
             try
             {
-                var pageSize = req.PageInfo?.PageSize ?? 10;
-                var pageIndex = req.PageInfo?.PageIndex ?? 0;
+                var pageSize = model.PageInfo?.PageSize ?? 10;
+                var pageIndex = model.PageInfo?.PageIndex ?? 0;
 
                 var query = new InternalModels.OrderInfoQueryModel
                 {
-                    CoocMemSid = req.MemSid,
-                    OrderDateStart = req.SearchStartDate,
-                    OrderDateEnd = req.SearchEndDate,
-                    CoomNo = req.CoomNo,
-                    CoomName = req.CoomName,
-                    EsmmShipNo = req.EsmmShipNo,
-                    CoodName = req.CoodName,
-                    CoocNo = req.CoocNo,
-                    OrderState = req.OrderState,
-                    DeliverMethodSearchKind = req.DeliverMethodSearchKind,
-                    OrdChannelKindSearchKind = req.OrdChannelKindSearchKind,
-                    TempTypeSearchKind = req.TempTypeSearchKind,
-                    IsQaList = req.IsQaList,
-                    BindMembersArray = req.BindMembersArray,
+                    CoocMemSid = model.MemSid,
+                    OrderDateStart = model.OrderDateStart,
+                    OrderDateEnd = model.OrderDateEnd,
+                    CoomNo = model.CoomNo,
+                    CoocNo = model.CoocNo,
+                    OrderState = model.OrderState,
+                    IsQaList = model.IsQaList,
+                    BindMembersArray = model.BindMembersArray,
                 };
-                var sort = new InternalModels.OrderInfoSortModel { OrderSorts = req.Sorts };
+                var sort = new InternalModels.OrderInfoSortModel { OrderSorts = model.OrderSorts };
 
-                // mirror 客戶原 SDK Dual Engine: ① OPS 取 Total + KeyList ② Mongo 取明細 (客戶端是 DDB/DynamoDB,dbSDK 用 MongoDB) ③ 轉 Public Model
+                // mirror 客戶原 SDK Dual Engine
                 var OPSResult = await _dal.SearchOrderInfoAsync(pageIndex * pageSize, pageSize, query, sort);
                 if (OPSResult.Total <= 0)
                 {
@@ -166,17 +168,19 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         }
 
         // ==========================================
-        // Search 4：App 儀表板總覽（固定 90 天區間）
+        // Search 4：App 儀表板總覽
+        // 客戶 Controller: GetAppDashboardOverview(GetAppDashboardOverviewModel)
+        // ⚠️ PENDING_BUSINESS_LOGIC:Golden In 未含時間區間、未指定 fallback 90 天規則待客戶確認
         // ==========================================
         public async Task<IResult<PublicModels.AppDashboardAggregateResultModel>> GetAppDashboardAsync(
-            PublicModels.OrderSearchRequest req)
+            PublicModels.GetAppDashboardOverviewModel model)
         {
             try
             {
-                var cid = req.CuamCid ?? 0;
-                // Caller 可指定區間;未指定 fallback 90 天 (移除原硬編碼,對齊 capsule §3 紀律)
-                var end = req.SearchEndDate ?? DateTime.UtcNow;
-                var start = req.SearchStartDate ?? end.AddDays(-90);
+                var cid = model.CuamCid ?? 0;
+                // Caller 可指定區間;未指定 fallback 90 天 (PENDING_BUSINESS_LOGIC 待客戶確認)
+                var end = model.SearchEndDate ?? DateTime.UtcNow;
+                var start = model.SearchStartDate ?? end.AddDays(-90);
 
                 var internalResult = await _dal.AppAggregateOrderInfoAsync(
                     appSellerOverview: [new InternalModels.AppSellerOverViewAggregateModel { CoomCuamCid = cid, OrderDateStart = start, OrderDateEnd = end }],
@@ -193,31 +197,32 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
 
         // ==========================================
         // Search 5：App 銷售指標（本日）
+        // 客戶 Controller: GetAppSalesMetrics(GetAppSalesMetricsModel) — dateRangeType=Today
         // ==========================================
         public async Task<IResult<PublicModels.AppSalesMetricsResultModel>> GetAppSalesTodayAsync(
-            PublicModels.OrderSearchRequest req)
+            PublicModels.GetAppSalesMetricsModel model)
         {
             try
             {
-                var (startPoP, endPoP, validationError) = ResolvePoPRange(req);
+                var (startPoP, endPoP, validationError) = ResolvePoPRange(model);
                 if (validationError != null)
                     return Result<PublicModels.AppSalesMetricsResultModel>.SetErrorResult(nameof(GetAppSalesTodayAsync), validationError);
 
-                var model = new InternalModels.AppSalesMetricsModel
+                var internalModel = new InternalModels.AppSalesMetricsModel
                 {
-                    CuamCid = req.CuamCid ?? 0,
-                    SearchStartDate = req.SearchStartDate,
-                    SearchEndDate = req.SearchEndDate,
+                    CuamCid = model.CuamCid ?? 0,
+                    SearchStartDate = model.SearchStartDate,
+                    SearchEndDate = model.SearchEndDate,
                     StartDatePoP = startPoP,
                     EndDatePoP = endPoP,
-                    DateRangeType = req.DateRangeType,
+                    DateRangeType = model.DateRangeType,
                 };
-                var internalResults = await _dal.AppSalesMetricsInfoAsync([model]);
+                var internalResults = await _dal.AppSalesMetricsInfoAsync([internalModel]);
                 var resultArray = internalResults.ConvertToAppSalesMetricsResultModel();
                 var result = resultArray.Length > 0 ? resultArray[0] : new PublicModels.AppSalesMetricsResultModel();
 
                 // 套用趨勢資料補零 (S41-F: Daily 路徑改以 req.SearchStart/End 為區間、不再用 DateTime.Now)
-                result = result.ApplyZeroPadding(req.DateRangeType, req.SearchStartDate, req.SearchEndDate);
+                result = result.ApplyZeroPadding(model.DateRangeType, model.SearchStartDate, model.SearchEndDate);
 
                 return Result<PublicModels.AppSalesMetricsResultModel>.SetResult("成功", result);
             }
@@ -230,31 +235,32 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
 
         // ==========================================
         // Search 6：App 銷售指標（本週）
+        // 客戶 Controller: GetAppSalesMetrics(GetAppSalesMetricsModel) — dateRangeType=SetWeek 等
         // ==========================================
         public async Task<IResult<PublicModels.AppSalesMetricsResultModel>> GetAppSalesWeekAsync(
-            PublicModels.OrderSearchRequest req)
+            PublicModels.GetAppSalesMetricsModel model)
         {
             try
             {
-                var (startPoP, endPoP, validationError) = ResolvePoPRange(req);
+                var (startPoP, endPoP, validationError) = ResolvePoPRange(model);
                 if (validationError != null)
                     return Result<PublicModels.AppSalesMetricsResultModel>.SetErrorResult(nameof(GetAppSalesWeekAsync), validationError);
 
-                var model = new InternalModels.AppSalesMetricsModel
+                var internalModel = new InternalModels.AppSalesMetricsModel
                 {
-                    CuamCid = req.CuamCid ?? 0,
-                    SearchStartDate = req.SearchStartDate,
-                    SearchEndDate = req.SearchEndDate,
+                    CuamCid = model.CuamCid ?? 0,
+                    SearchStartDate = model.SearchStartDate,
+                    SearchEndDate = model.SearchEndDate,
                     StartDatePoP = startPoP,
                     EndDatePoP = endPoP,
-                    DateRangeType = req.DateRangeType,
+                    DateRangeType = model.DateRangeType,
                 };
-                var internalResults = await _dal.AppSalesMetricsInfoAsync([model]);
+                var internalResults = await _dal.AppSalesMetricsInfoAsync([internalModel]);
                 var resultArray = internalResults.ConvertToAppSalesMetricsResultModel();
                 var result = resultArray.Length > 0 ? resultArray[0] : new PublicModels.AppSalesMetricsResultModel();
 
-                // 套用趨勢資料補零 (S41-F: Daily 路徑改以 req.SearchStart/End 為區間、不再用 DateTime.Now)
-                result = result.ApplyZeroPadding(req.DateRangeType, req.SearchStartDate, req.SearchEndDate);
+                // 套用趨勢資料補零 (S41-F: Daily 路徑改以 req.SearchStart/End 為區間)
+                result = result.ApplyZeroPadding(model.DateRangeType, model.SearchStartDate, model.SearchEndDate);
 
                 return Result<PublicModels.AppSalesMetricsResultModel>.SetResult("成功", result);
             }
@@ -266,33 +272,29 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         }
 
         // Application layer 業務規則:Period-over-Period (PoP) 區間預設策略 (S41-H)
-        // 規則:
-        //   (a) 若 caller 未指定 PoP (both null):預設等於 main range
-        //       — 對齊 Golden Search_5/6 樣張、PoP=main 表示「無對比基期」場景
-        //   (b) 半套指定 (只傳一邊):invalid input、回 validationError
-        //       — 防止 caller 誤傳一邊 null 一邊有值、避免 DAL silent skip date filter 撈全量
-        // 設計理由:此 PoP 區間規則屬「業務語義」、應在 BLL/Application layer 收斂、
-        //         不適合 DAL 層猜 default;DAL 保持 dumb (傳什麼撈什麼)
+        // 規則:(a) 若 caller 未指定 PoP (both null):預設等於 main range
+        //       (b) 半套指定 (只傳一邊):invalid input、回 validationError
         private static (DateTime? Start, DateTime? End, string? Error) ResolvePoPRange(
-            PublicModels.OrderSearchRequest req)
+            PublicModels.GetAppSalesMetricsModel model)
         {
-            if (req.DateStartPoP.HasValue != req.DateEndPoP.HasValue)
+            if (model.DateStartPoP.HasValue != model.DateEndPoP.HasValue)
                 return (null, null, "DateStartPoP 與 DateEndPoP 必須同時提供、或同時為 null");
 
-            return (req.DateStartPoP ?? req.SearchStartDate, req.DateEndPoP ?? req.SearchEndDate, null);
+            return (model.DateStartPoP ?? model.SearchStartDate, model.DateEndPoP ?? model.SearchEndDate, null);
         }
 
         // ==========================================
         // Search 7：取得賣家 cgdm 資料 (S41-E)
+        // 客戶 Controller: GetUserCgdmData(SearchUserCGoodsMModel)
         // mirror 客戶原 SDK: _searchDal.GetUserByCuamCidFromDDB(CuamCid) — 客戶 DDB=DynamoDB,dbSDK 用 MongoDB Users collection
         // 棄用原 ES 聚合 (Nested→Terms→ReverseNested→Max _ord_modify_date) — 測試資料 ES 無 _ord_modify_date 來源
         // ==========================================
         public async Task<IResult<PublicModels.UserCgdmDataResultModel>> GetUserCgdmDataAsync(
-            PublicModels.OrderSearchRequest req)
+            PublicModels.SearchUserCGoodsMModel model)
         {
             try
             {
-                var cid = req.CuamCid ?? 0;
+                var cid = model.CuamCid ?? 0;
                 var mongoUser = await _mongoSearchDal.GetUserByCuamCidFromMongoAsync(cid);
                 return Result<PublicModels.UserCgdmDataResultModel>.SetResult("成功", mongoUser.ConvertToUserCgdmDataResultModel(cid));
             }

@@ -18,15 +18,14 @@ namespace CPF.Sandbox.IntegrationTests.Scenarios
 
             var svc = SearchSdkSetup.Build();
 
-            // 用 dataset 完整區間 + 預埋的 SellerCuamCid
-            var req = new OrderSearchRequest
+            // 用 dataset 完整區間 + 預埋的 SellerCuamCid (Search 1 cuamCid 同時用作買家視角 MemSid、見 BLL line 28~50)
+            var req = new GetHomeToDoOverviewModel
             {
                 CuamCid = dataset.SellerCuamCid,
-                MemSid  = dataset.BuyerMemSid,
                 SearchStartDate = dataset.DateRangeStart,
                 SearchEndDate   = dataset.DateRangeEnd,
             };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, memSid={req.MemSid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}");
+            Console.WriteLine($"  In: cuamCid={req.CuamCid}, range={req.SearchStartDate:yyyy-MM-dd}~{req.SearchEndDate:yyyy-MM-dd}");
 
             // BLL 不接受 MemSid 在 GetHomeToDoOverView？看 BLL line 30~38：buyerOverview 用 cid（!）
             // 實際 BLL：buyerOverview/buyerPerformance 也是用 CuamCid。讓 expected 與 actual 一致。
