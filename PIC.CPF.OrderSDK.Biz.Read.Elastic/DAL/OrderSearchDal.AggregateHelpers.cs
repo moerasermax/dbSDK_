@@ -244,6 +244,9 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             var interval = isHourly ? CalendarInterval.Hour : CalendarInterval.Day;
             var fmt = isHourly ? "HH" : "MM/dd";
 
+            // S41-G: trend 改全量 (移除 PurchaseOrderQuery filter) 對齊 Golden Search 5/6 樣張
+            // 業務語義:trend 為「歷時走勢視覺化」、給賣家看訂單流量 (含取消)、非「有效訂單金額」
+            // 主指標 totalOrderCnt/totalAmount 仍保留 PurchaseOrderQuery (那是 KPI、要排除取消)
             return aggs => aggs.Add(name, agg => agg
                 .Filter(OrderInfoQuery(query))
                 .Aggregations(childAggs => childAggs
@@ -256,13 +259,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                             .TimeZone("+08:00")
                         )
                         .Aggregations(histAggs => histAggs
-                            .Add($"{name}_{SMT_Valid}", fa => fa
-                                .Filter(PurchaseOrderQuery())
-                                .Aggregations(validAggs => validAggs
-                                    .Add($"{name}_{SMT_SalesAmt}", sum => sum
-                                        .Sum(s => s.Field(o => o.CoomRcvTotalAmt))
-                                    )
-                                )
+                            .Add($"{name}_{SMT_SalesAmt}", sum => sum
+                                .Sum(s => s.Field(o => o.CoomRcvTotalAmt))
                             )
                         )
                     )
@@ -459,19 +457,14 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             var salesTrend = new List<OrderTrendData>();
             var orderTrend = new List<OrderTrendData>();
 
+            // S41-G: trend 改全量、直接讀 hist bucket DocCount + Sum (無 SMT_Valid 中介 filter)
             foreach (var bucket in hist.Buckets)
             {
                 var timePane = bucket.KeyAsString ?? bucket.Key.ToString();
-                int orderCount = 0;
-                int salesAmt = 0;
-
-                if (bucket.Aggregations != null &&
-                    bucket.Aggregations.TryGetValue($"{name}_{SMT_Valid}", out var validAgg) &&
-                    validAgg is FilterAggregate valid)
-                {
-                    orderCount = (int)valid.DocCount;
-                    salesAmt = GetNestedSum(valid.Aggregations, $"{name}_{SMT_SalesAmt}");
-                }
+                int orderCount = (int)bucket.DocCount;
+                int salesAmt = bucket.Aggregations != null
+                    ? GetNestedSum(bucket.Aggregations, $"{name}_{SMT_SalesAmt}")
+                    : 0;
 
                 salesTrend.Add(new OrderTrendData { TimePane = timePane, Value = salesAmt });
                 orderTrend.Add(new OrderTrendData { TimePane = timePane, Value = orderCount });

@@ -243,6 +243,11 @@ namespace CPF.Sandbox.Scenarios
             Check("TotalOrderCnt", data.TotalOrderCnt, 15);
             Check("ShipmentsCnt", data.ShipmentsCnt, 8);
             Check("SalesTrendData.length", data.SalesTrendData?.Count(), 24);
+            // S41-G: trend value 顯式驗、對齊 Golden Search_5 樣張 (測資 24 筆全在 05/05 20:54 +08 = hour 20)
+            Check("SalesTrend[20] value", data.SalesTrendData?.FirstOrDefault(t => t.TimePane == "20")?.Value, 13499);
+            Check("OrderTrend[20] value", data.OrderTrendData?.FirstOrDefault(t => t.TimePane == "20")?.Value, 24);
+            Check("SalesTrend first hour", data.SalesTrendData?.First().TimePane, "00");
+            Check("SalesTrend last hour", data.SalesTrendData?.Last().TimePane, "23");
             // ES cood_items nested 無 cood_price 欄位 → 商品銷售排名為空（對齊 Golden Search_5 樣張 productSalesRanking: []）
             Check("ProductSalesRanking.Count", data.ProductSalesRanking?.Count() ?? 0, 0);
         }
@@ -294,6 +299,9 @@ namespace CPF.Sandbox.Scenarios
             Check("SalesTrend first day", data.SalesTrendData?.First().TimePane, "04/28");
             Check("SalesTrend last day", data.SalesTrendData?.Last().TimePane, "05/05");
             Check("OrderTrendData.length", data.OrderTrendData?.Count(), 8);
+            // S41-G: trend value 顯式驗、對齊 Golden Search_6 樣張 (trend 為全量、不套 PurchaseOrderQuery)
+            Check("SalesTrend[05/05] value", data.SalesTrendData?.FirstOrDefault(t => t.TimePane == "05/05")?.Value, 13499);
+            Check("OrderTrend[05/05] value", data.OrderTrendData?.FirstOrDefault(t => t.TimePane == "05/05")?.Value, 24);
             // ES cood_items nested 無 cood_price 欄位 → 商品銷售排名為空(對齊 Golden Search_6 樣張)
             Check("ProductSalesRanking.Count", data.ProductSalesRanking?.Count() ?? 0, 0);
         }

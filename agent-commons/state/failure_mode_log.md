@@ -216,5 +216,30 @@ since: 2026-05-01
     3. Suite S28 assertion 改 `length=8` + 加 `first day "04/28"` / `last day "05/05"` 顯式錨點 (對齊 Golden、防 buggy 自我驗證復發)
     4. 紀律強化:後續寫 Suite assertion 必含「first/last 內容錨點」、不只驗長度
 - **狀態**：✅ 已修復、validate suite 全 31 項 PASS。
-- **遺留**：Search 6 trend value 與 Golden 仍偏差 (salesTrend[05/05]=8659 vs Golden 13499、orderTrend[05/05]=15 vs 24) — trend bucket 套 PurchaseOrderQuery、Golden 似乎用 raw count、屬不同 filter 缺陷、本 entry 不涵蓋。
+- **遺留**：Search 6 trend value 與 Golden 仍偏差 (salesTrend[05/05]=8659 vs Golden 13499、orderTrend[05/05]=15 vs 24) — trend bucket 套 PurchaseOrderQuery、Golden 似乎用 raw count、屬不同 filter 缺陷、本 entry 不涵蓋。後續由 F2-20260512-04 結案。
+
+---
+
+## [F2-20260512-04] Search 5/6 trend bucket 誤套 PurchaseOrderQuery + Today hour 格式偏差
+
+- **日期**：2026-05-12
+- **角色**：Engineer (Claude Code / 接續 Kiro S33 原 owner)
+- **失效模式**：F2 (Logic Regression) — 同類偏差 F2-20260512-03、F2-20260506-01
+- **事故描述**：
+    Search 5/6 趨勢資料兩條與 Golden Recipe 對不齊缺陷:
+    (a) **Trend bucket 誤套 PurchaseOrderQuery**:`AppSalesMetricsTrend` 在 hist bucket 下再包一層 `SMT_Valid` filter 套 `PurchaseOrderQuery()`(排除 status ∈ {00,11,12,1X})、把 9 筆取消單剃掉。Golden Search_5/6 樣張 trend[20]/trend[05/05] = 13499 / 24 (全量)、我們輸出 8659 / 15 (剃掉取消)
+    (b) **Today hour 格式 01-24 vs Golden 00-23**:`PadTrendDataHourly` 迴圈用 `for (int i = 1; i <= 24)`、但 ES `DateHistogram.Format("HH")` 回傳 00-23、lookup 對不到 key 整個 trend 被填 0 (掩蓋了 (a))。Golden Search_5 樣張明示 timePane 從 "00" 到 "23"
+- **根本原因**：
+    1. **業務語義誤判 (Trend filter)**:「主指標 totalAmount/totalOrderCnt」與「趨勢視覺化 salesTrend/orderTrend」誤用同一 filter。主指標是 KPI、應排除取消單 (有效訂單金額);趨勢是給賣家看訂單流量「視覺化」、應全量。S33 zero-padding 設計時未把兩個語義切開、一律套 PurchaseOrderQuery
+    2. **規格抽驗不足 (Hour format)**:S33 寫 Padder 時用 1-24 慣例 (人類直覺)、未對照 ES `Format("HH")` 規範 (00-23) 與 Golden 樣張、bug 被 (a) 的全 0 結果隱藏、Suite assertion 只驗 length=24 也驗不出 key 對不齊
+- **後果**：
+    - SDK 對「App 銷售指標」回傳的 trend 數值與客戶 Golden Recipe 不符、影響 App Dashboard 展示
+    - Hour 格式錯位導致 Today trend 整段 0、業務看不到任何流量、嚴重影響 UX
+    - 兩條 bug 相互掩蓋:hour 對不齊→trend 全 0、剛好把 trend filter 偏差也藏起來、增加除錯難度
+- **補救措施**：
+    1. `AppSalesMetricsTrend` builder 移除 SMT_Valid filter wrapper、Sum 直接掛在 hist bucket 下;`ParseSalesMetricsTrend` 改讀 `bucket.DocCount` (raw count) 與 `bucket.Aggregations[SMT_SalesAmt]` (raw sum)
+    2. `PadTrendDataHourly` 迴圈改 `for (int i = 0; i <= 23)` 對齊 ES `Format("HH")` 與 Golden 樣張
+    3. Suite S27/S28 加 trend value 顯式驗 (`SalesTrend[20]=13499` / `[05/05]=13499` / first hour="00" / last hour="23" 等)、防止 bug 自我隱藏復發
+    4. 紀律強化:寫 Padder/Parser 必對照 ES 實際回傳格式 + Golden 樣張、不靠人類直覺
+- **狀態**：✅ 已修復 (commit S41-G)、validate suite 全 37 項 PASS、Search 5/6 trend 完全對齊 Golden Recipe。
 

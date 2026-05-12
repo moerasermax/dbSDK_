@@ -387,11 +387,13 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
             return model;
         }
 
+        // Hour 序列 00-23 (對齊 ES DateHistogram Format("HH") + Golden Search_5 樣張 timePane "00"~"23")
+        // 原 01-24 是 bug、與 ES 回傳 "HH" (00-23) 不匹配、所有 hour bucket lookup fail、整個 trend 全 0
         private static List<PublicModels.OrderTrendData> PadTrendDataHourly(
             List<PublicModels.OrderTrendData> existingData)
         {
             var result = new List<PublicModels.OrderTrendData>();
-            for (int i = 1; i <= 24; i++)
+            for (int i = 0; i <= 23; i++)
             {
                 var hourStr = i.ToString("D2");
                 var existing = existingData.FirstOrDefault(d => d.TimePane == hourStr);
