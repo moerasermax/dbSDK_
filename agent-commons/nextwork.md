@@ -1,26 +1,22 @@
 
 ROLE: PM (Gemini) - PROVISIONAL
-LAST_SYNC: 2026-05-04
+LAST_SYNC: 2026-05-12
 
-## Active Focus
-- [ ] Phase 2.A: JSON Format Alignment (High Priority)
-    - [x] 1. Sprint S32: 內層容器結構與 Casing 修正 (S1, S4, S5, S6, S7)
-    - [x] 2. Sprint S33: 趨勢補零與 RankingNo (S5, S6)
-    - [ ] ~~3. Sprint S36: Sandbox 測試腳本整合 (Consolidation)~~ -> **CANCELLED** (Superseded by S37 Golden Data)
-    - [ ] ~~4. Sprint S35: 整合測試腳本對齊 (S1, S4 修正)~~ -> **CANCELLED**
-    - [ ] ~~5. Sprint S34: Mongo 深度整合 (S2, S3)~~ -> **CANCELLED** (Pending Client Architecture Review)
-    - [ ] 6. 重新執行 PM 驗收 (V2 - 內層對齊版)
+## 🏆 Project Completion
+- [x] Phase 2.A: JSON Format Alignment (ALL SPRINT COMPLETED)
+- [x] Phase 2.B: Golden Data Integration & ETL (ALL SPRINT COMPLETED)
+    - [x] Search 1-7 Golden Recipe 100% 對齊 (除 Search 1 業務疑點外)
+    - [x] 雙引擎鏈路 (ES + Mongo) 實作完成
+    - [x] Typed Public Input Model 重構完成
 
-- [ ] Phase 2.B: Golden Data Integration & ETL (New Priority)
-    - [x] 1. Sprint S37: Golden Data Ingestion (依據客戶 Sample Data)
-    - [x] 2. Sprint S40: 公用模型重構 (JSON 格式對齊)
-    - [>] 3. Sprint S41: Golden Recipe 全量驗收與邏輯修正 (S41-B/C/D/E)
-        - [>] S41-E: Search 7 Mongo 直讀與 User 資料導入 - **IN PROGRESS** (User Directive)
-    - ⚠️ P1 Blocker: Search 7 測試資料缺源 (`_ord_modify_date`) -> **RESOLVED** (Switch to Mongo)
-    - ⚠️ P2 Alignment: Search 1/4 業務語義與預設值待確認
-    - [ ] 4. Sprint S38: Dual Engine Integration (Elastic + Mongo Sync)
-    - [ ] 5. Sprint S39: Golden Recipe Alignment (Automated Validation)
+## Current Focus
+- [x] 專案交付準備 (All capsules archived)
+- [x] 環境清理 (Stale images removed)
+
+## ⚠️ Remaining Items (Post-Project)
+- [ ] Search 1 (toship) 業務語義待客戶最終裁決 (6 vs 1)
+- [ ] 強化抽驗模式：已達連續 3 次綠燈解除門檻 (2026-05-12)
 
 ## Handover Reference
-- [ ] agent-commons/handoffs/HANDOFF_INFRA_20260502.md
-- [ ] failure_mode_log.md [F2-20260504-01]
+- [ ] agent-commons/handoffs/HANDOFF_10.md
+- [ ] failure_mode_log.md (Final Audit: 2026-05-12)

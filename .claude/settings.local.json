@@ -7,7 +7,27 @@
       "Bash(dotnet build *)",
       "Bash(Select-String -Pattern \"error\")",
       "Bash(Select-String -NotMatch \"warning\")",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "Bash(grep -E 'HANDOFF_[0-9]+\\\\.md$')",
+      "Bash(python3 -c \"import sys, json; d = json.loads\\(sys.stdin.read\\(\\)\\); print\\('\\\\\\\\n'.join\\(sorted\\(d.keys\\(\\)\\)\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(docker version *)",
+      "Bash(docker exec *)",
+      "Bash(dotnet run *)",
+      "Read(//tmp/**)",
+      "Bash(grep -cE '\\\\\\\\u[0-9A-Fa-f]{4}' /tmp/dump_s2_v4.txt)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(curl -s -X POST \"http://localhost:9200/orders-*/_search\" -H \"Content-Type: application/json\" -d '{\"size\":1,\"query\":{\"term\":{\"coom_cuam_cid\":528672}},\"_source\":true}')",
+      "Bash(python -c \"import json,sys;d=json.loads\\(sys.stdin.read\\(\\)\\);src=d['hits']['hits'][0]['_source'];print\\('Top-level fields:'\\);[print\\(' ',k\\) for k in sorted\\(src.keys\\(\\)\\)]\")",
+      "Bash(curl -s -X POST \"http://localhost:9200/orders-*/_count\" -H \"Content-Type: application/json\" -d '{\"query\":{\"exists\":{\"field\":\"_ord_modify_date\"}}}')",
+      "Bash(curl -s \"http://localhost:9200/orders-605/_mapping\")",
+      "Bash(python -c \"import json,sys;m=json.loads\\(sys.stdin.read\\(\\)\\);props=list\\(m['orders-605']['mappings'].get\\('properties',{}\\).keys\\(\\)\\);print\\('Mapping fields:'\\);[print\\(' ',k\\) for k in sorted\\(props\\) if 'modify' in k.lower\\(\\) or 'date' in k.lower\\(\\)]\")",
+      "Bash(curl -s -X POST \"http://localhost:9200/orders-*/_search\" -H \"Content-Type: application/json\" -d '{\"size\":1,\"query\":{\"term\":{\"coom_cuam_cid\":528672}}}')",
+      "Bash(python -c ' *)",
+      "PowerShell(Stop-Process *)",
+      "PowerShell(Get-Process *)",
+      "Bash(curl *)"
     ]
   }
 }

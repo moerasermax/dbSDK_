@@ -3,7 +3,7 @@
 - **Spec**: AgentCharter `roles/engineer/_spec.md`
 - **AI 實作版**: AgentCharter `roles/engineer/claude-code.md`
 - **AI Vendor**: Claude Code (Anthropic)
-- **Status**: ACTIVE
+- **Status**: PROVISIONAL
 - **Self-Instantiation**: 2026-05-07 - Claude Code (Anthropic) re-self-instantiation, charter v0.10.1, doctor schema 0 errors (mode B minimal — §3.1/§3.3/§3.5/§3.7/§3.9/§3.11 全 PASS；E1103 經 user 授權補完 2026-05-04 reflection violations: [])
 - **Sign-in**: 2026-05-12 - User explicit authorization「你先登入」→ ACTIVE. S41-E Search 7 邏輯修正為當前任務、PM Co-sign 已到位、膠囊資料源已實證、強化抽驗模式 against PM 延續（連續綠燈累積 +1）.
 - **Prior Sign-in History**: 2026-05-08 sign-out (S41 A/B/C/D tech completed); 2026-05-08 sign-in (S41 NextWork); 2026-05-07 sign-out (S40 closed); 2026-05-07 sign-in (S40 NextWork); 2026-05-06 sign-out (framework upgrade); 2026-05-04 Kiro ACTIVE; 2026-05-01 Claude Code (Anthropic) ACTIVE
