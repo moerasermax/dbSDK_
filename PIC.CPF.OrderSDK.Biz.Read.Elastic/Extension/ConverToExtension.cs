@@ -344,82 +344,80 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
         }
 
         /// <summary>
-        /// 為趨勢資料補零，確保 Today=24格, Week=7格
+        /// 為趨勢資料補零、確保完整 time-slot 序列。
+        /// - Today: 固定 24 格 (01〜24 小時)、不參考 searchStart/end
+        /// - 其他類型 (ThisWeek/ThisMonth/SetWeek/SetMonth/PastOneMonth):
+        ///     用 searchStartDate ~ searchEndDate 區間 (本地時區 Date 部分) 生成每日序列
+        ///     對齊 Golden Search 6: 8 天區間 → 8 筆 trend
+        /// 修正點 (S41-F):
+        ///   1. 原用 `DateTime.Now` 算當週週一起 7 天、與使用者傳入的 searchStart/end 完全脫鉤
+        ///   2. 原硬編 expectedCount=7、忽略實際區間長度 (8 天區間被截成 7 格)
+        ///   3. ThisMonth/SetMonth 原直接 return 不補、改為依 req 區間補日序列
         /// </summary>
         internal static PublicModels.AppSalesMetricsResultModel ApplyZeroPadding(
-            this PublicModels.AppSalesMetricsResultModel model, DateRangeType? dateRangeType)
+            this PublicModels.AppSalesMetricsResultModel model,
+            DateRangeType? dateRangeType,
+            DateTime? searchStartDate = null,
+            DateTime? searchEndDate = null)
         {
             if (dateRangeType == null) return model;
 
-            int expectedCount = dateRangeType switch
+            if (dateRangeType == DateRangeType.Today)
             {
-                DateRangeType.Today => 24,
-                DateRangeType.ThisWeek => 7,
-                DateRangeType.ThisMonth => 0, // 28-31格，不補
-                DateRangeType.PastOneMonth => 30,
-                DateRangeType.SetWeek => 7,
-                DateRangeType.SetMonth => 0, // 28-31格，不補
-                _ => 0
-            };
+                if (model.SalesTrendData != null)
+                    model.SalesTrendData = PadTrendDataHourly(model.SalesTrendData.ToList());
+                if (model.OrderTrendData != null)
+                    model.OrderTrendData = PadTrendDataHourly(model.OrderTrendData.ToList());
+                return model;
+            }
 
-            if (expectedCount == 0) return model;
+            // Daily 路徑 (Week / Month / PastOneMonth + 對應 Set 版本)
+            // 一律以 searchStart~searchEnd 為趨勢區間;無 searchStart/end 則不補避免錯位
+            if (searchStartDate is null || searchEndDate is null) return model;
 
-            // 補 SalesTrendData
+            var start = searchStartDate.Value.ToLocalTime().Date;
+            var end = searchEndDate.Value.ToLocalTime().Date;
+            if (start > end) return model;
+
             if (model.SalesTrendData != null)
-            {
-                var existingData = model.SalesTrendData.ToList();
-                var paddedSalesTrend = PadTrendData(existingData, expectedCount, dateRangeType.Value);
-                model.SalesTrendData = paddedSalesTrend;
-            }
-
-            // 補 OrderTrendData
+                model.SalesTrendData = PadTrendDataDaily(model.SalesTrendData.ToList(), start, end);
             if (model.OrderTrendData != null)
-            {
-                var existingData = model.OrderTrendData.ToList();
-                var paddedOrderTrend = PadTrendData(existingData, expectedCount, dateRangeType.Value);
-                model.OrderTrendData = paddedOrderTrend;
-            }
+                model.OrderTrendData = PadTrendDataDaily(model.OrderTrendData.ToList(), start, end);
 
             return model;
         }
 
-        private static List<PublicModels.OrderTrendData> PadTrendData(
-            List<PublicModels.OrderTrendData> existingData, int expectedCount, DateRangeType dateRangeType)
+        private static List<PublicModels.OrderTrendData> PadTrendDataHourly(
+            List<PublicModels.OrderTrendData> existingData)
         {
             var result = new List<PublicModels.OrderTrendData>();
-
-            if (dateRangeType == DateRangeType.Today)
+            for (int i = 1; i <= 24; i++)
             {
-                // Today: 01-24 (小時)
-                for (int i = 1; i <= 24; i++)
+                var hourStr = i.ToString("D2");
+                var existing = existingData.FirstOrDefault(d => d.TimePane == hourStr);
+                result.Add(new PublicModels.OrderTrendData
                 {
-                    var hourStr = i.ToString("D2");
-                    var existing = existingData.FirstOrDefault(d => d.TimePane == hourStr);
-                    result.Add(new PublicModels.OrderTrendData
-                    {
-                        TimePane = hourStr,
-                        Value = existing?.Value ?? 0
-                    });
-                }
+                    TimePane = hourStr,
+                    Value = existing?.Value ?? 0
+                });
             }
-            else
-            {
-                // Week: 1-7 (天)
-                var now = DateTime.Now;
-                var startOfWeek = now.AddDays(-(int)now.DayOfWeek + 1); // 本週一
-                for (int i = 0; i < 7; i++)
-                {
-                    var date = startOfWeek.AddDays(i);
-                    var dateStr = date.ToString("MM/dd");
-                    var existing = existingData.FirstOrDefault(d => d.TimePane == dateStr);
-                    result.Add(new PublicModels.OrderTrendData
-                    {
-                        TimePane = dateStr,
-                        Value = existing?.Value ?? 0
-                    });
-                }
-            }
+            return result;
+        }
 
+        private static List<PublicModels.OrderTrendData> PadTrendDataDaily(
+            List<PublicModels.OrderTrendData> existingData, DateTime start, DateTime end)
+        {
+            var result = new List<PublicModels.OrderTrendData>();
+            for (var d = start; d <= end; d = d.AddDays(1))
+            {
+                var dateStr = d.ToString("MM/dd");
+                var existing = existingData.FirstOrDefault(t => t.TimePane == dateStr);
+                result.Add(new PublicModels.OrderTrendData
+                {
+                    TimePane = dateStr,
+                    Value = existing?.Value ?? 0
+                });
+            }
             return result;
         }
         #endregion

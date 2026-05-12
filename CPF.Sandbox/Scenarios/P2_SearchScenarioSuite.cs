@@ -289,7 +289,11 @@ namespace CPF.Sandbox.Scenarios
             Check("TotalAmount", data.TotalAmount, 8659);
             Check("TotalOrderCnt", data.TotalOrderCnt, 15);
             Check("ShipmentsCnt", data.ShipmentsCnt, 8);
-            Check("SalesTrendData.length", data.SalesTrendData?.Count(), 7);
+            // S41-F: 趨勢序列改以 req.SearchStart~End 為區間 (04/28~05/05 = 8 天、對齊 Golden、原 7 格為 bug)
+            Check("SalesTrendData.length", data.SalesTrendData?.Count(), 8);
+            Check("SalesTrend first day", data.SalesTrendData?.First().TimePane, "04/28");
+            Check("SalesTrend last day", data.SalesTrendData?.Last().TimePane, "05/05");
+            Check("OrderTrendData.length", data.OrderTrendData?.Count(), 8);
             // ES cood_items nested 無 cood_price 欄位 → 商品銷售排名為空(對齊 Golden Search_6 樣張)
             Check("ProductSalesRanking.Count", data.ProductSalesRanking?.Count() ?? 0, 0);
         }

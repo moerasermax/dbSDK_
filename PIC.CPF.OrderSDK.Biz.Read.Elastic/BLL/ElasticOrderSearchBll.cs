@@ -212,8 +212,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 var resultArray = internalResults.ConvertToAppSalesMetricsResultModel();
                 var result = resultArray.Length > 0 ? resultArray[0] : new PublicModels.AppSalesMetricsResultModel();
                 
-                // 套用趨勢資料補零
-                result = result.ApplyZeroPadding(req.DateRangeType);
+                // 套用趨勢資料補零 (S41-F: Daily 路徑改以 req.SearchStart/End 為區間、不再用 DateTime.Now)
+                result = result.ApplyZeroPadding(req.DateRangeType, req.SearchStartDate, req.SearchEndDate);
                 
                 return Result<PublicModels.AppSalesMetricsResultModel>.SetResult("成功", result);
             }
@@ -245,8 +245,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 var resultArray = internalResults.ConvertToAppSalesMetricsResultModel();
                 var result = resultArray.Length > 0 ? resultArray[0] : new PublicModels.AppSalesMetricsResultModel();
                 
-                // 套用趨勢資料補零
-                result = result.ApplyZeroPadding(req.DateRangeType);
+                // 套用趨勢資料補零 (S41-F: Daily 路徑改以 req.SearchStart/End 為區間、不再用 DateTime.Now)
+                result = result.ApplyZeroPadding(req.DateRangeType, req.SearchStartDate, req.SearchEndDate);
                 
                 return Result<PublicModels.AppSalesMetricsResultModel>.SetResult("成功", result);
             }

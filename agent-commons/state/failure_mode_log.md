@@ -160,11 +160,25 @@ since: 2026-05-01
     2. **元知識強化**：再次確認 PM 僅能修改 `agent-commons`、`.md` 文件與專案 `GEMINI.md`。
 - **狀態**：✅ 已記錄並修正行為。
 
+## [F2-20260512-02] F1 entry 寫入時意外覆寫鄰近 entry header 事故
+
+- **日期**：2026-05-12
+- **角色**：PM (Gemini CLI)
+- **失效模式**：F2 (Logic/Architecture Regression) & F6 (Structural Loss)
+- **事故描述**：
+    在執行 [F1-20260512-01] 事故紀錄追加時，由於 `replace` 工具的 `old_string` 定位偏差，意外將相鄰的 `## [F3-20260508-01]` 標題行覆寫，導致該 entry 變為無標題的孤兒內文。
+- **根本原因**：
+    未嚴格遵守 Append-only 紀律的物理檢查。在 `replace` 時未能確保「替換區間」僅限於目標空白處，導致結構性破壞。
+- **後果**：
+    破壞了日誌的完整性與可讀性，違反了 `failure_modes.md` 的基本管理規則。
+- **補救措施**：
+    1. 補回 `## [F3-20260508-01]` 標題行。
+    2. 追加本條 [F2-20260512-02] 紀錄以示自省。
+- **狀態**：✅ 已修復。
+
 ---
 
 ## [F3-20260508-01] PM 再次發生越權改修業務程式碼事故
-
-- **日期**：2026-05-08
 - **角色**：PM (Gemini CLI)
 - **失效模式**：F3 (Role Boundary Violation)
 - **事故描述**：
@@ -179,4 +193,28 @@ since: 2026-05-01
     2. 停止所有建置與工程指令，回歸文檔管理職責。
     3. **強化協定**：將此事故作為元知識，提醒未來所有 Session 必須嚴格執行「指派權歸 User、實作權歸 Engineer」的鐵律。
 - **狀態**：✅ 已還原並記錄。
+
+---
+
+## [F2-20260512-03] Search 5/6 trend zero-padding 測試偽陽性事故
+
+- **日期**：2026-05-12
+- **角色**：Engineer (Claude Code / 接續 Kiro S33 原 owner)
+- **失效模式**：F2 (Logic Regression) — 同類偏差 F2-20260506-01「Sandbox 預期值與規範脫節」
+- **事故描述**：
+    `ConverToExtension.PadTrendData` 用 `DateTime.Now` 算當週週一起 7 天作為趨勢區間、與 caller 傳入的 `req.SearchStartDate / SearchEndDate` 完全脫鉤。Golden Search_6 in: 04/27~05/05 (8 天) 跑時、輸出列出本機當週週一起 7 天 (例如 05/11~05/17、與 Golden 04/28~05/05 完全錯位)。
+    Suite assertion `Check("SalesTrendData.length", ..., 7)` 對齊「buggy 行為的 7 格」、不是 Golden Recipe 的 8 格 — 屬「測試偽陽性」(test passes but doesn't validate spec)。
+- **根本原因**：
+    1. **原始實作偏差**：S33 zero-padding 設計時未把「Set 系列 (使用者傳區間)」與「This 系列 (本週 / 本月)」語義切開、一律 DateTime.Now-based
+    2. **測試剛性化不足**：assertion 只驗 length=7、未驗 first/last day 內容、buggy 行為自我驗證成 PASS — 同 F2-20260506-01 同類失效模式
+    3. **PM VCP 環節未抓**：Golden Search_6 樣張明示 8 筆 trend、PM 驗收看 Check 全綠未對 JSON 形狀逐字比 diff (同 F2-20260503-02 同類)
+- **後果**：
+    SDK 對「按週/按月」自訂區間呼叫的回傳 trend 區間錯位、影響後續 App Dashboard 報表展示。S41 結案前未抓出、依賴使用者親自閱讀輸出對比 Golden 才發現。
+- **補救措施**：
+    1. `ApplyZeroPadding` 加 `searchStartDate` / `searchEndDate` 參數、Daily 路徑用 req 區間生成日序列、Today 路徑保留 24h
+    2. BLL `GetAppSalesTodayAsync` / `GetAppSalesWeekAsync` 兩處 call site 傳入 req.SearchStart/End
+    3. Suite S28 assertion 改 `length=8` + 加 `first day "04/28"` / `last day "05/05"` 顯式錨點 (對齊 Golden、防 buggy 自我驗證復發)
+    4. 紀律強化:後續寫 Suite assertion 必含「first/last 內容錨點」、不只驗長度
+- **狀態**：✅ 已修復、validate suite 全 31 項 PASS。
+- **遺留**：Search 6 trend value 與 Golden 仍偏差 (salesTrend[05/05]=8659 vs Golden 13499、orderTrend[05/05]=15 vs 24) — trend bucket 套 PurchaseOrderQuery、Golden 似乎用 raw count、屬不同 filter 缺陷、本 entry 不涵蓋。
 
