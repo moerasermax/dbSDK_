@@ -99,13 +99,21 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S24: Search 2 — SearchBySeller");
 
             var svc = SearchSdkSetup.Build();
-            // S41-L: 完整對齊 Golden Search_2 In-1 樣張 (含 PageInfo + IsQaList + ms .999)
+            // S41-L: 完整對齊 Golden Search_2 In-1 樣張、null 欄位顯式列出 (對齊 Golden In JSON 形狀、避免誤判)
             var req = new SearchOrderInfoBySellerIdModel
             {
                 PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 50 },
                 CuamCid = 528672,
                 OrderDateStart = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
                 OrderDateEnd = new DateTime(2026, 5, 5, 15, 59, 59, 999, DateTimeKind.Utc),
+                DeliverMethodSearchKind = null,
+                OrdChannelKindSearchKind = null,
+                TempTypeSearchKind = null,
+                CoomNo = null,
+                CoomName = null,
+                EsmmShipNo = null,
+                CoodName = null,
+                CoocNo = null,
                 OrderState = CPFEnum.OrderState.DealWith,
                 OrderSorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
                 IsQaList = false,
@@ -142,13 +150,15 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S25: Search 3 — SearchByBuyer");
 
             var svc = SearchSdkSetup.Build();
-            // S41-L: 完整對齊 Golden Search_3 In-1 樣張 (含 PageInfo + IsQaList + BindMembersArray + ms .999)
+            // S41-L: 完整對齊 Golden Search_3 In-1 樣張、null 欄位顯式列出 (對齊 Golden In JSON 形狀、避免誤判)
             var req = new SearchOrderInfoByBuyerIdModel
             {
                 PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 50 },
                 MemSid = 528672,
                 OrderDateStart = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
                 OrderDateEnd = new DateTime(2026, 5, 5, 15, 59, 59, 999, DateTimeKind.Utc),
+                CoomNo = null,
+                CoocNo = null,
                 OrderState = CPFEnum.OrderState.DealWith,
                 OrderSorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
                 IsQaList = false,
