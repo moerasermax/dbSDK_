@@ -99,14 +99,16 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S24: Search 2 — SearchBySeller");
 
             var svc = SearchSdkSetup.Build();
+            // S41-L: 完整對齊 Golden Search_2 In-1 樣張 (含 PageInfo + IsQaList + ms .999)
             var req = new SearchOrderInfoBySellerIdModel
             {
+                PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 50 },
                 CuamCid = 528672,
                 OrderDateStart = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
-                OrderDateEnd = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Utc),
-                OrderState = CPFEnum.OrderState.DealWith, // 處理中
-                // 對齊 Golden Search_2 In 期望:OrderSorts=[1,3] = [CoomCreateDatetimeDesc, CoomNoDesc]
+                OrderDateEnd = new DateTime(2026, 5, 5, 15, 59, 59, 999, DateTimeKind.Utc),
+                OrderState = CPFEnum.OrderState.DealWith,
                 OrderSorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
+                IsQaList = false,
             };
             Console.WriteLine($"  In: cuamCid={req.CuamCid}, range={req.OrderDateStart:yyyy-MM-dd}~{req.OrderDateEnd:yyyy-MM-dd}, orderState={req.OrderState}");
 
@@ -140,14 +142,17 @@ namespace CPF.Sandbox.Scenarios
             PrintHeader("S25: Search 3 — SearchByBuyer");
 
             var svc = SearchSdkSetup.Build();
+            // S41-L: 完整對齊 Golden Search_3 In-1 樣張 (含 PageInfo + IsQaList + BindMembersArray + ms .999)
             var req = new SearchOrderInfoByBuyerIdModel
             {
+                PageInfo = new OrderSearchPageInfo { PageIndex = 0, PageSize = 50 },
                 MemSid = 528672,
                 OrderDateStart = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
-                OrderDateEnd = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
-                OrderState = CPFEnum.OrderState.DealWith, // 補上 OrderState 過濾
-                // 對齊 Golden Search_3 In 期望:OrderSorts=[1,3]
+                OrderDateEnd = new DateTime(2026, 5, 5, 15, 59, 59, 999, DateTimeKind.Utc),
+                OrderState = CPFEnum.OrderState.DealWith,
                 OrderSorts = new[] { CPFEnum.OrderSort.CoomCreateDatetimeDesc, CPFEnum.OrderSort.CoomNoDesc },
+                IsQaList = false,
+                BindMembersArray = Array.Empty<int>(),
             };
             Console.WriteLine($"  In: memSid={req.MemSid}, range={req.OrderDateStart:yyyy-MM-dd}~{req.OrderDateEnd:yyyy-MM-dd}, orderState={req.OrderState}");
 
@@ -180,16 +185,15 @@ namespace CPF.Sandbox.Scenarios
         {
             PrintHeader("S26: Search 4 — GetAppDashboard");
 
-            var svc = SearchSdkSetup.Build();
-            // 從測試資料反推:Search 4 newOrderCnt/shippedCnt/repliedCnt 對應 Search 1 dealWith/toship/sellerQaNeverReply 桶,該桶用 4/27~5/05 區間得 5/1/1 對齊 Golden
-            // ⚠️ PENDING_BUSINESS_LOGIC:Golden In 只傳 cuamCid、Suite 為對齊 Golden Out 反推補 SearchStart/End 區間、待客戶確認真實 default 行為
-            var req = new GetAppDashboardOverviewModel
-            {
-                CuamCid = 528672,
-                SearchStartDate = new DateTime(2026, 4, 27, 16, 0, 0, DateTimeKind.Utc),
-                SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
-            };
-            Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}");
+            // S41-L: 完整對齊 Golden Search_4 In 樣張 (只傳 cuamCid)
+            // 注入 FixedClock(2026-05-05) 讓 BLL fallback 算 today / mondayDate / endDate
+            //   Overview = today.AddDays(-90) ~ today                     = 2026-02-04 ~ 2026-05-05
+            //   Performance = mondayDate ~ today+1 (Wed 5/05、Mon=5/03)   = 2026-05-03 ~ 2026-05-06
+            //   兩段 window 都涵蓋測資 (全在 2026-05-05)、Out 對齊 Golden
+            var fixedToday = new DateTime(2026, 5, 5, 23, 59, 59, DateTimeKind.Local);
+            var svc = SearchSdkSetup.Build(clock: new FixedClock(fixedToday));
+            var req = new GetAppDashboardOverviewModel { CuamCid = 528672 };
+            Console.WriteLine($"  In: cuamCid={req.CuamCid} (FixedClock today={fixedToday:O})");
 
             var result = await svc.GetAppDashboardAsync(req);
             if (!result.IsSuccess) { Console.WriteLine($"  ❌ ERROR: {result.Msg}"); return; }

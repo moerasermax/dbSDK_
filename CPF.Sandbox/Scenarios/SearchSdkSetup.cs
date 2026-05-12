@@ -17,7 +17,8 @@ namespace CPF.Sandbox.Scenarios
             string mongoUri = "mongodb://root:example@localhost:27017",
             string mongoDb = "CpfOrderDb",
             string mongoCollection = "Orders",
-            string mongoUserCollection = "Users")
+            string mongoUserCollection = "Users",
+            IClock? clock = null)
         {
             // ES 端 (OPS)
             var connSettings = new ConnectionSettings
@@ -38,7 +39,7 @@ namespace CPF.Sandbox.Scenarios
             var mongoUserColl = mongoDatabase.GetCollection<MongoUser>(mongoUserCollection);
             var mongoSearchDal = new MongoSearchDal(mongoColl, mongoUserColl, mongoMap);
 
-            var bll = new ElasticOrderSearchBll(dal, mongoSearchDal, null);
+            var bll = new ElasticOrderSearchBll(dal, mongoSearchDal, null, clock);
             return new ElasticOrderSearchService(bll, null);
         }
     }

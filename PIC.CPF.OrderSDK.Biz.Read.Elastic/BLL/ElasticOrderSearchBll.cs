@@ -3,6 +3,7 @@ using NO3._dbSDK_Imporve.Core.Interface;
 using NO3._dbSDK_Imporve.Core.Models;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL;
 using PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension;
+using PIC.CPF.OrderSDK.Biz.Read.Elastic.Services;
 using System.Text.Json;
 using PublicModels = PIC.CPF.OrderSDK.Biz.Read.Elastic.Models;
 using InternalModels = PIC.CPF.OrderSDK.Biz.Read.Elastic.Models.Internal;
@@ -14,18 +15,26 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
     /// Clean Architecture 分層:
     ///   Public Input (客戶端傳入) → BLL (本層) → Internal Aggregate Model → DAL → ES/Mongo
     ///   業務規則 (PoP defaulting、fallback 區間、Dual Engine flow) 收斂於本層、DAL 保持 dumb。
+    /// 依賴注入:
+    ///   IClock 用於 Search 4 fallback 區間計算 (today / mondayDate / endDate)、利於測試注入固定時間。
     /// </summary>
     public class ElasticOrderSearchBll
     {
         private readonly OrderSearchDal _dal;
         private readonly MongoSearchDal _mongoSearchDal;
         private readonly ILogger<ElasticOrderSearchBll>? _logger;
+        private readonly IClock _clock;
 
-        public ElasticOrderSearchBll(OrderSearchDal dal, MongoSearchDal mongoSearchDal, ILogger<ElasticOrderSearchBll>? logger)
+        public ElasticOrderSearchBll(
+            OrderSearchDal dal,
+            MongoSearchDal mongoSearchDal,
+            ILogger<ElasticOrderSearchBll>? logger,
+            IClock? clock = null)
         {
             _dal = dal;
             _mongoSearchDal = mongoSearchDal;
             _logger = logger;
+            _clock = clock ?? new SystemClock();
         }
 
         // ==========================================
@@ -183,7 +192,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 var cid = model.CuamCid ?? 0;
 
                 // 客戶原邏輯:today = DateTime.Now (本地)、轉 UTC 後傳入 ES
-                var today = DateTime.Now;
+                // 注入 IClock 抽象、生產用 SystemClock、測試可注入 FixedClock
+                var today = _clock.Now;
                 var daysFromMonday = ((int)today.DayOfWeek == 0 ? 7 : (int)today.DayOfWeek) - 1;
                 var mondayDate = today.AddDays(-daysFromMonday).Date;
                 var endDate = today.Date.AddDays(1); // +1 含今天
