@@ -46,8 +46,6 @@ namespace CPF.Sandbox.Scenarios
                 4 => await svc.GetAppDashboardAsync(new GetAppDashboardOverviewModel
                 {
                     CuamCid = 528672,
-                    SearchStartDate = new DateTime(2026, 4, 22, 0, 0, 0, DateTimeKind.Utc),
-                    SearchEndDate = new DateTime(2026, 4, 29, 23, 59, 59, DateTimeKind.Utc),
                 }),
                 5 => await svc.GetAppSalesTodayAsync(new GetAppSalesMetricsModel
                 {

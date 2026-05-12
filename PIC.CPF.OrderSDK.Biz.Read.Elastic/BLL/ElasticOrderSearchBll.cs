@@ -198,13 +198,13 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 var mondayDate = today.AddDays(-daysFromMonday).Date;
                 var endDate = today.Date.AddDays(1); // +1 含今天
 
-                // Overview 預設區間:過去 90 天
-                var overviewStart = model.SearchStartDate ?? today.AddDays(-90).ToUniversalTime();
-                var overviewEnd = model.SearchEndDate ?? today.ToUniversalTime();
+                // Overview 區間:過去 90 天 (對齊客戶原 SDK BLL 邏輯)
+                var overviewStart = today.AddDays(-90).ToUniversalTime();
+                var overviewEnd = today.ToUniversalTime();
 
-                // Performance 預設區間:本週一 ~ today+1
-                var perfStart = model.SearchStartDate ?? mondayDate.ToUniversalTime();
-                var perfEnd = model.SearchEndDate ?? endDate.ToUniversalTime();
+                // Performance 區間:本週一 ~ today+1
+                var perfStart = mondayDate.ToUniversalTime();
+                var perfEnd = endDate.ToUniversalTime();
 
                 var internalResult = await _dal.AppAggregateOrderInfoAsync(
                     appSellerOverview: [new InternalModels.AppSellerOverViewAggregateModel { CoomCuamCid = cid, OrderDateStart = overviewStart, OrderDateEnd = overviewEnd }],
