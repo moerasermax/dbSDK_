@@ -199,22 +199,26 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         {
             try
             {
+                var (startPoP, endPoP, validationError) = ResolvePoPRange(req);
+                if (validationError != null)
+                    return Result<PublicModels.AppSalesMetricsResultModel>.SetErrorResult(nameof(GetAppSalesTodayAsync), validationError);
+
                 var model = new InternalModels.AppSalesMetricsModel
                 {
                     CuamCid = req.CuamCid ?? 0,
                     SearchStartDate = req.SearchStartDate,
                     SearchEndDate = req.SearchEndDate,
-                    StartDatePoP = req.DateStartPoP,
-                    EndDatePoP = req.DateEndPoP,
+                    StartDatePoP = startPoP,
+                    EndDatePoP = endPoP,
                     DateRangeType = req.DateRangeType,
                 };
                 var internalResults = await _dal.AppSalesMetricsInfoAsync([model]);
                 var resultArray = internalResults.ConvertToAppSalesMetricsResultModel();
                 var result = resultArray.Length > 0 ? resultArray[0] : new PublicModels.AppSalesMetricsResultModel();
-                
+
                 // 套用趨勢資料補零 (S41-F: Daily 路徑改以 req.SearchStart/End 為區間、不再用 DateTime.Now)
                 result = result.ApplyZeroPadding(req.DateRangeType, req.SearchStartDate, req.SearchEndDate);
-                
+
                 return Result<PublicModels.AppSalesMetricsResultModel>.SetResult("成功", result);
             }
             catch (Exception ex)
@@ -232,22 +236,26 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         {
             try
             {
+                var (startPoP, endPoP, validationError) = ResolvePoPRange(req);
+                if (validationError != null)
+                    return Result<PublicModels.AppSalesMetricsResultModel>.SetErrorResult(nameof(GetAppSalesWeekAsync), validationError);
+
                 var model = new InternalModels.AppSalesMetricsModel
                 {
                     CuamCid = req.CuamCid ?? 0,
                     SearchStartDate = req.SearchStartDate,
                     SearchEndDate = req.SearchEndDate,
-                    StartDatePoP = req.DateStartPoP,
-                    EndDatePoP = req.DateEndPoP,
+                    StartDatePoP = startPoP,
+                    EndDatePoP = endPoP,
                     DateRangeType = req.DateRangeType,
                 };
                 var internalResults = await _dal.AppSalesMetricsInfoAsync([model]);
                 var resultArray = internalResults.ConvertToAppSalesMetricsResultModel();
                 var result = resultArray.Length > 0 ? resultArray[0] : new PublicModels.AppSalesMetricsResultModel();
-                
+
                 // 套用趨勢資料補零 (S41-F: Daily 路徑改以 req.SearchStart/End 為區間、不再用 DateTime.Now)
                 result = result.ApplyZeroPadding(req.DateRangeType, req.SearchStartDate, req.SearchEndDate);
-                
+
                 return Result<PublicModels.AppSalesMetricsResultModel>.SetResult("成功", result);
             }
             catch (Exception ex)
@@ -255,6 +263,23 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
                 _logger?.LogError(ex, nameof(GetAppSalesWeekAsync));
                 return Result<PublicModels.AppSalesMetricsResultModel>.SetErrorResult(nameof(GetAppSalesWeekAsync), ex.Message);
             }
+        }
+
+        // Application layer 業務規則:Period-over-Period (PoP) 區間預設策略 (S41-H)
+        // 規則:
+        //   (a) 若 caller 未指定 PoP (both null):預設等於 main range
+        //       — 對齊 Golden Search_5/6 樣張、PoP=main 表示「無對比基期」場景
+        //   (b) 半套指定 (只傳一邊):invalid input、回 validationError
+        //       — 防止 caller 誤傳一邊 null 一邊有值、避免 DAL silent skip date filter 撈全量
+        // 設計理由:此 PoP 區間規則屬「業務語義」、應在 BLL/Application layer 收斂、
+        //         不適合 DAL 層猜 default;DAL 保持 dumb (傳什麼撈什麼)
+        private static (DateTime? Start, DateTime? End, string? Error) ResolvePoPRange(
+            PublicModels.OrderSearchRequest req)
+        {
+            if (req.DateStartPoP.HasValue != req.DateEndPoP.HasValue)
+                return (null, null, "DateStartPoP 與 DateEndPoP 必須同時提供、或同時為 null");
+
+            return (req.DateStartPoP ?? req.SearchStartDate, req.DateEndPoP ?? req.SearchEndDate, null);
         }
 
         // ==========================================

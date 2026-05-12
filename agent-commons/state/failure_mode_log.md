@@ -243,3 +243,36 @@ since: 2026-05-01
     4. 紀律強化:寫 Padder/Parser 必對照 ES 實際回傳格式 + Golden 樣張、不靠人類直覺
 - **狀態**：✅ 已修復 (commit S41-G)、validate suite 全 37 項 PASS、Search 5/6 trend 完全對齊 Golden Recipe。
 
+---
+
+## [F2-20260512-05] Search 5/6 PoP 區間契約缺陷 + Suite 偽陽性 + ES stale 污染三連環
+
+- **日期**：2026-05-12
+- **角色**：Engineer (Claude Code、跨多層問題:BLL 契約 + Suite 測試 + Seeder 環境)
+- **失效模式**：F2 (Logic Regression) — 三條相關偏差合併紀錄
+- **事故描述**：
+    Suite S28 dump-s6 輸出 PoP 值 (totalAmountPoP=11541 / totalOrderCntPoP=36 / shipmentsCntPoP=17) 與 Golden Recipe (8659 / 15 / 8) 嚴重不符。User 親自閱讀 dump 對比 Golden 發現、抽驗揭露三條相關缺陷:
+    (i) **Suite S27/S28 沒傳 DateStartPoP/DateEndPoP**:Golden In 明示 PoP=main range、Suite 不傳即 null
+    (ii) **BLL/DAL 對 null PoP silent-skip date filter**:`OrderInfoQuery` 只在 HasValue 時加 filter、null 直接撈全量 (跨整個 ES wildcard search)
+    (iii) **GoldenSeeder 只刪當前 `orders-605`、不清 stale `orders-604` (30 筆殘留)**:wildcard search 撈到 stale + fresh 共 54 筆、套 PurchaseOrderQuery 排除 18 取消單 = 36 = 我們的 PoP orderCnt
+- **根本原因**：
+    1. **介面契約模糊 (i+ii)**:`OrderSearchRequest.DateStartPoP / DateEndPoP` 為 nullable、但 BLL 未定義「null 時該怎麼解釋」的業務規則 — 結果 DAL silent-skip、撈全量
+    2. **Suite 偽陽性 (i)**:S33 寫 Suite 時參考客戶 In 不完整、忽略 PoP dates、null 傳下去碰巧通過 (因 stale data 數值湊巧符合誤算)
+    3. **環境污染 (iii)**:S37 GoldenSeeder 設計時只清當前 ElasticIndex、未考慮跨 session 殘留;舊 inttest 灌的 orders-604 從未被清掉
+    4. **三條偏差相互掩蓋**:(i) Suite 不傳 PoP → (ii) BLL silent-skip 撈全量 → (iii) stale 資料填數值湊巧對某些 Check 不衝突
+- **後果**：
+    - SDK 對「PoP null」場景行為 = 撈全量、絕對不符 PoP (Period over Period) 語義 — production 若 caller 不傳 PoP 等於拿到隨機數值
+    - 跨 session ES 殘留會污染 Suite 驗收結果、無法重現的失敗
+    - User 親自抽驗對比 Golden 才發現、否則三條偏差會被認為「Suite 全綠 = SDK 正確」
+- **補救措施 (S41-H)**：
+    1. **BLL Application layer**:新增 `ResolvePoPRange` private helper、業務規則「PoP=null 預設 = main range / 半套 (只傳一邊) = invalid input」、回 `Result.SetErrorResult`;此規則屬 Application layer 邊界、不放 DAL 保持 dumb
+    2. **GoldenSeeder**:`EnsureElasticIndexAsync` 改 enumerate `orders-*` + 逐一 delete by name (ES 8.x 預設 `destructive_requires_name=true` 禁 wildcard、改 GetAsync 列舉再 delete)
+    3. **Suite S27/S28**:補傳 DateStartPoP=SearchStartDate / DateEndPoP=SearchEndDate 對齊 Golden In;加 PoP 顯式錨點 (TotalAmountPoP=8659 / TotalOrderCntPoP=15 / ShipmentsCntPoP=8) 防止偽陽性復發
+    4. **紀律強化**:Suite In 必逐字比 Golden In 樣張完整對齊 (含 PoP / 任何 optional 參數)、不只比關鍵欄位
+- **狀態**：✅ 已修復、validate suite 全 43 項 PASS (從 37 增至 43、加 PoP 6 項錨點)。
+- **DDD/Clean Architecture 合規檢核**:
+    - Domain layer (OrderSearchRequest):不動、保持 data shape
+    - Application/BLL (ElasticOrderSearchBll):業務規則 (PoP defaulting + validation) 在此 layer 收斂、`ResolvePoPRange` private helper
+    - Infrastructure/DAL (OrderSearchDal):不動、保持 dumb (傳什麼撈什麼)
+    - Presentation (Sandbox):Suite + Seeder 改動屬 tooling、不影響 SDK 對外契約
+

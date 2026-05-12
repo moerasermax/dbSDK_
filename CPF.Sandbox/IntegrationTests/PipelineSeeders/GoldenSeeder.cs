@@ -142,11 +142,18 @@ namespace CPF.Sandbox.IntegrationTests.PipelineSeeders
 
         private static async Task EnsureElasticIndexAsync(ElasticsearchClient client)
         {
-            var exists = await client.Indices.ExistsAsync(ElasticIndex);
-            if (exists.Exists)
+            // S41-H: 清除所有 orders-* stale 索引、避免舊 inttest / 跨 session 殘留資料污染 PoP 統計
+            // (舊版只刪當前 ElasticIndex、其他 orders-60X 殘留會被 wildcard search 撈到、影響 cross-month 聚合)
+            // ES 8.x 預設 action.destructive_requires_name=true 禁 wildcard delete、改 enumerate 後逐一 delete by name
+            // 注意:此為 dev/sandbox 工具、生產環境不適用
+            var allIndicesResp = await client.Indices.GetAsync(new Elastic.Clients.Elasticsearch.IndexManagement.GetIndexRequest("orders-*"));
+            if (allIndicesResp.IsValidResponse)
             {
-                Console.WriteLine($"🗑️  刪除舊索引：{ElasticIndex}");
-                await client.Indices.DeleteAsync(ElasticIndex);
+                foreach (var indexName in allIndicesResp.Indices.Keys.Select(k => k.ToString()))
+                {
+                    Console.WriteLine($"🗑️  清除 stale 索引：{indexName}");
+                    await client.Indices.DeleteAsync(indexName);
+                }
             }
 
             Console.WriteLine($"📐 建立 Explicit Mapping：{ElasticIndex}");

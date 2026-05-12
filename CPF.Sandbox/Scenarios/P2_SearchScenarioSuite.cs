@@ -220,6 +220,9 @@ namespace CPF.Sandbox.Scenarios
                 CuamCid = 528672,
                 SearchStartDate = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
                 SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
+                // S41-H: 補對齊 Golden Search_5 In 樣張 (PoP=main、無對比基期場景)
+                DateStartPoP = new DateTime(2026, 5, 4, 16, 0, 0, DateTimeKind.Utc),
+                DateEndPoP = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
                 DateRangeType = CPFEnum.DateRangeType.Today,
             };
             Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}, dateRangeType={req.DateRangeType}");
@@ -242,6 +245,10 @@ namespace CPF.Sandbox.Scenarios
             Check("TotalAmount", data.TotalAmount, 8659);
             Check("TotalOrderCnt", data.TotalOrderCnt, 15);
             Check("ShipmentsCnt", data.ShipmentsCnt, 8);
+            // S41-H: PoP 顯式錨點驗、對齊 Golden Search_5 樣張 (PoP=main 時三項應等值)
+            Check("TotalAmountPoP", data.TotalAmountPoP, 8659);
+            Check("TotalOrderCntPoP", data.TotalOrderCntPoP, 15);
+            Check("ShipmentsCntPoP", data.ShipmentsCntPoP, 8);
             Check("SalesTrendData.length", data.SalesTrendData?.Count(), 24);
             // S41-G: trend value 顯式驗、對齊 Golden Search_5 樣張 (測資 24 筆全在 05/05 20:54 +08 = hour 20)
             Check("SalesTrend[20] value", data.SalesTrendData?.FirstOrDefault(t => t.TimePane == "20")?.Value, 13499);
@@ -270,6 +277,9 @@ namespace CPF.Sandbox.Scenarios
                 CuamCid = 528672,
                 SearchStartDate = new DateTime(2026, 4, 27, 16, 0, 0, DateTimeKind.Utc),
                 SearchEndDate = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
+                // S41-H: 補對齊 Golden Search_6 In 樣張 (PoP=main、無對比基期場景)
+                DateStartPoP = new DateTime(2026, 4, 27, 16, 0, 0, DateTimeKind.Utc),
+                DateEndPoP = new DateTime(2026, 5, 5, 15, 59, 59, DateTimeKind.Utc),
                 DateRangeType = CPFEnum.DateRangeType.SetWeek,
             };
             Console.WriteLine($"  In: cuamCid={req.CuamCid}, start={req.SearchStartDate:O}, end={req.SearchEndDate:O}, dateRangeType={req.DateRangeType}");
@@ -294,6 +304,10 @@ namespace CPF.Sandbox.Scenarios
             Check("TotalAmount", data.TotalAmount, 8659);
             Check("TotalOrderCnt", data.TotalOrderCnt, 15);
             Check("ShipmentsCnt", data.ShipmentsCnt, 8);
+            // S41-H: PoP 顯式錨點驗、對齊 Golden Search_6 樣張 (PoP=main 時三項應等值)
+            Check("TotalAmountPoP", data.TotalAmountPoP, 8659);
+            Check("TotalOrderCntPoP", data.TotalOrderCntPoP, 15);
+            Check("ShipmentsCntPoP", data.ShipmentsCntPoP, 8);
             // S41-F: 趨勢序列改以 req.SearchStart~End 為區間 (04/28~05/05 = 8 天、對齊 Golden、原 7 格為 bug)
             Check("SalesTrendData.length", data.SalesTrendData?.Count(), 8);
             Check("SalesTrend first day", data.SalesTrendData?.First().TimePane, "04/28");
