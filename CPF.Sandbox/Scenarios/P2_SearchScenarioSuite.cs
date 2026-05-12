@@ -78,6 +78,13 @@ namespace CPF.Sandbox.Scenarios
             Check("SellerPerformance.OrderCount", sp?.OrderCount, 24);
             Check("SellerPerformance.SendCount", sp?.SendCount, 8);
             Check("SellerPerformance.SalesAmt", sp?.SalesAmt, 138);
+            // S41-J: BuyerOverView 顯式錨點驗、對齊 Golden Search_1 樣張 (toship=1 加 esmm_status="01")
+            var bo = data.BuyerOverview;
+            Check("BuyerOverview.Unpaid", bo?.Unpaid, 1);
+            Check("BuyerOverview.Toship", bo?.Toship, 1);
+            Check("BuyerOverview.ToFinish", bo?.ToFinish, 1);
+            Check("BuyerOverview.Cancel", bo?.Cancel, 9);
+            Check("BuyerOverview.Finish", bo?.Finish, 1);
         }
 
         // ==========================================

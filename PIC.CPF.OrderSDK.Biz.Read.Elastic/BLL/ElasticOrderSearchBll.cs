@@ -170,7 +170,10 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         // ==========================================
         // Search 4：App 儀表板總覽
         // 客戶 Controller: GetAppDashboardOverview(GetAppDashboardOverviewModel)
-        // ⚠️ PENDING_BUSINESS_LOGIC:Golden In 未含時間區間、未指定 fallback 90 天規則待客戶確認
+        // S41-K:對齊客戶原 SDK BLL 邏輯、Overview 與 Performance 用「不同」預設區間:
+        //   - AppSellerOverview:    today.AddDays(-90) ~ today (過去 90 天)
+        //   - AppSellerPerformance: 本週一 mondayDate ~ today+1 endDate (本週累計)
+        // Caller 傳入 SearchStartDate/EndDate 時兩段共用 (供測試或自訂區間覆寫)
         // ==========================================
         public async Task<IResult<PublicModels.AppDashboardAggregateResultModel>> GetAppDashboardAsync(
             PublicModels.GetAppDashboardOverviewModel model)
@@ -178,13 +181,24 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
             try
             {
                 var cid = model.CuamCid ?? 0;
-                // Caller 可指定區間;未指定 fallback 90 天 (PENDING_BUSINESS_LOGIC 待客戶確認)
-                var end = model.SearchEndDate ?? DateTime.UtcNow;
-                var start = model.SearchStartDate ?? end.AddDays(-90);
+
+                // 客戶原邏輯:today = DateTime.Now (本地)、轉 UTC 後傳入 ES
+                var today = DateTime.Now;
+                var daysFromMonday = ((int)today.DayOfWeek == 0 ? 7 : (int)today.DayOfWeek) - 1;
+                var mondayDate = today.AddDays(-daysFromMonday).Date;
+                var endDate = today.Date.AddDays(1); // +1 含今天
+
+                // Overview 預設區間:過去 90 天
+                var overviewStart = model.SearchStartDate ?? today.AddDays(-90).ToUniversalTime();
+                var overviewEnd = model.SearchEndDate ?? today.ToUniversalTime();
+
+                // Performance 預設區間:本週一 ~ today+1
+                var perfStart = model.SearchStartDate ?? mondayDate.ToUniversalTime();
+                var perfEnd = model.SearchEndDate ?? endDate.ToUniversalTime();
 
                 var internalResult = await _dal.AppAggregateOrderInfoAsync(
-                    appSellerOverview: [new InternalModels.AppSellerOverViewAggregateModel { CoomCuamCid = cid, OrderDateStart = start, OrderDateEnd = end }],
-                    appSellerPerformance: [new InternalModels.AppSellerPerformanceAggregateModel { CoomCuamCid = cid, OrderDateStart = start, OrderDateEnd = end }]
+                    appSellerOverview: [new InternalModels.AppSellerOverViewAggregateModel { CoomCuamCid = cid, OrderDateStart = overviewStart, OrderDateEnd = overviewEnd }],
+                    appSellerPerformance: [new InternalModels.AppSellerPerformanceAggregateModel { CoomCuamCid = cid, OrderDateStart = perfStart, OrderDateEnd = perfEnd }]
                 );
                 return Result<PublicModels.AppDashboardAggregateResultModel>.SetResult("成功", internalResult.ConvertToAppDashboardAggregateResultModel());
             }

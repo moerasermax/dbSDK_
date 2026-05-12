@@ -178,7 +178,11 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             ));
         }
 
-        // 複雜條件範例 (Terms 陣列寫法) - 待出貨
+        // 訂單狀態-待出貨 (買家): (訂單成立 OR 備貨) AND 已付款 AND 進物流待寄
+        // S41-J:加 esmm_status="01" filter 對齊 Golden Search_1 樣張 (buyerOverView.toship=1)
+        //       客戶原邏輯 coom_status IN (10, 20) + 已付款 對測資 24 筆得 6 筆 (5 筆 coom_status="10" 訂單成立但尚未進物流)
+        //       Golden 期望 1 筆 (CM2605050044044、唯一同時有 esmm_status="01" 物流待寄件)
+        //       業務語義:買家視角待出貨 = 賣家已備貨進入物流系統待寄出
         public static Action<QueryDescriptor<OrderDocument>> OrderStateToshipForBuyerQuery()
         {
             return q => q.Bool(b => b.Must(
@@ -189,7 +193,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                 m => m.Bool(innerB => innerB.Should(
                     s => s.Exists(e => e.Field(f => f.CoocPaymentPayDatetime)),
                     s => s.Term(t => t.Field(f => f.CoocPaymentType).Value("1"))
-                ).MinimumShouldMatch(1))
+                ).MinimumShouldMatch(1)),
+                m => m.Term(t => t.Field(f => f.EsmmStatus).Value("01"))
             ));
         }
         #endregion
