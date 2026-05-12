@@ -258,7 +258,9 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
         }
 
         // ==========================================
-        // Search 7：取得賣家 cgdm 資料
+        // Search 7：取得賣家 cgdm 資料 (S41-E)
+        // mirror 客戶原 SDK: _searchDal.GetUserByCuamCidFromDDB(CuamCid) — 客戶 DDB=DynamoDB,dbSDK 用 MongoDB Users collection
+        // 棄用原 ES 聚合 (Nested→Terms→ReverseNested→Max _ord_modify_date) — 測試資料 ES 無 _ord_modify_date 來源
         // ==========================================
         public async Task<IResult<PublicModels.UserCgdmDataResultModel>> GetUserCgdmDataAsync(
             PublicModels.OrderSearchRequest req)
@@ -266,8 +268,8 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.BLL
             try
             {
                 var cid = req.CuamCid ?? 0;
-                var internalResults = await _dal.GetUserCgdmDataAsync(cid);
-                return Result<PublicModels.UserCgdmDataResultModel>.SetResult("成功", internalResults.ConvertToUserCgdmDataResultModel(cid));
+                var mongoUser = await _mongoSearchDal.GetUserByCuamCidFromMongoAsync(cid);
+                return Result<PublicModels.UserCgdmDataResultModel>.SetResult("成功", mongoUser.ConvertToUserCgdmDataResultModel(cid));
             }
             catch (Exception ex)
             {

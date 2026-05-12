@@ -16,7 +16,8 @@ namespace CPF.Sandbox.Scenarios
             string esEndpoint = "http://localhost:9200",
             string mongoUri = "mongodb://root:example@localhost:27017",
             string mongoDb = "CpfOrderDb",
-            string mongoCollection = "Orders")
+            string mongoCollection = "Orders",
+            string mongoUserCollection = "Users")
         {
             // ES 端 (OPS)
             var connSettings = new ConnectionSettings
@@ -28,12 +29,14 @@ namespace CPF.Sandbox.Scenarios
             var repo = new ElasticRepository<OrderDocument>(driver, map, "orders-*");
             var dal = new OrderSearchDal(repo);
 
-            // Mongo 端 — Dual Engine hydration 用 (對齊客戶原 SDK 的 DDB/DynamoDB pattern,dbSDK 改用 MongoDB)
+            // Mongo 端 — Orders (Dual Engine Search 2/3) + Users (Search 7 單筆 LoadAsync)
+            // 對齊客戶原 SDK 的 DDB/DynamoDB pattern,dbSDK 改用 MongoDB
             var mongoMap = new MongoMap();
             var mongoClient = new MongoClient(mongoUri);
             var mongoDatabase = mongoClient.GetDatabase(mongoDb);
             var mongoColl = mongoDatabase.GetCollection<MongoOrder>(mongoCollection);
-            var mongoSearchDal = new MongoSearchDal(mongoColl, mongoMap);
+            var mongoUserColl = mongoDatabase.GetCollection<MongoUser>(mongoUserCollection);
+            var mongoSearchDal = new MongoSearchDal(mongoColl, mongoUserColl, mongoMap);
 
             var bll = new ElasticOrderSearchBll(dal, mongoSearchDal, null);
             return new ElasticOrderSearchService(bll, null);

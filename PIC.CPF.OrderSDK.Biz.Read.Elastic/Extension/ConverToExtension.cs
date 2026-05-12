@@ -425,7 +425,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
         #endregion
 
         // ==========================================
-        // Flow 4: Search 7 GetUserCgdmData
+        // Flow 4: Search 7 GetUserCgdmData (legacy ES 聚合路徑、S41-E 後不再被 BLL 呼叫,保留為審計 trail)
         // ==========================================
         internal static PublicModels.UserCgdmDataResultModel ConvertToUserCgdmDataResultModel(
             this InternalModels.UserCgdmDataAggregateModel[] models, int cuamCid)
@@ -439,6 +439,55 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.Extension
                     CgdmUpdateDatetime = m.MaxModifyDate?.ToString("yyyy-MM-ddTHH:mm:ss.fff") ?? string.Empty,
                 }).ToArray(),
             };
+        }
+
+        // ==========================================
+        // Flow 4 (S41-E): Search 7 Mongo 單筆路徑
+        // mirror 客戶原 SDK: result.Data = ConvertToExtension.ConvertToUserData(DDBUser)
+        // Mongo cgdm_update_datetime 為 UTC (BSON Date)、反序列化後 DateTime.Kind=Unspecified;
+        // 此處先 SpecifyKind Utc 再 ConvertTimeFromUtc → Asia/Taipei、輸出無 Z 後綴對齊 Golden Recipe
+        // ==========================================
+        private static readonly TimeZoneInfo TaipeiTz = ResolveTaipeiTz();
+
+        private static TimeZoneInfo ResolveTaipeiTz()
+        {
+            try { return TimeZoneInfo.FindSystemTimeZoneById("Asia/Taipei"); }
+            catch (TimeZoneNotFoundException) { }
+            try { return TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time"); }
+            catch (TimeZoneNotFoundException) { }
+            return TimeZoneInfo.CreateCustomTimeZone("Asia/Taipei", TimeSpan.FromHours(8), "Asia/Taipei", "Asia/Taipei");
+        }
+
+        internal static PublicModels.UserCgdmDataResultModel ConvertToUserCgdmDataResultModel(
+            this InternalModels.MongoUser? user, int cuamCid)
+        {
+            if (user?.CGoodsM is null || user.CGoodsM.Count == 0)
+            {
+                return new PublicModels.UserCgdmDataResultModel
+                {
+                    CuamCid = cuamCid,
+                    Cgdm = Array.Empty<PublicModels.CgdmDataModel>(),
+                };
+            }
+
+            return new PublicModels.UserCgdmDataResultModel
+            {
+                CuamCid = cuamCid,
+                Cgdm = user.CGoodsM.Select(g => new PublicModels.CgdmDataModel
+                {
+                    CgdmId = g.CgdmId ?? string.Empty,
+                    CgdmUpdateDatetime = FormatTaipeiNoZ(g.CgdmUpdateDatetime),
+                }).ToArray(),
+            };
+        }
+
+        // UTC → Asia/Taipei (UTC+8)、yyyy-MM-ddTHH:mm:ss.fff、無 Z 後綴
+        private static string FormatTaipeiNoZ(DateTime? utcDate)
+        {
+            if (!utcDate.HasValue) return string.Empty;
+            var utc = DateTime.SpecifyKind(utcDate.Value, DateTimeKind.Utc);
+            var taipei = TimeZoneInfo.ConvertTimeFromUtc(utc, TaipeiTz);
+            return taipei.ToString("yyyy-MM-ddTHH:mm:ss.fff");
         }
     }
 }

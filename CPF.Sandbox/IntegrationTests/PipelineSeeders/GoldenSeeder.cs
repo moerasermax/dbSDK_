@@ -11,31 +11,37 @@ using System.Text.Json;
 namespace CPF.Sandbox.IntegrationTests.PipelineSeeders
 {
     /// <summary>
-    /// [S37] Golden Data 數據導入：讀取客戶提供的正式測試資料並植入本地環境。
+    /// [S37/S41-E] Golden Data 數據導入：讀取客戶提供的正式測試資料並植入本地環境。
     /// - Elastic：讀取 測試資料_Elastic.txt（Bulk 格式）寫入 orders-605 索引
-    /// - Mongo：讀取 測試資料_Mongo.txt（JSON 陣列）寫入 CpfOrderDb.Orders Collection
+    /// - Mongo Orders：讀取 測試資料_Mongo_Order.txt（JSON 陣列）寫入 CpfOrderDb.Orders Collection
+    /// - Mongo Users：讀取 測試資料_Mongo_User.txt（JSON 陣列）寫入 CpfOrderDb.Users Collection (S41-E 新增)
     /// </summary>
     public static class GoldenSeeder
     {
         private const string ElasticDataPath = ".gemini/Sample_Data/Elastic_Search/測試資料_Elastic.txt";
-        private const string MongoDataPath = ".gemini/Sample_Data/Elastic_Search/測試資料_Mongo.txt";
+        private const string MongoOrderDataPath = ".gemini/Sample_Data/Elastic_Search/測試資料_Mongo_Order.txt";
+        private const string MongoUserDataPath = ".gemini/Sample_Data/Elastic_Search/測試資料_Mongo_User.txt";
         private const string ElasticIndex = "orders-605";
         private const string MongoDatabase = "CpfOrderDb";
-        private const string MongoCollection = "Orders";
+        private const string MongoOrderCollection = "Orders";
+        private const string MongoUserCollection = "Users";
 
         public static async Task SeedAsync(
             string esEndpoint = "http://localhost:9200",
             string mongoUri = "mongodb://root:example@localhost:27017")
         {
             Console.WriteLine("\n========================================");
-            Console.WriteLine("=== [S37] Golden Data 數據導入 ===");
+            Console.WriteLine("=== [S37/S41-E] Golden Data 數據導入 ===");
             Console.WriteLine("========================================\n");
 
             // 1. Elastic 植入
             await SeedElasticAsync(esEndpoint);
 
-            // 2. Mongo 植入
-            await SeedMongoAsync(mongoUri);
+            // 2. Mongo Orders 植入
+            await SeedMongoOrderAsync(mongoUri);
+
+            // 3. Mongo Users 植入 (S41-E)
+            await SeedMongoUserAsync(mongoUri);
 
             Console.WriteLine("\n========================================");
             Console.WriteLine("=== Golden Data 導入完成 ===");
@@ -191,11 +197,31 @@ namespace CPF.Sandbox.IntegrationTests.PipelineSeeders
 
         #region Mongo 植入
 
-        private static async Task SeedMongoAsync(string mongoUri)
+        private static async Task SeedMongoOrderAsync(string mongoUri)
         {
-            Console.WriteLine("\n📦 [Mongo] 讀取測試資料_Mongo.txt...");
+            await SeedMongoCollectionAsync(
+                mongoUri,
+                MongoOrderDataPath,
+                MongoOrderCollection,
+                tag: "Orders");
+        }
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), MongoDataPath);
+        // S41-E: Search 7 (GetUserCgdmData) 改 Mongo 單筆 LoadAsync — Users collection 對應原 DDB UserModel
+        private static async Task SeedMongoUserAsync(string mongoUri)
+        {
+            await SeedMongoCollectionAsync(
+                mongoUri,
+                MongoUserDataPath,
+                MongoUserCollection,
+                tag: "Users");
+        }
+
+        // 共用植入流程:讀 JSON 陣列 → BsonArray → 清空 Collection → InsertMany
+        private static async Task SeedMongoCollectionAsync(string mongoUri, string dataPath, string collectionName, string tag)
+        {
+            Console.WriteLine($"\n📦 [Mongo {tag}] 讀取 {Path.GetFileName(dataPath)}...");
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), dataPath);
             if (!File.Exists(filePath))
             {
                 Console.WriteLine($"❌ 檔案不存在：{filePath}");
@@ -221,17 +247,17 @@ namespace CPF.Sandbox.IntegrationTests.PipelineSeeders
             // 連接 MongoDB
             var client = new MongoClient(mongoUri);
             var database = client.GetDatabase(MongoDatabase);
-            var collection = database.GetCollection<BsonDocument>(MongoCollection);
+            var collection = database.GetCollection<BsonDocument>(collectionName);
 
             // 清空舊資料
-            Console.WriteLine($"🗑️  清空 Collection：{MongoCollection}");
+            Console.WriteLine($"🗑️  清空 Collection：{collectionName}");
             await collection.DeleteManyAsync(Builders<BsonDocument>.Filter.Empty);
 
             // 批次植入
             var documents = bsonArray.Select(b => b.AsBsonDocument).ToList();
             await collection.InsertManyAsync(documents);
 
-            Console.WriteLine($"✅ Mongo 植入完成：{documents.Count} 筆");
+            Console.WriteLine($"✅ Mongo {tag} 植入完成：{documents.Count} 筆");
         }
 
         #endregion
