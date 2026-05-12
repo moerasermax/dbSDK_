@@ -14,7 +14,7 @@ LAST_SYNC: 2026-05-12
 - [x] 環境清理 (Stale images removed)
 
 ## ⚠️ Remaining Items (Post-Project)
-- [ ] Search 1 (toship) 業務語義待客戶最終裁決 (6 vs 1)
+- [x] Search 1 (toship) 業務語義分析素材已就緒 (待客戶決議 A/B/C)
 - [ ] 強化抽驗模式：已達連續 3 次綠燈解除門檻 (2026-05-12)
 
 ## Handover Reference

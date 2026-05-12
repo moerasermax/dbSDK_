@@ -27,6 +27,8 @@
     - 2026-05-12 S41-J 曾嘗試補 `esmm_status="01"` filter 對齊 Golden 1 筆、但屬 Engineer 從測資反推、未經客戶確認業務語義
     - 同日 user 提供客戶原 SDK 原碼確認**無 esmm_status filter**、revert S41-J
     - SDK 現狀 100% 對齊客戶原碼、Suite assertion 期望值改 6 (對齊客戶邏輯、不對齊 Golden)
+- **2026-05-12 PM 分析更新**: 透過抽驗測資 `seller_memo` 發現 6 筆訂單代表 6 種不同業務情境（可取消/提問/合併/已付款/關轉/備貨），其中僅有 **CM2605050044044 (備貨)** 與 Golden 期望的 1 筆對齊。
+- **分析文件**: `agent-commons/pm-validation/V1_Search1_Conflict_Analysis.md`
 - **需廠商確認** (三選一):
     1. Golden Recipe 樣張**有誤**、應改為 6 筆 (符合客戶 SDK 行為);或
     2. 業務語義需要**加 esmm_status="01"** (物流待寄件) 或其他 filter、Engineer 補回 query 條件;或
