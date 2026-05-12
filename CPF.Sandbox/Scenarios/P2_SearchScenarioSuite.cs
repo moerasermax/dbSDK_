@@ -78,10 +78,13 @@ namespace CPF.Sandbox.Scenarios
             Check("SellerPerformance.OrderCount", sp?.OrderCount, 24);
             Check("SellerPerformance.SendCount", sp?.SendCount, 8);
             Check("SellerPerformance.SalesAmt", sp?.SalesAmt, 138);
-            // S41-J: BuyerOverView 顯式錨點驗、對齊 Golden Search_1 樣張 (toship=1 加 esmm_status="01")
+            // BuyerOverView 錨點驗
+            //   2026-05-12 S41-J revert:客戶原 OrderStateToshipForBuyerQuery 無 esmm_status filter
+            //   ⚠️ PENDING_BUSINESS_LOGIC:Toship 客戶邏輯=6 vs Golden=1 不一致、待客戶釐清
+            //   Suite 期望值用「客戶真實邏輯輸出」(6)、不對齊 Golden (1)
             var bo = data.BuyerOverview;
             Check("BuyerOverview.Unpaid", bo?.Unpaid, 1);
-            Check("BuyerOverview.Toship", bo?.Toship, 1);
+            Check("BuyerOverview.Toship", bo?.Toship, 6); // ⚠️ 客戶邏輯 6 vs Golden 1、未對齊
             Check("BuyerOverview.ToFinish", bo?.ToFinish, 1);
             Check("BuyerOverview.Cancel", bo?.Cancel, 9);
             Check("BuyerOverview.Finish", bo?.Finish, 1);

@@ -17,15 +17,31 @@
 
 ## 2. 業務邏輯疑點 (Spec Discrepancies) - P2 Alignment
 
-### Search 1: 待出貨 (toship) 定義
-- **現象**：現行 SDK Filter (coom_status [10,20] + 已付款) 在測試資料中命中 **6 筆**，但 Golden Recipe 期望為 **1 筆**。
-- **需廠商確認**：
-    - 「待出貨」的完整過濾條件為何？是否需排除特定物流狀態 (esmm_status) 或特定訂單旗標？
+### Search 1: 待出貨 (toship) 定義 — 客戶原邏輯 vs Golden 不一致
+- **現象**：
+    - 客戶原 SDK `OrderStateToshipForBuyerQuery` (user 2026-05-12 提供原碼確認):
+      `coom_status IN (10, 20) AND (cooc_payment_pay_datetime exists OR cooc_payment_type="1")`
+    - 用此邏輯跑現行測資 → **6 筆**
+    - Golden Recipe `Search_1_GetHomeToDoOverview.txt` 樣張期望 → **1 筆**
+- **歷程**：
+    - 2026-05-12 S41-J 曾嘗試補 `esmm_status="01"` filter 對齊 Golden 1 筆、但屬 Engineer 從測資反推、未經客戶確認業務語義
+    - 同日 user 提供客戶原 SDK 原碼確認**無 esmm_status filter**、revert S41-J
+    - SDK 現狀 100% 對齊客戶原碼、Suite assertion 期望值改 6 (對齊客戶邏輯、不對齊 Golden)
+- **需廠商確認** (三選一):
+    1. Golden Recipe 樣張**有誤**、應改為 6 筆 (符合客戶 SDK 行為);或
+    2. 業務語義需要**加 esmm_status="01"** (物流待寄件) 或其他 filter、Engineer 補回 query 條件;或
+    3. 測資與 Golden 生成時 dataset 不同步、需補測資讓客戶邏輯跑出 1 筆
 
 ### Search 4: 預設查詢區間
 - **現象**：Golden Recipe 樣張未提供輸入區間，但結果呈現 5 筆資料。SDK 若不傳區間預設 fallback 至 90 天，會導致命中 15 筆。
-- **需廠商確認**：
-    - 當呼叫端未傳入時間範圍時，該 API 的預設行為 (Default Date Range) 應為何？
+- **2026-05-12 user 補完客戶原 SDK 邏輯**:
+    - `AppSellerOverview` = `today.AddDays(-90)` ~ `today` (90 天)
+    - `AppSellerPerformance` = `mondayDate` ~ `today+1` (本週一 ~ 今天+1)
+    - 兩 bucket 用**不同預設區間**
+- **SDK 現狀**:
+    - 已對齊客戶原邏輯 (S41-K)、BLL 拆兩段 fallback
+    - Suite 注入 FixedClock(2026-05-05) 對齊 Golden Out (S41-L)
+- **狀態**:✅ 客戶邏輯確認、PENDING 已解
 
 ---
 

@@ -220,6 +220,33 @@ since: 2026-05-01
 
 ---
 
+## [F3-20260512-06] S41-J 從測資反推業務 filter、未經客戶確認加 esmm_status="01" 事故
+
+- **日期**：2026-05-12
+- **角色**：Engineer (Claude Code)
+- **失效模式**：F3 (捏造業務語義) — 同類 evidence-first §4 反捏造原則違反
+- **事故描述**：
+    S41-J 處理 Search 1 buyerOverView.toship Golden=1 vs SDK=6 不一致時、Engineer (我) 撈出 6 筆訂單明細、發現只有 1 筆 (CM2605050044044) 有 `esmm_status="01"`、直接從這個觀察反推「加 esmm_status="01" filter」、commit S41-J 修法。
+
+    2026-05-12 user 提供客戶原 SDK 完整碼 `OrderStateToshipForBuyerQuery()` 確認客戶原邏輯**無 `esmm_status` filter** — 證實 S41-J 加的條件是 Engineer 從測資反推、不是客戶業務語義、屬 F3 捏造業務 spec。
+- **根本原因**：
+    1. **User 「對齊 Golden 優先」裁決被過度解讀**:user 說「先照著 Search_1 查 In Out 對齊」、Engineer 解讀為「可加業務 filter 對齊 Golden Out」、但實際應解讀為「先把 Suite 等對齊 Golden In/Out 結構、業務語義差異仍需客戶確認」
+    2. **測資反推取代客戶確認**:看到 6 筆中唯一不同的特徵是 `esmm_status="01"`、直接加 filter、未走 PENDING_BUSINESS_LOGIC 流程跟客戶確認
+    3. **evidence-first §4 反捏造原則違反**:對「業務 spec」這類客戶 domain 知識、Engineer 嚴禁從測資反推 — 該由 PM 跟客戶 ground truth
+- **後果**：
+    - S41-J commit 加了非客戶授權的業務 filter、若直接交付 production、客戶可能反映「我們的訂單統計變少了」(實際 production 訂單可能有 esmm_status=null 但業務上算 toship)
+    - 若客戶後來說「Golden 樣張本身錯、不是 SDK 該加 filter」、SDK 多此一條會偏離客戶原意
+    - 紀律層面:Engineer 越權做業務裁決
+- **補救措施**：
+    1. **revert S41-J**:S41-P commit、SDK `OrderStateToshipForBuyerQuery` 100% 對齊客戶原碼
+    2. **Suite assertion 改 6**:期望值改為客戶真實輸出 (而非 Golden 1)、不掩飾不一致
+    3. **PENDING_BUSINESS_LOGIC.md 詳記**:Search 1 toship Golden 1 vs 客戶邏輯 6、三選一待客戶釐清
+    4. **紀律強化**:後續對「Golden Out 與客戶原邏輯不一致」場景、Engineer 一律走 PENDING flow、不擅自加 filter 對齊;若 user 裁決「先動工」、明示為 PENDING + 在 commit message 標註「⚠️ over-fit、待客戶確認」
+- **狀態**：✅ 已 revert (S41-P commit) + PENDING 已記。
+
+
+---
+
 ## [F2-20260512-04] Search 5/6 trend bucket 誤套 PurchaseOrderQuery + Today hour 格式偏差
 
 - **日期**：2026-05-12

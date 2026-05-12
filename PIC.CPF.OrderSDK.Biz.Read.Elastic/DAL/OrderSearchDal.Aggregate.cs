@@ -11,7 +11,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
 {
     public partial class OrderSearchDal
     {
-        // 1. 注入你強大的 dbSDK Repository
+        // 1. 注入 dbSDK Repository
         private readonly ElasticRepository<OrderDocument> _elasticRepository;
 
         public OrderSearchDal(ElasticRepository<OrderDocument> elasticRepository)
@@ -178,11 +178,12 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
             ));
         }
 
-        // 訂單狀態-待出貨 (買家): (訂單成立 OR 備貨) AND 已付款 AND 進物流待寄
-        // S41-J:加 esmm_status="01" filter 對齊 Golden Search_1 樣張 (buyerOverView.toship=1)
-        //       客戶原邏輯 coom_status IN (10, 20) + 已付款 對測資 24 筆得 6 筆 (5 筆 coom_status="10" 訂單成立但尚未進物流)
-        //       Golden 期望 1 筆 (CM2605050044044、唯一同時有 esmm_status="01" 物流待寄件)
-        //       業務語義:買家視角待出貨 = 賣家已備貨進入物流系統待寄出
+        // 訂單狀態-待出貨 (買家): (訂單成立 OR 備貨) AND (取貨付款 OR 已付款)
+        // 100% 對齊客戶原 SDK OrderStateToshipForBuyerQuery (Engineer 不擅自加 filter)
+        // ⚠️ PENDING_BUSINESS_LOGIC:本邏輯對測資得 6 筆、Golden 期望 1 筆、不一致
+        //   2026-05-12 user 確認客戶原碼即此邏輯、無 esmm_status filter
+        //   推測:Golden Recipe 樣張本身有誤、或測資與 Golden 生成時 dataset 不同步
+        //   待 PM 跟客戶釐清:Golden 應改 6、或補測資、或客戶確認業務語義加 filter
         public static Action<QueryDescriptor<OrderDocument>> OrderStateToshipForBuyerQuery()
         {
             return q => q.Bool(b => b.Must(
@@ -193,8 +194,7 @@ namespace PIC.CPF.OrderSDK.Biz.Read.Elastic.DAL
                 m => m.Bool(innerB => innerB.Should(
                     s => s.Exists(e => e.Field(f => f.CoocPaymentPayDatetime)),
                     s => s.Term(t => t.Field(f => f.CoocPaymentType).Value("1"))
-                ).MinimumShouldMatch(1)),
-                m => m.Term(t => t.Field(f => f.EsmmStatus).Value("01"))
+                ).MinimumShouldMatch(1))
             ));
         }
         #endregion
