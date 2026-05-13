@@ -14,28 +14,66 @@ MongoSerializationConfig.Register();
 MongoMap.EnsureClassMapsRegistered();
 ```
 
+接著從 `appsettings.json` 讀取連線設定並綁定到 `ConnectionSettings`，後面模組 A / B 都會用到：
+
+```csharp
+using Microsoft.Extensions.Configuration;
+
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: false)
+    .Build();
+
+var settings = new ConnectionSettings();
+configuration.GetSection("ConnectionSettings").Bind(settings);
+```
+
+`appsettings.json` 結構（對應 `ConnectionSettings` 類別）：
+
+```json
+{
+  "ConnectionSettings": {
+    "Mongo":   { "Uri": "...", "User": "...", "Password": "..." },
+    "Elastic": { "EndPoint": "...", "ApiKey": "..." },
+    "Redis":   { "EndPoint": "...", "Port": 6379, "User": "...", "Password": "..." }
+  }
+}
+```
+
+> ⚠️ `appsettings.json` 需在 .csproj 設為「複製到輸出目錄」：
+> ```xml
+> <ItemGroup>
+>   <None Update="appsettings.json">
+>     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+>   </None>
+> </ItemGroup>
+> ```
+
 ---
 
 ## 模組 A：訂單查詢 SDK (Search)
 **適用於**：Search 1~7 業務查詢 (Seller/Buyer/App Dashboard)
 
 ### 1. DI 服務註冊
+連線參數一律從 §0 載入的 `settings` 取、不再 hardcode IP：
+
 ```csharp
+services.AddSingleton(settings);
 services.AddSingleton<IElasticOrderSearchService>(sp =>
 {
-    // A1. 配置 ElasticSearch Driver
-    var conn = new ConnectionSettings { 
-        Elastic = new DbDetail { EndPoint = "http://localhost:9200" } 
-    };
-    var esDriver = new ElasticDriver("Elastic", conn);
+    var s = sp.GetRequiredService<ConnectionSettings>();
+
+    // A1. 配置 ElasticSearch Driver (端點來自 settings.Elastic)
+    var esDriver = new ElasticDriver("Elastic", s);
     var esRepo = new ElasticRepository<OrderDocument>(esDriver, new ElasticMap(), "orders-*");
-    
-    // A2. 配置 MongoDB 查詢層 (SearchDal)
-    var mongoClient = new MongoClient("mongodb://root:example@localhost:27017");
+
+    // A2. 配置 MongoDB 查詢層 (連線字串來自 settings.Mongo)
+    var mongoConnStr = $"mongodb://{s.Mongo.User}:{s.Mongo.Password}@{s.Mongo.Uri}";
+    var mongoClient = new MongoClient(mongoConnStr);
     var db = mongoClient.GetDatabase("CpfOrderDb");
     var mongoDal = new MongoSearchDal(
-        db.GetCollection<MongoOrder>("Orders"), 
-        db.GetCollection<MongoUser>("Users"), 
+        db.GetCollection<MongoOrder>("Orders"),
+        db.GetCollection<MongoUser>("Users"),
         new MongoMap());
 
     // A3. 組裝 BLL 與 Service
@@ -60,14 +98,20 @@ public async Task<IResult<SearchOrderInfoResultModel>> GetOrders(int cid)
 **適用於**：更新訂單狀態、物流取號、寄貨資訊同步
 
 ### 1. DI 服務註冊
+連線參數一律從 §0 載入的 `settings` 取、不再 hardcode：
+
 ```csharp
+services.AddSingleton(settings);
+services.AddSingleton<MongoDBDriver>(sp =>
+    new MongoDBDriver("MongoDB", sp.GetRequiredService<ConnectionSettings>()));
+services.AddSingleton<MongoMap>();
+services.AddSingleton<IDTO, DTO>();
 services.AddSingleton<IMongoDBRepository<OrderModel>>(sp =>
-{
-    var driver = new MongoDBDriver("MongoDB", new ConnectionSettings {
-        Mongo = new DbDetail { Uri = "mongodb://..." }
-    });
-    return new MongoRepository<OrderModel>(driver, new MongoMap(), new DTO(), "Order");
-});
+    new MongoRepository<OrderModel>(
+        sp.GetRequiredService<MongoDBDriver>(),
+        sp.GetRequiredService<MongoMap>(),
+        sp.GetRequiredService<IDTO>(),
+        "Order"));
 ```
 
 ### 2. 使用範例 (局部更新範式)
@@ -99,6 +143,6 @@ public async Task UpdateStatus(string coomNo)
 
 ## 技術要點備註
 
-1. **安全性**：`ConnectionSettings` 建議從環境變數讀取。
+1. **安全性**：production 環境建議用 `appsettings.Production.json` 或環境變數（`AddEnvironmentVariables()`）覆寫 `appsettings.json` 中的密碼/ApiKey、原檔僅留佔位符。
 2. **自動扁平化**：SDK 內部呼叫 `FlattenBsonDocument`，會自動將 `C_Order_M.CoomStatus` 轉為 Mongo 的 `c_order_m.coom_status` 路徑。
 3. **查詢預覽**：若需在 Console 預覽指令，請參考 `CPF.Sandbox/Scenarios/IntegrationGuideScenario.cs`。

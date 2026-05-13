@@ -10,7 +10,8 @@ LAST_SYNC: 2026-05-12
     - [x] Typed Public Input Model 重構完成
 
 ## Current Focus
-- [ ] S44: 重構串接教學場景（邏輯分段）(NEW)
+- [x] S45: 修正 DI 註冊範例（改採 appsettings.json 配置）
+- [x] S44: 重構串接教學場景（邏輯分段）
 - [x] S42: SDK 串接教學與 Mongo 更新範例實作
 - [x] 專案交付準備 (All capsules archived)
 - [x] 環境清理 (Stale images removed)

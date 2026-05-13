@@ -83,37 +83,37 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo
                     });
                 }
 
-                // 註冊 EventGiftModel 衍生類別
-                if (!BsonClassMap.IsClassMapRegistered(typeof(EventGiftModel)))
-                {
-                    BsonClassMap.RegisterClassMap<EventGiftModel>(cm =>
-                    {
-                        cm.AutoMap();
-                        // S11 修復：AutoMap() 會將名為 "id" 的屬性自動映射為 _id (ObjectId)
-                        // 使用 SetIdMember(null) 取消此慣例，讓 MongoDB 原生產生 ObjectId 作為 _id
-                        cm.SetIdMember(null);
-                        // 重新將 id 作為普通字串欄位映射
-                        cm.MapMember(c => c.id)
-                          .SetSerializer(new StringSerializer(BsonType.String));
-                        // S11 補丁：讀取時資料庫文件含有原生 _id (ObjectId)，
-                        // 但 ClassMap 已無對應成員，加入此設定避免 "Element '_id' does not match any field" 錯誤
-                        cm.SetIgnoreExtraElements(true);
-                    });
-                }
+                //// 註冊 EventGiftModel 衍生類別
+                //if (!BsonClassMap.IsClassMapRegistered(typeof(EventGiftModel)))
+                //{
+                //    BsonClassMap.RegisterClassMap<EventGiftModel>(cm =>
+                //    {
+                //        cm.AutoMap();
+                //        // S11 修復：AutoMap() 會將名為 "id" 的屬性自動映射為 _id (ObjectId)
+                //        // 使用 SetIdMember(null) 取消此慣例，讓 MongoDB 原生產生 ObjectId 作為 _id
+                //        cm.SetIdMember(null);
+                //        // 重新將 id 作為普通字串欄位映射
+                //        cm.MapMember(c => c.id)
+                //          .SetSerializer(new StringSerializer(BsonType.String));
+                //        // S11 補丁：讀取時資料庫文件含有原生 _id (ObjectId)，
+                //        // 但 ClassMap 已無對應成員，加入此設定避免 "Element '_id' does not match any field" 錯誤
+                //        cm.SetIgnoreExtraElements(true);
+                //    });
+                //}
 
-                // 註冊 EventGiftSummaryModel 衍生類別
-                if (!BsonClassMap.IsClassMapRegistered(typeof(EventGiftSummaryModel)))
-                {
-                    BsonClassMap.RegisterClassMap<EventGiftSummaryModel>(cm =>
-                    {
-                        cm.AutoMap();
-                        // 同 EventGiftModel：取消 Id 的 _id 自動映射，改為普通字串欄位
-                        cm.SetIdMember(null);
-                        cm.MapMember(c => c.Id)
-                          .SetSerializer(new StringSerializer(BsonType.String));
-                        cm.SetIgnoreExtraElements(true);
-                    });
-                }
+                //// 註冊 EventGiftSummaryModel 衍生類別
+                //if (!BsonClassMap.IsClassMapRegistered(typeof(EventGiftSummaryModel)))
+                //{
+                //    BsonClassMap.RegisterClassMap<EventGiftSummaryModel>(cm =>
+                //    {
+                //        cm.AutoMap();
+                //        // 同 EventGiftModel：取消 Id 的 _id 自動映射，改為普通字串欄位
+                //        cm.SetIdMember(null);
+                //        cm.MapMember(c => c.Id)
+                //          .SetSerializer(new StringSerializer(BsonType.String));
+                //        cm.SetIgnoreExtraElements(true);
+                //    });
+                //}
 
                 _classMapsRegistered = true;
             }

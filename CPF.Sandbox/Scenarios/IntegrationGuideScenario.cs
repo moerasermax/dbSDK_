@@ -1,4 +1,5 @@
 using CPF.Service.SendDataToMongoDB.Model.Order;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
@@ -22,12 +23,12 @@ namespace CPF.Sandbox.Scenarios
 {
     /// <summary>
     /// SDK QuickStart 教學 — 對齊 docs/SDK_QuickStart.md 三段結構:
-    ///   §0  全局初始化 (Global Init)
+    ///   §0  全局初始化 + 載入 appsettings.json (Global Init + Configuration)
     ///   模組 A — 訂單查詢 SDK (Search)
     ///   模組 B — 貨態更新服務 (Write)
     ///
+    /// 連線設定從 CPF.Sandbox/appsettings.json 讀取、不在程式碼中 hardcode。
     /// 模組 A 與模組 B 各自 new ServiceCollection、完全解耦、不共享 DI 容器或任何狀態。
-    /// 客戶端只用其中一個模組時、另一個模組整段可直接刪掉、不影響運作。
     /// </summary>
     public static class IntegrationGuideScenario
     {
@@ -35,39 +36,64 @@ namespace CPF.Sandbox.Scenarios
         {
             PrintHeader("dbSDK QuickStart 教學");
 
-            RunGlobalInit();
-            RunSearchExample();
-            RunUpdateExample();
+            // §0 全局初始化 + 載入 Configuration
+            var settings = RunGlobalInit();
+
+            // 模組 A / B 各自吃 settings、不共用 ServiceCollection
+            RunSearchExample(settings);
+            RunUpdateExample(settings);
 
             PrintHeader("教學完成、完整步驟請見 docs/SDK_QuickStart.md");
             return Task.CompletedTask;
         }
 
         // ═════════════════════════════════════════════════════════════════
-        //  §0 全局初始化 (Global Init)
-        //  Program.cs 啟動跑一次、模組 A 與 B 共用。
+        //  §0 全局初始化 + 載入 appsettings.json
+        //  Program.cs 啟動跑一次、模組 A 與 B 共用 settings。
         // ═════════════════════════════════════════════════════════════════
-        private static void RunGlobalInit()
+        private static ConnectionSettings RunGlobalInit()
         {
-            PrintSection("§0 全局初始化 (Global Init)");
+            PrintSection("§0 全局初始化 + 載入 appsettings.json");
 
-            Console.WriteLine("  兩階段靜態註冊 (Program.cs 頂部、builder.Build() 之前):");
+            // 兩階段靜態註冊 (鐵律 §A)
+            Console.WriteLine("  Step 1: 兩階段靜態註冊");
             Console.WriteLine("    MongoSerializationConfig.Register();");
             Console.WriteLine("    MongoMap.EnsureClassMapsRegistered();");
-            Console.WriteLine();
-
             MongoSerializationConfig.Register();
             MongoMap.EnsureClassMapsRegistered();
 
-            Console.WriteLine("  ✅ 序列化器 + ClassMap 已註冊 (重複呼叫安全、內部有 lock + flag)");
+            // 從 appsettings.json 載入 ConnectionSettings
+            Console.WriteLine();
+            Console.WriteLine("  Step 2: 從 appsettings.json 載入連線設定");
+            Console.WriteLine("    var configuration = new ConfigurationBuilder()");
+            Console.WriteLine("        .SetBasePath(AppContext.BaseDirectory)");
+            Console.WriteLine("        .AddJsonFile(\"appsettings.json\", optional: false)");
+            Console.WriteLine("        .Build();");
+            Console.WriteLine("    var settings = new ConnectionSettings();");
+            Console.WriteLine("    configuration.GetSection(\"ConnectionSettings\").Bind(settings);");
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
+            var settings = new ConnectionSettings();
+            configuration.GetSection("ConnectionSettings").Bind(settings);
+
+            Console.WriteLine();
+            Console.WriteLine("  ✅ 載入完成 (顯示讀取結果、密碼省略):");
+            Console.WriteLine($"    Mongo.Uri      = {settings.Mongo.Uri}");
+            Console.WriteLine($"    Mongo.User     = {settings.Mongo.User}");
+            Console.WriteLine($"    Elastic.EndPoint = {settings.Elastic.EndPoint}");
+
+            return settings;
         }
 
         // ═════════════════════════════════════════════════════════════════
         //  模組 A — 訂單查詢 SDK (Search)
-        //  獨立 ServiceCollection、與模組 B 互不影響。
-        //  適用 Search 1-7 業務查詢 (Seller / Buyer / App Dashboard)
+        //  獨立 ServiceCollection、settings 由外層 §0 傳入、不重新讀檔。
         // ═════════════════════════════════════════════════════════════════
-        private static void RunSearchExample()
+        private static void RunSearchExample(ConnectionSettings settings)
         {
             PrintSection("模組 A — 訂單查詢 SDK (Search)");
 
@@ -75,6 +101,7 @@ namespace CPF.Sandbox.Scenarios
             // 用到的依賴:ElasticDriver + MongoClient + ElasticRepository + MongoSearchDal + Bll + Service
             // 與模組 B「不重疊」:這裡完全不用 MongoDBDriver / IMongoDBRepository
             var services = new ServiceCollection();
+            services.AddSingleton(settings);
             services.AddSingleton<IElasticOrderSearchService>(BuildSearchService);
 
             using var sp = services.BuildServiceProvider();
@@ -93,21 +120,19 @@ namespace CPF.Sandbox.Scenarios
             Console.WriteLine($"            req.MemSid={req.MemSid}, PageIndex={req.PageIndex}, PageSize={req.PageSize}");
         }
 
-        private static IElasticOrderSearchService BuildSearchService(IServiceProvider _)
+        private static IElasticOrderSearchService BuildSearchService(IServiceProvider sp)
         {
-            const string esEndpoint = "http://localhost:9200";
-            const string mongoUri = "mongodb://root:example@localhost:27017";
-            const string mongoDbName = "CpfOrderDb";
+            var settings = sp.GetRequiredService<ConnectionSettings>();
 
-            // ES 端 stack:Driver → Repo → DAL
-            var conn = new ConnectionSettings { Elastic = new DbDetail { EndPoint = esEndpoint } };
-            var esDriver = new ElasticDriver("Elastic", conn);
+            // ES 端 stack:Driver → Repo → DAL (端點來自 settings.Elastic)
+            var esDriver = new ElasticDriver("Elastic", settings);
             var esRepo = new ElasticRepository<OrderDocument>(esDriver, new ElasticMap(), "orders-*");
             var esDal = new OrderSearchDal(esRepo);
 
-            // Mongo 端 stack (Dual Engine 用、Search 2/3/7 走 Mongo 補資料)
-            var mongoClient = new MongoClient(mongoUri);
-            var db = mongoClient.GetDatabase(mongoDbName);
+            // Mongo 端 stack:Dual Engine 用 (Search 2/3/7 走 Mongo 補資料、連線字串來自 settings.Mongo)
+            var mongoConnStr = BuildMongoConnectionString(settings);
+            var mongoClient = new MongoClient(mongoConnStr);
+            var db = mongoClient.GetDatabase(ExtractDbName(settings.Mongo.Uri));
             var mongoDal = new MongoSearchDal(
                 db.GetCollection<MongoOrder>("Orders"),
                 db.GetCollection<MongoUser>("Users"),
@@ -120,10 +145,9 @@ namespace CPF.Sandbox.Scenarios
 
         // ═════════════════════════════════════════════════════════════════
         //  模組 B — 貨態更新服務 (Write)
-        //  獨立 ServiceCollection、與模組 A 互不影響。
-        //  適用訂單貨態變更 / 物流取號 / 寄貨資訊同步 ($set + $unset + $push 一次合併)
+        //  獨立 ServiceCollection、settings 由外層 §0 傳入、不重新讀檔。
         // ═════════════════════════════════════════════════════════════════
-        private static void RunUpdateExample()
+        private static void RunUpdateExample(ConnectionSettings settings)
         {
             PrintSection("模組 B — 貨態更新服務 (Write)");
 
@@ -131,19 +155,9 @@ namespace CPF.Sandbox.Scenarios
             // 用到的依賴:MongoDBDriver + MongoMap + IDTO + MongoRepository
             // 與模組 A「不重疊」:這裡完全不用 ElasticDriver / IElasticOrderSearchService / MongoSearchDal
             var services = new ServiceCollection();
-            services.AddSingleton<MongoDBDriver>(_ =>
-            {
-                var settings = new ConnectionSettings
-                {
-                    Mongo = new DbDetail
-                    {
-                        User = "root",
-                        Password = "example",
-                        Uri = "cluster0.example.mongodb.net/CpfOrderDb"
-                    }
-                };
-                return new MongoDBDriver("MongoDB", settings);
-            });
+            services.AddSingleton(settings);
+            services.AddSingleton<MongoDBDriver>(sp =>
+                new MongoDBDriver("MongoDB", sp.GetRequiredService<ConnectionSettings>()));
             services.AddSingleton<MongoMap>();
             services.AddSingleton<IDTO, DTO>();
             services.AddSingleton<IMongoDBRepository<OrderModel>>(sp =>
@@ -211,8 +225,23 @@ namespace CPF.Sandbox.Scenarios
         }
 
         // ─────────────────────────────────────────────────────────────────
-        //  輔助 — 視覺分隔
+        //  輔助
         // ─────────────────────────────────────────────────────────────────
+
+        // 從 settings.Mongo 組 mongodb:// 連線字串 (走 MongoClient 直接路徑、dev 適用)
+        private static string BuildMongoConnectionString(ConnectionSettings s)
+            => $"mongodb://{s.Mongo.User}:{s.Mongo.Password}@{s.Mongo.Uri}";
+
+        // 從 Mongo URI 中抽 DB name (例如 "cluster0.xxx/CpfOrderDb" → "CpfOrderDb")
+        private static string ExtractDbName(string uri)
+        {
+            var slashIdx = uri.IndexOf('/');
+            if (slashIdx < 0 || slashIdx == uri.Length - 1) return "CpfOrderDb";
+            var dbPart = uri.Substring(slashIdx + 1);
+            var qIdx = dbPart.IndexOf('?');
+            return qIdx >= 0 ? dbPart.Substring(0, qIdx) : dbPart;
+        }
+
         private static void PrintHeader(string title)
         {
             Console.WriteLine();
