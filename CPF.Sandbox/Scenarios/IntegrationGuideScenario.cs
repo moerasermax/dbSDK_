@@ -21,48 +21,66 @@ using PIC.CPF.OrderSDK.Biz.Read.Elastic.Services;
 namespace CPF.Sandbox.Scenarios
 {
     /// <summary>
-    /// SDK QuickStart 教學 — 客戶端 5 分鐘接入示範。
-    /// 完整文件: docs/SDK_QuickStart.md
+    /// SDK QuickStart 教學 — 對齊 docs/SDK_QuickStart.md 三段結構:
+    ///   §0  全局初始化 (Global Init)
+    ///   模組 A — 訂單查詢 SDK (Search)
+    ///   模組 B — 貨態更新服務 (Write)
     ///
-    /// 範例 1: 註冊查詢服務 + 呼叫 SearchByBuyerAsync
-    /// 範例 2: 註冊 Mongo 寫入 Repository + 呼叫 UpdateData ($set + $unset + $push 一次合併)
+    /// 模組 A 與模組 B 各自 new ServiceCollection、完全解耦、不共享 DI 容器或任何狀態。
+    /// 客戶端只用其中一個模組時、另一個模組整段可直接刪掉、不影響運作。
     /// </summary>
     public static class IntegrationGuideScenario
     {
         public static Task RunAsync()
         {
-            Console.WriteLine();
-            Console.WriteLine("=== dbSDK QuickStart 教學 ===");
+            PrintHeader("dbSDK QuickStart 教學");
 
-            Demo1_RegisterAndQuery();
-            Demo2_RegisterAndUpdate();
+            RunGlobalInit();
+            RunSearchExample();
+            RunUpdateExample();
 
-            Console.WriteLine();
-            Console.WriteLine("=== 教學完成、完整步驟請見 docs/SDK_QuickStart.md ===");
+            PrintHeader("教學完成、完整步驟請見 docs/SDK_QuickStart.md");
             return Task.CompletedTask;
         }
 
-        // ─────────────────────────────────────────────────────────────────
-        // 範例 1: 註冊查詢服務 + 呼叫查詢
-        // ─────────────────────────────────────────────────────────────────
-        private static void Demo1_RegisterAndQuery()
+        // ═════════════════════════════════════════════════════════════════
+        //  §0 全局初始化 (Global Init)
+        //  Program.cs 啟動跑一次、模組 A 與 B 共用。
+        // ═════════════════════════════════════════════════════════════════
+        private static void RunGlobalInit()
         {
-            Console.WriteLine();
-            Console.WriteLine("【範例 1】註冊查詢服務 + 呼叫 SearchByBuyerAsync");
+            PrintSection("§0 全局初始化 (Global Init)");
+
+            Console.WriteLine("  兩階段靜態註冊 (Program.cs 頂部、builder.Build() 之前):");
+            Console.WriteLine("    MongoSerializationConfig.Register();");
+            Console.WriteLine("    MongoMap.EnsureClassMapsRegistered();");
             Console.WriteLine();
 
-            // 啟動初始化 (Program.cs 開頭跑一次)
             MongoSerializationConfig.Register();
             MongoMap.EnsureClassMapsRegistered();
 
-            // DI 註冊
+            Console.WriteLine("  ✅ 序列化器 + ClassMap 已註冊 (重複呼叫安全、內部有 lock + flag)");
+        }
+
+        // ═════════════════════════════════════════════════════════════════
+        //  模組 A — 訂單查詢 SDK (Search)
+        //  獨立 ServiceCollection、與模組 B 互不影響。
+        //  適用 Search 1-7 業務查詢 (Seller / Buyer / App Dashboard)
+        // ═════════════════════════════════════════════════════════════════
+        private static void RunSearchExample()
+        {
+            PrintSection("模組 A — 訂單查詢 SDK (Search)");
+
+            // ───── 模組 A 註冊:組 IElasticOrderSearchService ─────
+            // 用到的依賴:ElasticDriver + MongoClient + ElasticRepository + MongoSearchDal + Bll + Service
+            // 與模組 B「不重疊」:這裡完全不用 MongoDBDriver / IMongoDBRepository
             var services = new ServiceCollection();
             services.AddSingleton<IElasticOrderSearchService>(BuildSearchService);
 
-            // 注入並使用
             using var sp = services.BuildServiceProvider();
             var sdk = sp.GetRequiredService<IElasticOrderSearchService>();
 
+            // ───── 呼叫範例 ─────
             var req = new SearchOrderInfoByBuyerIdModel
             {
                 MemSid = 12345,
@@ -71,8 +89,8 @@ namespace CPF.Sandbox.Scenarios
             };
 
             Console.WriteLine($"  服務型別: {sdk.GetType().Name}");
-            Console.WriteLine($"  呼叫: var result = await sdk.SearchByBuyerAsync(req);");
-            Console.WriteLine($"        req.MemSid={req.MemSid}, PageIndex={req.PageIndex}, PageSize={req.PageSize}");
+            Console.WriteLine($"  注入呼叫: var result = await sdk.SearchByBuyerAsync(req);");
+            Console.WriteLine($"            req.MemSid={req.MemSid}, PageIndex={req.PageIndex}, PageSize={req.PageSize}");
         }
 
         private static IElasticOrderSearchService BuildSearchService(IServiceProvider _)
@@ -81,33 +99,37 @@ namespace CPF.Sandbox.Scenarios
             const string mongoUri = "mongodb://root:example@localhost:27017";
             const string mongoDbName = "CpfOrderDb";
 
+            // ES 端 stack:Driver → Repo → DAL
             var conn = new ConnectionSettings { Elastic = new DbDetail { EndPoint = esEndpoint } };
             var esDriver = new ElasticDriver("Elastic", conn);
-            var esMap = new ElasticMap();
-            var esRepo = new ElasticRepository<OrderDocument>(esDriver, esMap, "orders-*");
+            var esRepo = new ElasticRepository<OrderDocument>(esDriver, new ElasticMap(), "orders-*");
             var esDal = new OrderSearchDal(esRepo);
 
-            var mongoMap = new MongoMap();
+            // Mongo 端 stack (Dual Engine 用、Search 2/3/7 走 Mongo 補資料)
             var mongoClient = new MongoClient(mongoUri);
             var db = mongoClient.GetDatabase(mongoDbName);
-            var orderColl = db.GetCollection<MongoOrder>("Orders");
-            var userColl = db.GetCollection<MongoUser>("Users");
-            var mongoDal = new MongoSearchDal(orderColl, userColl, mongoMap);
+            var mongoDal = new MongoSearchDal(
+                db.GetCollection<MongoOrder>("Orders"),
+                db.GetCollection<MongoUser>("Users"),
+                new MongoMap());
 
+            // BLL + Service
             var bll = new ElasticOrderSearchBll(esDal, mongoDal, null, null);
             return new ElasticOrderSearchService(bll, null);
         }
 
-        // ─────────────────────────────────────────────────────────────────
-        // 範例 2: 註冊 Mongo 寫入 Repository + 呼叫更新 ($set + $unset + $push)
-        // ─────────────────────────────────────────────────────────────────
-        private static void Demo2_RegisterAndUpdate()
+        // ═════════════════════════════════════════════════════════════════
+        //  模組 B — 貨態更新服務 (Write)
+        //  獨立 ServiceCollection、與模組 A 互不影響。
+        //  適用訂單貨態變更 / 物流取號 / 寄貨資訊同步 ($set + $unset + $push 一次合併)
+        // ═════════════════════════════════════════════════════════════════
+        private static void RunUpdateExample()
         {
-            Console.WriteLine();
-            Console.WriteLine("【範例 2】註冊 Mongo Repository + 呼叫 UpdateData ($set + $unset + $push 一次合併)");
-            Console.WriteLine();
+            PrintSection("模組 B — 貨態更新服務 (Write)");
 
-            // DI 註冊
+            // ───── 模組 B 註冊:組 IMongoDBRepository<OrderModel> ─────
+            // 用到的依賴:MongoDBDriver + MongoMap + IDTO + MongoRepository
+            // 與模組 A「不重疊」:這裡完全不用 ElasticDriver / IElasticOrderSearchService / MongoSearchDal
             var services = new ServiceCollection();
             services.AddSingleton<MongoDBDriver>(_ =>
             {
@@ -131,10 +153,10 @@ namespace CPF.Sandbox.Scenarios
                     sp.GetRequiredService<IDTO>(),
                     "Order"));
 
-            // 注入並使用
             using var sp = services.BuildServiceProvider();
             var repo = sp.GetRequiredService<IMongoDBRepository<OrderModel>>();
 
+            // ───── 呼叫範例 ($set + $unset + $push 一次合併) ─────
             string filter = "{ \"coom_no\": \"CM2604160395986\" }";
 
             var patch = new OrderModel
@@ -161,8 +183,7 @@ namespace CPF.Sandbox.Scenarios
                 }
             };
 
-            // dry-run 預覽 (不執行 I/O、看實際送 Mongo 的 BSON 指令)
-            // 用 SDK public static helper FlattenBsonDocument 自己拼 — 與 UpdateData 內部邏輯一致
+            // ───── dry-run 預覽 (用 SDK public static FlattenBsonDocument 自拼、不執行 I/O) ─────
             var rawPatch = patch.ToBsonDocument();
             var flatSet = MongoRepository<OrderModel>.FlattenBsonDocument(rawPatch);
 
@@ -181,12 +202,31 @@ namespace CPF.Sandbox.Scenarios
                 cmd["$push"] = push;
             }
 
-            var pretty = new JsonWriterSettings { Indent = true };
+            Console.WriteLine($"  Repository 型別: {repo.GetType().Name}");
             Console.WriteLine($"  filter: {filter}");
-            Console.WriteLine("  update:");
-            Console.WriteLine(cmd.ToJson(pretty));
+            Console.WriteLine("  update 預覽 (合併 $set + $unset + $push):");
+            Console.WriteLine(cmd.ToJson(new JsonWriterSettings { Indent = true }));
             Console.WriteLine();
             Console.WriteLine("  生產呼叫: var result = await repo.UpdateData(filter, patch, options);");
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  輔助 — 視覺分隔
+        // ─────────────────────────────────────────────────────────────────
+        private static void PrintHeader(string title)
+        {
+            Console.WriteLine();
+            Console.WriteLine(new string('═', 70));
+            Console.WriteLine($"  {title}");
+            Console.WriteLine(new string('═', 70));
+        }
+
+        private static void PrintSection(string title)
+        {
+            Console.WriteLine();
+            Console.WriteLine(new string('─', 70));
+            Console.WriteLine($"▶ {title}");
+            Console.WriteLine(new string('─', 70));
         }
     }
 }
