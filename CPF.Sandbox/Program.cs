@@ -55,6 +55,9 @@ static async Task DispatchAsync(string[] args)
         case "dump-s6":     await P2_SearchScenarioSuite.RunSearch6Async(verbose: true); break;
         case "dump-s7":     await P2_SearchScenarioSuite.RunSearch7Async(verbose: true); break;
 
+        // SDK QuickStart 教學 (Sandbox 場景配合 docs/SDK_QuickStart.md)
+        case "teaching": await IntegrationGuideScenario.RunAsync(); break;
+
         // 離線驗證 (Mock + Shipping + Update tests)
         case "offline":
         default:
@@ -127,6 +130,9 @@ static void PrintMenu()
     Console.WriteLine(" 【離線驗證】(無需 ES/Mongo)");
     Console.WriteLine("   O  Mock + Shipping + S22ElasticUpdate");
     Console.WriteLine();
+    Console.WriteLine(" 【SDK 整合教學】");
+    Console.WriteLine("   T  QuickStart 教學 (配合 docs/SDK_QuickStart.md)");
+    Console.WriteLine();
     Console.WriteLine("   Q / Esc  結束");
     Console.WriteLine();
 }
@@ -151,6 +157,8 @@ static async Task RunChoiceAsync(char choice)
         case 'j': await RunIntegrationTestAsync(new[] { "inttest", "seed" }); break;
 
         case 'o': RunOfflineValidation(); break;
+
+        case 't': await IntegrationGuideScenario.RunAsync(); break;
 
         default:
             Console.WriteLine("(無效選項)");

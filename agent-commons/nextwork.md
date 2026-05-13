@@ -10,6 +10,7 @@ LAST_SYNC: 2026-05-12
     - [x] Typed Public Input Model 重構完成
 
 ## Current Focus
+- [ ] S42: SDK 串接教學與 Mongo 更新範例實作 (NEW)
 - [x] 專案交付準備 (All capsules archived)
 - [x] 環境清理 (Stale images removed)
 
