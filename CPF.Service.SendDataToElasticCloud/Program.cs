@@ -11,8 +11,6 @@ using NO3._dbSDK_Imporve.Infrastructure.Persistence.Mongo;
 using NO3._dbSDK_Imporve.Infrastructure.Persistence.Redis;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddHostedService<Worker>();
-
 
 
 

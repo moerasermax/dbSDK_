@@ -22,30 +22,29 @@ using PIC.CPF.OrderSDK.Biz.Read.Elastic.Services;
 namespace CPF.Sandbox.Scenarios
 {
     /// <summary>
-    /// SDK QuickStart 教學 — 對齊 docs/SDK_QuickStart.md 四段結構:
+    /// SDK QuickStart 教學 — 對齊 docs/SDK_QuickStart.md 三段結構:
     ///   §0  全局初始化 + 載入 appsettings.json (Global Init + Configuration)
     ///   模組 A — 訂單查詢 SDK (Search)
     ///   模組 B — 貨態更新服務 (Write)
-    ///   模組 C — 背景同步服務 (Background Sync) — 詳細實作見 BackgroundServiceScenario.cs
     ///
     /// 連線設定從 CPF.Sandbox/appsettings.json 讀取、不在程式碼中 hardcode。
     /// 模組 A 與模組 B 各自 new ServiceCollection、完全解耦、不共享 DI 容器或任何狀態。
     /// </summary>
     public static class IntegrationGuideScenario
     {
-        public static async Task RunAsync()
+        public static Task RunAsync()
         {
             PrintHeader("dbSDK QuickStart 教學");
 
             // §0 全局初始化 + 載入 Configuration
             var settings = RunGlobalInit();
 
-            // 模組 A / B / C 各自吃 settings、不共用 ServiceCollection
+            // 模組 A / B 各自吃 settings、不共用 ServiceCollection
             RunSearchExample(settings);
             RunUpdateExample(settings);
-            await RunBackgroundExample(settings);
 
             PrintHeader("教學完成、完整步驟請見 docs/SDK_QuickStart.md");
+            return Task.CompletedTask;
         }
 
         // ═════════════════════════════════════════════════════════════════
@@ -223,19 +222,6 @@ namespace CPF.Sandbox.Scenarios
             Console.WriteLine(cmd.ToJson(new JsonWriterSettings { Indent = true }));
             Console.WriteLine();
             Console.WriteLine("  生產呼叫: var result = await repo.UpdateData(filter, patch, options);");
-        }
-
-        // ═════════════════════════════════════════════════════════════════
-        //  模組 C — 背景同步服務 (Background Sync)
-        //  Redis Event → Worker → Mongo / ES Repository 全流程模擬。
-        //  詳細實作在 BackgroundServiceScenario.cs(避開本檔過長、職責分離)。
-        // ═════════════════════════════════════════════════════════════════
-        private static async Task RunBackgroundExample(ConnectionSettings settings)
-        {
-            PrintSection("模組 C — 背景同步服務 (Background Sync)");
-            Console.WriteLine("  資料流: Redis Event → Worker → Mongo / ES Repository");
-            Console.WriteLine("  本場景用 in-memory Queue 模擬 Redis Buffer、不真連 Redis");
-            await BackgroundServiceScenario.RunAsync(settings);
         }
 
         // ─────────────────────────────────────────────────────────────────

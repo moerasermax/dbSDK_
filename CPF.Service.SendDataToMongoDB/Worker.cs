@@ -51,7 +51,7 @@ namespace CPF.Service.SendDataToMongoDB
                     if (result.DataJson != null) 
                     {
 
-                        Do(result.DataJson);
+                        await Do(result.DataJson);
 
                     }
                     else

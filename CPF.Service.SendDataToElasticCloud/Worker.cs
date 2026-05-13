@@ -37,7 +37,7 @@ namespace CPF.Service.SendDataToElasticCloud
                     {
                         ElasticAddOrder response = JsonSerializer.Deserialize<ElasticAddOrder>(result.DataJson);
 
-                        Do(response);
+                        await Do(response);
 
                     }
                     else
