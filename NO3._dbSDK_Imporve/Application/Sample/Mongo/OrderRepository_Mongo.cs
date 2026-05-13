@@ -47,11 +47,5 @@ namespace NO3._dbSDK_Imporve.Application.Sample.Mongo
         /// </summary>
         public async Task<IResult> UpdateData(string ConditionData_Json, Orders Data, MongoUpdateOptions options)
             => await _innerRepository.UpdateData(ConditionData_Json, Data, options);
-
-        /// <summary>
-        /// 初始化更新指令 (供進階使用者直接取得 BsonDocument)
-        /// </summary>
-        public async Task<IResult> UpdateInit(string ConditionData_Json, Orders Data, MongoUpdateOptions options)
-            => await _innerRepository.UpdateInit(ConditionData_Json, Data, options);
     }
 }

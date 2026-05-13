@@ -206,27 +206,5 @@ namespace NO3._dbSDK_Imporve.Application.Services
             }
         }
 
-        /// <summary>
-        /// 初始化更新指令 (供 Mock 測試使用)
-        /// </summary>
-        public async Task<IResult> InitUpdateAsync(ShippingUpdateDto dto)
-        {
-            var esmlList = dto.ParseEsmlList();
-            var esmsList = dto.ParseEsmsList();
-            var coomStatus = dto.CoomStatus?.ToString() ?? "";
-            var isNewShipment = coomStatus == "20";
-
-            var condition = $"{{\"coom_no\": \"{dto.CoomNo}\"}}";
-            var updateData = BuildUpdateData(dto, esmlList, esmsList);
-            var options = BuildUpdateOptions(dto, esmlList, esmsList, isNewShipment);
-
-            // 使用 UpdateInit 取得指令 (不實際執行)
-            if (_mongoRepo is OrderRepository_Mongo orderRepo)
-            {
-                return await orderRepo.UpdateInit(condition, updateData, options);
-            }
-
-            return Result.SetErrorResult("InitUpdateAsync", "Repository 不支援 UpdateInit");
-        }
     }
 }
