@@ -47,7 +47,6 @@ namespace CPF.Sandbox.Scenarios
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false)
-                .AddEnvironmentVariables(prefix: "DBSDK_")
                 .Build();
 
             // §1 S45 模式註冊:AddDbSdk 統一裝載 + AddDbSdkMongoRepository<OrderModel>

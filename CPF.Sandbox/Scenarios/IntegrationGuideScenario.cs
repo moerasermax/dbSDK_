@@ -26,8 +26,7 @@ namespace CPF.Sandbox.Scenarios
     ///   模組 A — 訂單查詢 SDK (Search)
     ///   模組 B — 貨態更新服務 (Write)
     ///
-    /// S45 升級:DI 註冊全面採用 services.AddDbSdk(IConfiguration)+ IOptions<ConnectionSettings>;
-    /// 環境變數 DBSDK_ConnectionSettings__Mongo__Uri 等可覆蓋 appsettings.json。
+    /// S45 升級:DI 註冊全面採用 services.AddDbSdk(IConfiguration)+ IOptions<ConnectionSettings>。
     /// 模組 A 與模組 B 各自 new ServiceCollection、完全解耦、不共享 DI 容器或任何狀態。
     /// </summary>
     public static class IntegrationGuideScenario
@@ -63,19 +62,17 @@ namespace CPF.Sandbox.Scenarios
             MongoSerializationConfig.Register();
             MongoMap.EnsureClassMapsRegistered();
 
-            // 從 appsettings.json + 環境變數 載入 ConnectionSettings
+            // 從 appsettings.json 載入 ConnectionSettings
             Console.WriteLine();
-            Console.WriteLine("  Step 2: 載入連線設定 (appsettings.json + 環境變數 prefix DBSDK_ 覆蓋)");
+            Console.WriteLine("  Step 2: 從 appsettings.json 載入連線設定");
             Console.WriteLine("    var configuration = new ConfigurationBuilder()");
             Console.WriteLine("        .SetBasePath(AppContext.BaseDirectory)");
             Console.WriteLine("        .AddJsonFile(\"appsettings.json\", optional: false)");
-            Console.WriteLine("        .AddEnvironmentVariables(prefix: \"DBSDK_\")");
             Console.WriteLine("        .Build();");
 
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false)
-                .AddEnvironmentVariables(prefix: "DBSDK_")
                 .Build();
 
             // 為顯示用而手動 Bind 一次;DI 容器內仍走 IOptions<ConnectionSettings> 模式
@@ -87,9 +84,6 @@ namespace CPF.Sandbox.Scenarios
             Console.WriteLine($"    Mongo.Uri        = {settings.Mongo.Uri}");
             Console.WriteLine($"    Mongo.User       = {settings.Mongo.User}");
             Console.WriteLine($"    Elastic.EndPoint = {settings.Elastic.EndPoint}");
-            Console.WriteLine();
-            Console.WriteLine("  💡 環境變數覆蓋範例 (PowerShell):");
-            Console.WriteLine("    $env:DBSDK_ConnectionSettings__Mongo__Uri = \"override.example.com/db\"");
 
             return (configuration, settings);
         }
@@ -104,11 +98,13 @@ namespace CPF.Sandbox.Scenarios
 
             // ───── 模組 A 註冊 ─────
             // S45 升級:用 AddDbSdk 統一註冊 Drivers + Maps + IDTO;
-            // 額外註冊本模組才需要的 BLL stack(ElasticRepository / Dal / Service)
+            // AddDbSdkElasticRepository<OrderDocument>("orders-*") 取代手動 new ElasticRepository;
+            // 額外註冊本模組才需要的 BLL stack(Dal + Service)
             Console.WriteLine("  註冊範例:");
             Console.WriteLine("    var services = new ServiceCollection();");
-            Console.WriteLine("    services.AddDbSdk(configuration);                                  // SDK 基礎元件");
-            Console.WriteLine("    services.AddSingleton<IElasticOrderSearchService>(BuildSearchService); // App-specific");
+            Console.WriteLine("    services.AddDbSdk(configuration);                                       // SDK 基礎元件");
+            Console.WriteLine("    services.AddDbSdkElasticRepository<OrderDocument>(\"orders-*\");        // ES 索引綁定");
+            Console.WriteLine("    services.AddSingleton<IElasticOrderSearchService>(BuildSearchService);  // App-specific BLL");
 
             if (isPlaceholder)
             {
@@ -120,6 +116,7 @@ namespace CPF.Sandbox.Scenarios
 
             var services = new ServiceCollection();
             services.AddDbSdk(configuration);
+            services.AddDbSdkElasticRepository<OrderDocument>("orders-*");
             services.AddSingleton<IElasticOrderSearchService>(BuildSearchService);
 
             using var sp = services.BuildServiceProvider();
@@ -143,10 +140,9 @@ namespace CPF.Sandbox.Scenarios
         {
             // 從 DI 容器取 IOptions<ConnectionSettings>;.Value 取出實體
             var settings = sp.GetRequiredService<IOptions<ConnectionSettings>>().Value;
-            var esDriver = sp.GetRequiredService<ElasticDriver>();
 
-            // ES 端 stack:Repo → DAL
-            var esRepo = new ElasticRepository<OrderDocument>(esDriver, new ElasticMap(), "orders-*");
+            // ES 端 stack:Repo 從 DI 容器取(已用 AddDbSdkElasticRepository 註冊)、組 DAL
+            var esRepo = sp.GetRequiredService<ElasticRepository<OrderDocument>>();
             var esDal = new OrderSearchDal(esRepo);
 
             // Mongo 端 stack:Dual Engine 用(Search 2/3/7 走 Mongo 補資料)

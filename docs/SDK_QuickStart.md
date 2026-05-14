@@ -18,9 +18,9 @@ MongoSerializationConfig.Register();
 MongoMap.EnsureClassMapsRegistered();
 ```
 
-### 0.2 載入 Configuration (含環境變數覆蓋)
+### 0.2 載入 Configuration
 
-接著建立 `IConfiguration`、含 `appsettings.json` + 環境變數 `DBSDK_` 前綴覆蓋。模組 A 與 B 都會共用同一個 `IConfiguration`:
+接著建立 `IConfiguration`、從 `appsettings.json` 讀取設定。模組 A 與 B 都會共用同一個 `IConfiguration`:
 
 ```csharp
 using Microsoft.Extensions.Configuration;
@@ -28,7 +28,6 @@ using Microsoft.Extensions.Configuration;
 IConfiguration configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false)
-    .AddEnvironmentVariables(prefix: "DBSDK_")   // 環境變數可覆蓋 appsettings 設定
     .Build();
 ```
 
@@ -46,27 +45,7 @@ IConfiguration configuration = new ConfigurationBuilder()
 }
 ```
 
-> 💡 **提示**: 您只需修改 `appsettings.json` 內的連線資訊即可生效。
-
-### 0.4 環境變數覆蓋範例
-
-部署時可用環境變數覆蓋敏感欄位、不需動 `appsettings.json`:
-
-```powershell
-# PowerShell
-$env:DBSDK_ConnectionSettings__Mongo__Uri      = "cluster0.prod.mongodb.net/CpfOrderDb"
-$env:DBSDK_ConnectionSettings__Mongo__User     = "prod_user"
-$env:DBSDK_ConnectionSettings__Mongo__Password = "***"
-```
-
-```bash
-# Bash / CI
-export DBSDK_ConnectionSettings__Mongo__Uri="cluster0.prod.mongodb.net/CpfOrderDb"
-export DBSDK_ConnectionSettings__Mongo__User="prod_user"
-export DBSDK_ConnectionSettings__Mongo__Password="***"
-```
-
-> 雙底線 `__` 是 .NET 對 JSON 階層的標準對應(`__` ↔ `:`)、不要寫成 `_`。
+> 💡 **提示**: 您只需修改 `appsettings.json` 內的連線資訊即可生效。生產環境部署時、請確保此檔案的密碼 / ApiKey 不會被 commit 進公開倉庫。
 
 ---
 
@@ -79,20 +58,20 @@ export DBSDK_ConnectionSettings__Mongo__Password="***"
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-services.AddDbSdk(configuration);                                       // SDK 基礎元件(Drivers + Maps + IDTO + IOptions<ConnectionSettings>)
-services.AddSingleton<IElasticOrderSearchService>(BuildSearchService);   // App-specific:Search BLL stack
+services.AddDbSdk(configuration);                                            // SDK 基礎元件(Drivers + Maps + IDTO + IOptions<ConnectionSettings>)
+services.AddDbSdkElasticRepository<OrderDocument>("orders-*");               // ES 索引綁定
+services.AddSingleton<IElasticOrderSearchService>(BuildSearchService);        // App-specific:Search BLL stack
 ```
 
-`BuildSearchService` factory(從 DI 容器取 `IOptions<ConnectionSettings>` + `ElasticDriver`):
+`BuildSearchService` factory(全部依賴從 DI 容器取):
 
 ```csharp
 private static IElasticOrderSearchService BuildSearchService(IServiceProvider sp)
 {
     var settings = sp.GetRequiredService<IOptions<ConnectionSettings>>().Value;
-    var esDriver = sp.GetRequiredService<ElasticDriver>();
 
-    // ES 端 stack
-    var esRepo = new ElasticRepository<OrderDocument>(esDriver, new ElasticMap(), "orders-*");
+    // ES 端 stack:Repo 從 DI 容器取(AddDbSdkElasticRepository 已註冊)
+    var esRepo = sp.GetRequiredService<ElasticRepository<OrderDocument>>();
     var esDal = new OrderSearchDal(esRepo);
 
     // Mongo 端 stack (Dual Engine — Search 2/3/7 補資料)
@@ -135,6 +114,120 @@ using Microsoft.Extensions.DependencyInjection;
 services.AddDbSdk(configuration);                          // SDK 基礎元件
 services.AddDbSdkMongoRepository<OrderModel>("Order");    // entity-specific 註冊
 ```
+
+> 💡 **Repository 註冊對稱表**:
+>
+> | 引擎 | 擴充方法 | 綁定參數 | 取出方式 |
+> |---|---|---|---|
+> | Mongo | `AddDbSdkMongoRepository<TModel>(collectionName)` | collection 名 | `IMongoDBRepository<TModel>` |
+> | Elastic | `AddDbSdkElasticRepository<TModel>(indexPattern)` | 索引 pattern | `ElasticRepository<TModel>` 或 `IRepository<TModel>` (同一實例) |
+>
+> 寫端雙引擎場景(例如 `ShippingSyncService`:Mongo 主寫 + ES 副同步)可一次裝兩支:
+> ```csharp
+> services.AddDbSdk(configuration);
+> services.AddDbSdkMongoRepository<OrderModel>("Order");
+> services.AddDbSdkElasticRepository<OrderSummary>("orders-*");
+> services.AddSingleton<ShippingSyncService>();
+> ```
+
+---
+
+## DI 容器取用服務 (`GetRequiredService<T>`)
+
+呼叫過 `AddDbSdk` / `AddDbSdkMongoRepository` / `AddDbSdkElasticRepository` 後、服務存進 DI 容器內;**取出**靠 `provider.GetRequiredService<T>()`。
+
+### 四個取得 `IServiceProvider` 的 context
+
+| Context | `provider` 來源 | 典型場景 |
+|---|---|---|
+| Factory lambda 內 | `services.AddSingleton<X>(sp => ...)` 的 `sp` 參數 | 註冊「依賴其他服務」的服務 |
+| 純 console / 手動 build | `services.BuildServiceProvider()` 的回傳 | Sandbox、CLI 工具 |
+| `Host.CreateDefaultBuilder` | `host.Services`(Build 之後) | Worker Service |
+| ASP.NET Core | ctor 注入(框架替你取)或 `builder.Services.BuildServiceProvider()` | Web API |
+
+### 範例 1:純 console — `BuildServiceProvider`
+
+```csharp
+var services = new ServiceCollection();
+services.AddDbSdk(configuration);
+services.AddDbSdkMongoRepository<OrderModel>("Order");
+
+using var provider = services.BuildServiceProvider();   // ← 凝固成 IServiceProvider
+
+var repo = provider.GetRequiredService<IMongoDBRepository<OrderModel>>();
+await repo.UpdateData(filter, patch, options);
+```
+
+> ⚠️ `BuildServiceProvider()` 回的是 `IDisposable`、用 `using` 包起來、否則 Singleton (連線) 不會被釋放。
+
+### 範例 2:`Host.CreateDefaultBuilder`
+
+```csharp
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((ctx, services) =>
+    {
+        services.AddDbSdk(ctx.Configuration);
+        services.AddDbSdkMongoRepository<OrderModel>("Order");
+    })
+    .Build();
+
+var repo = host.Services.GetRequiredService<IMongoDBRepository<OrderModel>>();
+await host.RunAsync();
+```
+
+### 範例 3:ASP.NET Core — ctor 注入 (推薦)
+
+```csharp
+[ApiController]
+public class OrdersController : ControllerBase
+{
+    private readonly IMongoDBRepository<OrderModel> _repo;
+
+    public OrdersController(IMongoDBRepository<OrderModel> repo)  // ← 框架自動 GetRequiredService 給你
+    {
+        _repo = repo;
+    }
+}
+```
+
+→ **99% 的 Web 場景走 ctor 注入、不需要手動 `GetRequiredService`**。手動取主要用於 HostedService / Middleware / Filter 等框架擴充點。
+
+### 用 dbSDK 註冊過的東西能取什麼
+
+```csharp
+// 設定 — IOptions 包裝、用 .Value 取出實體
+var settings = provider.GetRequiredService<IOptions<ConnectionSettings>>().Value;
+
+// Drivers
+var mongoDriver   = provider.GetRequiredService<MongoDBDriver>();
+var elasticDriver = provider.GetRequiredService<ElasticDriver>();
+var redisDriver   = provider.GetRequiredService<RedisDriver>();
+
+// Maps + IDTO
+var mongoMap   = provider.GetRequiredService<MongoMap>();
+var elasticMap = provider.GetRequiredService<ElasticMap>();
+var dto        = provider.GetRequiredService<IDTO>();
+
+// Repositories (前提:已呼叫對應的 AddDbSdkXxxRepository<T>)
+var mongoRepo        = provider.GetRequiredService<IMongoDBRepository<OrderModel>>();
+var elasticRepo      = provider.GetRequiredService<ElasticRepository<OrderSummary>>();
+var elasticRepoIface = provider.GetRequiredService<IRepository<OrderSummary>>();   // 同一實例
+```
+
+### 常見錯誤
+
+| 錯誤寫法 | 症狀 | 修法 |
+|---|---|---|
+| `GetRequiredService<ConnectionSettings>()` | throw:沒註冊 | 改 `GetRequiredService<IOptions<ConnectionSettings>>().Value` |
+| 沒呼叫 `AddDbSdkMongoRepository<T>` 就取 `IMongoDBRepository<T>` | throw:沒註冊 | 先註冊再取 |
+| 用完 `BuildServiceProvider` 沒 dispose | Singleton 連線洩漏 | 加 `using var provider = ...` |
+
+### `GetRequiredService` vs `GetService`
+
+| Method | 沒註冊時 | 何時用 |
+|---|---|---|
+| `GetRequiredService<T>()` | **throw** `InvalidOperationException` | 確定該有、失敗即早炸 |
+| `GetService<T>()` | 回 `null` | 可選依賴、有就用 / 沒有就 fallback |
 
 ### B.2 使用範例 (局部更新範式)
 
@@ -248,7 +341,7 @@ dotnet run --project CPF.Sandbox -- teaching
 
 ## 技術要點備註
 
-1. **安全性**:production 環境建議用環境變數(`AddEnvironmentVariables(prefix: "DBSDK_")`)覆寫 `appsettings.json` 中的密碼 / ApiKey、原檔僅留佔位符。
+1. **安全性**:`appsettings.json` 內的密碼 / ApiKey 不要 commit 進公開倉庫;建議用 `appsettings.Production.json` overlay 或部署時手動替換 placeholder。
 2. **自動扁平化**:SDK 內部呼叫 `FlattenBsonDocument`、自動將 `C_Order_M.CoomStatus` 轉為 Mongo 的 `c_order_m.coom_status` 路徑。
 3. **複合操作原子性**:$set + $unset + $push 必須在同一次 `UpdateData` 呼叫合併執行、嚴禁拆分為多次 SDK 呼叫(DBSDK Part I §D)。
 4. **查詢預覽**:若需在 Console 預覽 BSON 指令、請參考 `CPF.Sandbox/Scenarios/IntegrationGuideScenario.cs` 與 `AdvancedUpdateScenario.cs`。
