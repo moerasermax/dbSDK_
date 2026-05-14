@@ -21,6 +21,7 @@ LAST_SYNC: 2026-05-14
 - [x] 環境清理 (Stale images removed)
 
 ## ⚠️ Remaining Items (Post-Project)
+- [ ] **S45 & S42 變更整合回 AI_Dev 分流** (同步開發分支)
 - [ ] **WebApi-Search 整合實作**
 - [x] S45: 修正 DI 註冊範例 (已於 2026-05-14 結案)
 - [x] S42: SDK 串投教學與 Mongo 更新範例實作 (已於 2026-05-14 結案)
