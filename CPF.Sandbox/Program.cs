@@ -58,6 +58,9 @@ static async Task DispatchAsync(string[] args)
         // SDK QuickStart 教學 (Sandbox 場景配合 docs/SDK_QuickStart.md)
         case "teaching": await IntegrationGuideScenario.RunAsync(); break;
 
+        // S42 進階更新範例 ($set + $unset 複合操作)
+        case "advanced-update": await AdvancedUpdateScenario.RunAsync(); break;
+
         // 離線驗證 (Mock + Shipping + Update tests)
         case "offline":
         default:
@@ -132,6 +135,7 @@ static void PrintMenu()
     Console.WriteLine();
     Console.WriteLine(" 【SDK 整合教學】");
     Console.WriteLine("   T  QuickStart 教學 (配合 docs/SDK_QuickStart.md)");
+    Console.WriteLine("   U  進階更新範例 ($set + $unset 複合操作 — S42)");
     Console.WriteLine();
     Console.WriteLine("   Q / Esc  結束");
     Console.WriteLine();
@@ -159,6 +163,7 @@ static async Task RunChoiceAsync(char choice)
         case 'o': RunOfflineValidation(); break;
 
         case 't': await IntegrationGuideScenario.RunAsync(); break;
+        case 'u': await AdvancedUpdateScenario.RunAsync(); break;
 
         default:
             Console.WriteLine("(無效選項)");

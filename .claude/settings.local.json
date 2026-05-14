@@ -27,7 +27,17 @@
       "Bash(python -c ' *)",
       "PowerShell(Stop-Process *)",
       "PowerShell(Get-Process *)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(git config *)",
+      "Bash(git -c color.ui=never commit --dry-run -m \"test: dry run probe\")",
+      "Bash(bash .git/hooks/pre-commit)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(git -c color.ui=never push origin Release_7-11)",
+      "Bash(echo \"--- push exit: $? ---\")",
+      "Bash(git rev-list *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\YCLIN\\\\Desktop\\\\WorkSpace\\\\測試專案\\\\No.3_dbSDK\" -Recurse -Filter \"*.csproj\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(xargs grep -l \"class MongoUpdateOptions\\\\|record MongoUpdateOptions\")"
     ]
   }
 }

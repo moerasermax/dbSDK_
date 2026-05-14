@@ -1,4 +1,5 @@
 using Elastic.Clients.Elasticsearch;
+using Microsoft.Extensions.Options;
 using NO3._dbSDK_Imporve.Core.Abstraction;
 using NO3._dbSDK_Imporve.Core.Models;
 
@@ -14,6 +15,10 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Driver
 
             _client = new ElasticsearchClient(settings);
         }
+
+        public ElasticDriver(string Service, IOptions<ConnectionSettings> options)
+            : this(Service, options.Value) { }
+
         public ElasticsearchClient GetClient()
         {
             return this._client;

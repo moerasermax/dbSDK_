@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using NO3._dbSDK_Imporve.Core.Abstraction;
 using NO3._dbSDK_Imporve.Core.Models;
@@ -13,7 +14,10 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Driver
             string mongoConnStr = $"mongodb+srv://{settings.Mongo.User}:{settings.Mongo.Password}@{settings.Mongo.Uri}";
             _client = new MongoClient(mongoConnStr);
         }
-        
+
+        public MongoDBDriver(string Service, IOptions<ConnectionSettings> options)
+            : this(Service, options.Value) { }
+
         public IMongoDatabase GetDatabase(string DBName)
         {
             return _client.GetDatabase(DBName);

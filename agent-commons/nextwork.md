@@ -1,24 +1,31 @@
 
 ROLE: PM (Gemini) - PROVISIONAL
-LAST_SYNC: 2026-05-12
+LAST_SYNC: 2026-05-14
 
 ## 🏆 Project Completion
 - [x] Phase 2.A: JSON Format Alignment (ALL SPRINT COMPLETED)
 - [x] Phase 2.B: Golden Data Integration & ETL (ALL SPRINT COMPLETED)
-    - [x] Search 1-7 Golden Recipe 100% 對齊 (除 Search 1 業務疑點外)
+    - [x] Search 1-7 Golden Recipe 100% 對齊 (除已決議之差異外)
     - [x] 雙引擎鏈路 (ES + Mongo) 實作完成
     - [x] Typed Public Input Model 重構完成
 
 ## Current Focus
-- [ ] S46: 整合背景服務 (SendDataToXXX) 教學與範例 (NEW)
+- [x] Search 1 (toship) 業務語義分析完成 (User 確認 6 筆為對)
+- [x] Search 7 (cgdmUpdateDatetime) 資料源修正完成 (改採 Mongo)
+- [x] 強化抽驗模式：已達連續 3 次綠燈解除門檻 (2026-05-12)
 - [x] S45: 修正 DI 註冊範例（改採 appsettings.json 配置）
 - [x] S42: SDK 串接教學與 Mongo 更新範例實作
 - [x] 專案交付準備 (All capsules archived)
 - [x] 環境清理 (Stale images removed)
 
 ## ⚠️ Remaining Items (Post-Project)
-- [x] Search 1 (toship) 業務語義分析素材已就緒 (待客戶決議 A/B/C)
-- [ ] 強化抽驗模式：已達連續 3 次綠燈解除門檻 (2026-05-12)
+- [ ] S45: 修正 DI 註冊範例（改採 appsettings.json 配置）
+- [ ] S42: SDK 串投教學與 Mongo 更新範例實作
+- [x] Search 1/7 疑點決議 (已於 2026-05-14 結案)
+
+## 🔍 Known Limitations (Data Coverage Gaps)
+- **退貨申請過濾**：目前測試資料中 `crsa_applied` 均為 0，Search 1 的 `buyerReturnReq` / `sellerReturnReq` 尚未在「有退貨資料」情境下實測。
+- **物流進階狀態**：`esms_dlv_status_seller_pickup` 等欄位在測試資料中為空，影響部分物流視角過濾之驗證。
 
 ## Handover Reference
 - [ ] agent-commons/handoffs/HANDOFF_10.md

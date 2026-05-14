@@ -1,43 +1,29 @@
-# Sprint S45：修正 DI 註冊範例（改採 appsettings.json 配置）
-tracking_label: P2B-DOCUMENT-3 / S45
+# Sprint S45：DI 配置重構與 Options 模式實作 (DI & Configuration Refactoring)
 
 ## 任務目標
-修正 `docs/SDK_QuickStart.md` 與 `CPF.Sandbox/Scenarios/IntegrationGuideScenario.cs` 中的 DI 註冊範例，將硬編碼 (Hardcoded) 的連線字串改為從 `appsettings.json` 讀取並綁定 (Bind) 的標準方式。
-
----
+將 dbSDK 的 DI 註冊邏輯從「手動組合」升級為「標準擴充方法 (Extension Methods)」，並全面採用 `IOptions<T>` 模式處理配置，消除硬編碼與 Magic Strings。
 
 ## 需求背景
-目前教學範例直接在程式碼中 new `ConnectionSettings` 並填入字串，這不符合 .NET 最佳實踐，也與本專案 `appsettings.json` 的現有結構脫節。
-客戶端工程師需要看到如何正確使用 `IConfiguration` 來載入配置。
-
----
+目前 `Program.cs` 存在大量重複且手動的 `AddSingleton` 邏輯，且 Driver 直接依賴具體的 `ConnectionSettings` 實體。為了讓外部專案（如 Web API）更易於整合，需提供標準的 `AddDbSdk()` 註冊介面。
 
 ## 任務清單
+- [ ] **Core 層級**：
+    - 在 `NO3._dbSDK_Imporve.Infrastructure` (或適當目錄) 建立 `ServiceCollectionExtensions.cs`。
+- [ ] **實作註冊邏輯**：
+    - 建立 `public static IServiceCollection AddDbSdk(this IServiceCollection services, IConfiguration configuration)`。
+    - 內部實作 `services.Configure<ConnectionSettings>(configuration.GetSection("ConnectionSettings"))`。
+    - 將 `Drivers`, `Repositories`, `Maps`, `Mappers` 的註冊移入擴充方法。
+- [ ] **Infrastructure 層級**：
+    - 修改 `MongoDBDriver`, `ElasticDriver`, `RedisDriver`，改為注入 `IOptions<ConnectionSettings> settings`。
+- [ ] **Program.cs 清理**：
+    - 移除原本散亂的 `AddSingleton`，改用 `services.AddDbSdk(context.Configuration)`。
+- [ ] **環境變數驗證**：
+    - 確保 `AddEnvironmentVariables(prefix: "DBSDK_")` 能正確與 `IOptions` 連動。
 
-### 1. [ ] 更新 docs/SDK_QuickStart.md
-- **模組 A 與 B** 的註冊範例，加入 `IConfiguration` 綁定邏輯：
-    ```csharp
-    var settings = new ConnectionSettings();
-    configuration.GetSection("ConnectionSettings").Bind(settings);
-    ```
-- 說明如何從 `appsettings.json` 對應到 `ConnectionSettings` 類別。
+## 檢核點 (VCP)
+- [ ] **建置成功**：`dotnet build` 無報錯。
+- [ ] **DI 正常運作**：執行 `CPF.Sandbox` 任一查詢，確認 Driver 仍能正確讀取配置並連線成功。
+- [ ] **配置覆蓋**：設定環境變數 `DBSDK_ConnectionSettings__Mongo__Uri`，確認驅動能抓到覆蓋值。
 
-### 2. [ ] 更新 CPF.Sandbox/Scenarios/IntegrationGuideScenario.cs
-- 在 `BuildSearchService` 與 `RunUpdateExample` 中，加入 `ConfigurationBuilder` 讀取 `appsettings.json` 的邏輯。
-- 展示如何將讀取到的 `settings` 物件傳遞給 Driver。
-
----
-
-## PM 驗收項目 (VCP)
-
-| # | 驗證項目 | 驗證方式 | 期望值 |
-|---|---------|---------|--------|
-| 1 | **配置解耦** | Code Review | 範例程式碼中不再出現 hardcoded 的 IP 或連線字串 |
-| 2 | **綁定正確性** | Code Review | 註冊範例包含 `.GetSection("ConnectionSettings").Bind(settings)` 關鍵動作 |
-| 3 | **執行驗證** | teaching 模式 | 執行 `teaching` 模式時，能正常從 Sandbox 根目錄的 `appsettings.json` 讀取值並顯示預覽 |
-
----
-
-## 技術檢核點
-- [ ] 確保 `using Microsoft.Extensions.Configuration;` 已加入。
-- [ ] 提醒使用者 `appsettings.json` 需設為「固定複製到輸出目錄」。
+## 完成日期
+2026-05-14

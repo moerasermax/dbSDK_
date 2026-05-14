@@ -1,4 +1,5 @@
-﻿using NO3._dbSDK_Imporve.Core.Abstraction;
+﻿using Microsoft.Extensions.Options;
+using NO3._dbSDK_Imporve.Core.Abstraction;
 using NO3._dbSDK_Imporve.Core.Models;
 using StackExchange.Redis;
 
@@ -11,6 +12,9 @@ namespace NO3._dbSDK_Imporve.Infrastructure.Driver
         {
                 _redis = ConnectionMultiplexer.Connect(GetConnectInfo(dbInfo));
         }
+
+        public RedisDriver(string Service, IOptions<ConnectionSettings> options)
+            : this(Service, options.Value) { }
 
         ConfigurationOptions GetConnectInfo(ConnectionSettings dbInfo)
         {

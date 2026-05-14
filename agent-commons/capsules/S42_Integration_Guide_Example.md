@@ -1,50 +1,27 @@
-# Sprint S42：SDK 串接教學與 Mongo 更新範例實作
-tracking_label: P2B-DOCUMENT-1 / S42
+# Sprint S42：SDK 串接教學與 Mongo 進階更新範例 (Integration Guide & Advanced Samples)
 
 ## 任務目標
-在 Sandbox 專案中建立一份「串接小教學」，包含 SDK 查詢服務的 DI 注入說明，以及 MongoRepository 貨態更新（$set/$unset）的程式碼範例。
-
----
+提供完整的 SDK 串接手冊，並實作具備業務參考價值的 MongoDB 局部更新 ($set/$unset) 範例。
 
 ## 需求背景
-為了讓使用者能快速將本 SDK 整合至客戶端環境，需要一份一目了然的範例程式。
-內容需涵蓋：
-1. `PIC.CPF.OrderSDK.Biz.Read.Elastic` 的服務註冊與呼叫。
-2. `MongoRepository` 的貨態更新教學（強調 Flatten 局部更新與 UnsetFields 使用）。
-
----
-
-## 任務核准狀態 (Co-sign)
-
-- [ ] **PM**：任務範例需求定義完成 (Gemini CLI 2026-05-13)
-- [ ] **Engineer**：確認範例實作路徑與技術細節 (Claude Code)
-
----
+dbSDK 已具備強大的雙引擎查詢與 Mongo 扁平化更新能力，但缺乏對外展示如何「正確串接」與「處理複雜更新」的範例，這將直接影響交付後的開發者體驗。
 
 ## 任務清單
+- [ ] **手冊更新 (`docs/SDK_QuickStart.md`)**：
+    - 更新「註冊範例」，改用 S45 實作的 `AddDbSdk()`。
+    - 新增「雙引擎 (Dual Engine) 查詢模式」說明，解釋 Search 1-7 的資料流向。
+    - 增加「MongoDB 局部更新指南」，包含 `$set` 與 `$unset` 的業務情境。
+- [ ] **實作進階範例 (`CPF.Sandbox/Scenarios/AdvancedUpdateScenario.cs`)**：
+    - 建立一個新的 Scenario 類別。
+    - 範例情境：當訂單狀態從「待支付」變為「已支付」，需 `$set` 狀態與支付時間，同時 `$unset` (移除) 原本的「支付逾期提醒」欄位。
+    - 演示如何使用 `MongoRepository.UpdateData` 一次性執行複合操作。
+- [ ] **範例整合**：
+    - 將此新 Scenario 加入 `SandboxRunner` 的選單中，方便使用者一鍵執行。
 
-### 1. [ ] 建立範例場景檔案
-- 檔案：`CPF.Sandbox/Scenarios/IntegrationGuideScenario.cs`
-- 內容：
-    - 展示如何在 `Program.cs` 或 `Startup.cs` 進行 DI 註冊。
-    - 撰寫 `RunAsync` 方法。
-    - 範例 1：呼叫 `IElasticOrderSearchService` 進行訂單查詢。
-    - 範例 2：呼叫 `IRepository<Order>.UpdateData` 執行 $set (局部更新) 與 $unset (欄位移除)。
+## 檢核點 (VCP)
+- [ ] **文件一致性**：`SDK_QuickStart.md` 的範例碼可通過建置。
+- [ ] **功能實證**：執行 `AdvancedUpdateScenario`，並透過 `mongo` shell 或 `Studio 3T` 觀察欄位是否確實被 $set 與 $unset。
+- [ ] **健壯性**：確認 `FlattenBsonDocument` 仍能正確忽略 null 欄位。
 
-### 2. [ ] 註冊至 SandboxRunner (選配)
-- 若使用者需要直接執行，請在 `SandboxRunner.cs` 中保留進入點。
-
----
-
-## PM 驗收項目 (VCP)
-
-| # | 驗證項目 | 驗證方式 | 期望值 |
-|---|---------|---------|--------|
-| 1 | **教學易讀性** | Code Review | 程式碼註解清晰，明確區分查詢與更新範例 |
-| 2 | **技術正確性** | Code Review | 範例中的 DI 註冊清單完整，UpdateData 呼叫方式正確（含 options） |
-
----
-
-## 技術檢核點
-- [ ] 範例代碼需符合 `DBSDK.md` 中的 Clean Architecture 規範。
-- [ ] 強調 `FlattenBsonDocument` 在局部更新中的重要性（防止覆寫）。
+## 完成日期
+2026-05-14
