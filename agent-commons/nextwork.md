@@ -11,6 +11,7 @@ LAST_SYNC: 2026-05-14
 - [x] **CUN9101 貨態(寄貨)更新服務串接完成** (2026-05-14)
 
 ## Current Focus
+- [ ] **WebApi-Search 接入** (預計 2026-05-15 啟動)
 - [x] Search 1 (toship) 業務語義分析完成 (User 確認 6 筆為對)
 - [x] Search 7 (cgdmUpdateDatetime) 資料源修正完成 (改採 Mongo)
 - [x] 強化抽驗模式：已達連續 3 次綠燈解除門檻 (2026-05-12)
@@ -20,8 +21,9 @@ LAST_SYNC: 2026-05-14
 - [x] 環境清理 (Stale images removed)
 
 ## ⚠️ Remaining Items (Post-Project)
-- [ ] S45: 修正 DI 註冊範例（改採 appsettings.json 配置）
-- [ ] S42: SDK 串投教學與 Mongo 更新範例實作
+- [ ] **WebApi-Search 整合實作**
+- [x] S45: 修正 DI 註冊範例 (已於 2026-05-14 結案)
+- [x] S42: SDK 串投教學與 Mongo 更新範例實作 (已於 2026-05-14 結案)
 - [x] Search 1/7 疑點決議 (已於 2026-05-14 結案)
 
 ## 🔍 Known Limitations (Data Coverage Gaps)
