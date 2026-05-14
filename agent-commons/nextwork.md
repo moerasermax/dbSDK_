@@ -8,6 +8,7 @@ LAST_SYNC: 2026-05-14
     - [x] Search 1-7 Golden Recipe 100% 對齊 (除已決議之差異外)
     - [x] 雙引擎鏈路 (ES + Mongo) 實作完成
     - [x] Typed Public Input Model 重構完成
+- [x] **CUN9101 貨態(寄貨)更新服務串接完成** (2026-05-14)
 
 ## Current Focus
 - [x] Search 1 (toship) 業務語義分析完成 (User 確認 6 筆為對)

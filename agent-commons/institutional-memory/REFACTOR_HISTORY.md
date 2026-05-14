@@ -157,6 +157,17 @@
   - 實作 `FlattenBsonDocument` 的日期識別 logic，寫入時強制轉型為 `BsonDateTime`。
   - 建立並全域註冊 `MongoDateTimeSerializer`，相容讀取髒資料中的日期字串。
 
+### 階段九：CUN9101 貨態搜尋與雙引擎整合 (2026-05-14)
+
+**Search 1-7 全量對齊與驗收 (Sprint S41 系列)**
+- **議題結案**：
+    - **Search 1**：確認 SDK 100% 對齊客戶原碼（命中 6 筆），排除 Golden Recipe 樣張與測資標註之單一情境差異。
+    - **Search 7**：資料源從 ES 聚合修正為 Mongo 單筆直讀 (`Users` collection)，解決測試資料缺源 (`cgdmUpdateDatetime`) 問題。
+- **技術成就**：
+    - **Dual Engine Hydration**：實作 ES (主查詢/過濾) + MongoDB (補完 nested 資料) 雙引擎鏈路。
+    - **時區修正**：解決台北時區 (+8h) 與 ElasticSearch 本身不含 Z 之時間格式對齊。
+    - **S45/S42 交付**：DI 註冊改採標準 `IOptions` 擴充模式，並完成 $set/$unset 複合操作教學範例。
+
 ---
 
 ## 最終狀態
