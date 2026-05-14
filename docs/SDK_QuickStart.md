@@ -46,14 +46,7 @@ IConfiguration configuration = new ConfigurationBuilder()
 }
 ```
 
-> ⚠️ `appsettings.json` 需在 .csproj 設為「複製到輸出目錄」:
-> ```xml
-> <ItemGroup>
->   <None Update="appsettings.json">
->     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
->   </None>
-> </ItemGroup>
-> ```
+> 💡 **提示**: 您只需修改 `appsettings.json` 內的連線資訊即可生效。
 
 ### 0.4 環境變數覆蓋範例
 
