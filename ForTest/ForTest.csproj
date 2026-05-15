@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-ForTest-fdb2a1ca-1174-4e16-83ff-786c73b849fc</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CPF.Service.SendDataToElasticCloud\CPF.Service.SendDataToElasticCloud.csproj" />
+    <ProjectReference Include="..\CPF.Service.SendDataToMongoDB\CPF.Service.SendDataToMongoDB.csproj" />
+    <ProjectReference Include="..\CPF.Services.Redis.Post\CPF.Services.Redis.Post.csproj" />
+    <ProjectReference Include="..\NO3._dbSDK_Imporve\NO3._dbSDK_Imporve.csproj" />
+  </ItemGroup>
+</Project>
