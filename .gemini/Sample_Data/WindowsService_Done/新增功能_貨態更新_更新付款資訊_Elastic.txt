@@ -1,0 +1,68 @@
+Redis:
+{
+    "Name": "UpdateChangePayTypeEvent",
+    "Args": {
+        "CoocNo": "CC2604160431309",
+        "CoocPaymentType": "1"
+    }
+}
+
+
+Elastic-更新前
+
+{
+    "coom_no": "CM2604160395987",
+    "coom_name": "test",
+    "coom_status": "10",
+    "coom_temp_type": "01",
+    "coom_create_datetime": "2026-04-16T05:57:15.5679146Z",
+    "coom_cuam_cid": 528672,
+    "cooc_no": "CC2604160431309",
+    "cooc_deliver_method": "1",
+    "cooc_ord_channel_kind": "1",
+    "cooc_mem_sid": 528672,
+    "cood_name": [
+        "testtesttete ttttt"
+    ],
+    "coom_rcv_totalamt": 88,
+    "cood_items": [
+        {
+            "cgdd_cgdmid": "GM2512170027503",
+            "cgdd_id": "2601270002368654",
+            "cood_cgdsid": "2602120002370677",
+            "cood_name": "testtesttete ttttt",
+            "cood_qty": 5,
+            "cood_image_path": "2601270002368647.jpg"
+        }
+    ]
+}
+
+
+Elastic-更新後
+{
+    "coom_no": "CM2604160395987",
+    "coom_name": "test",
+    "coom_status": "10",
+    "coom_temp_type": "01",
+    "coom_create_datetime": "2026-04-16T05:57:15.5679146Z",
+    "coom_cuam_cid": 528672,
+    "cooc_no": "CC2604160431309",
+    "cooc_payment_type": "1",
+    "cooc_deliver_method": "1",
+    "cooc_ord_channel_kind": "1",
+    "cooc_mem_sid": 528672,
+    "cood_name": [
+        "testtesttete ttttt"
+    ],
+    "coom_rcv_totalamt": 88,
+    "cood_items": [
+        {
+            "cgdd_cgdmid": "GM2512170027503",
+            "cgdd_id": "2601270002368654",
+            "cood_cgdsid": "2602120002370677",
+            "cood_name": "testtesttete ttttt",
+            "cood_qty": 5,
+            "cood_image_path": "2601270002368647.jpg"
+        }
+    ]
+}

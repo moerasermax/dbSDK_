@@ -1,4 +1,5 @@
 using CPF.Services.Redis.Post.Model;
+using Elastic.Transport;
 using NO3._dbSDK_Imporve.Application.Sample.Redis;
 
 namespace CPF.Services.Redis.Post
@@ -87,10 +88,18 @@ namespace CPF.Services.Redis.Post
 
         async void UpdateChangePayTypeEvent()
         {
-            var UpdateData = _CPF_TestDataEngine.GetMongoUpdateChangePayTypeEventObject("CC3692967605991");
+            var UpdateData_Mongo = _CPF_TestDataEngine.GetMongoUpdateChangePayTypeEventObject("CC3692967605991");
 
             _redis.QueryDB = "Request_MongoDB";
-            await _redis.InsertData(UpdateData);
+            await _redis.InsertData(UpdateData_Mongo);
+
+
+            /// Elastic
+
+            _redis.QueryDB = "Request_Elastic";
+            var UpdateData_Elastic = _CPF_TestDataEngine.GetElasticUpdateChangePayTypeEventObject("CC3692967605991");
+
+            await _redis.InsertData(UpdateData_Elastic);
 
             Console.WriteLine($"[更新付款資訊 Request發送完成]");
         }

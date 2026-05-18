@@ -59,7 +59,7 @@ namespace CPF.Service.SendDataToElasticCloud
 
         async Task Do(ElasticAddOrder query)
         {
-            
+
             switch (query.Name)
             {
                 case "AddOrderEvent":
@@ -102,7 +102,7 @@ namespace CPF.Service.SendDataToElasticCloud
                         // 從嵌套的 esmm 物件取得資料
                         var esmm = query.Args.Esmm;
                         var coom = query.Args.Coom;
-                        
+
                         // 組合 EsmmShipNo + EsmmShipNoAuthCode (如 D8803212 + 0964 = D88032120964)
                         var shipNo = esmm?.EsmmShipNo ?? query.Args.EsmmShipNo ?? "";
                         var authCode = esmm?.EsmmShipNoAuthCode ?? query.Args.EsmmShipNoAuthCode ?? "";
@@ -133,7 +133,7 @@ namespace CPF.Service.SendDataToElasticCloud
                         // 從嵌套的 esmm 物件取得資料
                         var esmm = query.Args.Esmm;
                         var coom = query.Args.Coom;
-                        
+
                         // 組合 EsmmShipNo + EsmmShipNoAuthCode
                         var shipNo = esmm?.EsmmShipNo ?? query.Args.EsmmShipNo ?? "";
                         var authCode = esmm?.EsmmShipNoAuthCode ?? query.Args.EsmmShipNoAuthCode ?? "";
@@ -163,6 +163,31 @@ namespace CPF.Service.SendDataToElasticCloud
                     }
                     break;
 
+                case "UpdateChangePayTypeEvent":
+                    if (query.Args != null && !string.IsNullOrEmpty(query.Args.CoocNo))
+                    {
+                        var updateData = new OrderInfoModel
+                        {
+                            CoomNo = query.Args.CoomNo,  // ⚠️ 必須顯式 null - 避開 OrderInfoModel.CoomNo default = string.Empty 的陷阱
+                            CoocPaymentType = query.Args.CoocPaymentType
+                        };
+
+                        var updateCondition = new { cooc_no = query.Args.CoocNo };
+
+                        var result = await _elasticRepo.UpdateData(
+                            JsonSerializer.Serialize(updateCondition),
+                            updateData);
+
+                        _logger.LogInformation(
+                            $"[UpdateChangePayTypeEvent] CoocNo: {query.Args.CoocNo}, " +
+                            $"CoocPaymentType: {query.Args.CoocPaymentType}, " +
+                            $"Result: {(result.IsSuccess ? "OK" : result.Msg)}");
+                    }
+                    else
+                    {
+                        _logger.LogWarning("[UpdateChangePayTypeEvent] 缺少必要參數 CoocNo");
+                    }
+                    break;
                 #endregion
 
                 default:

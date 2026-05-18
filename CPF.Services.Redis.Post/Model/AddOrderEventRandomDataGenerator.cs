@@ -411,6 +411,22 @@ namespace CPF.Services.Redis.Post.Model
             };
         }
 
+        /// <summary>
+        /// 取得 Elastic 更新付款方式事件 (UpdateChangePayTypeEvent)
+        /// </summary>
+        public ElasticAddOrder GetElasticUpdateChangePayTypeEventObject(string coocNo)
+        {
+            return new ElasticAddOrder()
+            {
+                Name = "UpdateChangePayTypeEvent",
+                Args = new Elastic.OrderArgs()
+                {
+                    CoocNo = coocNo,
+                    CoocPaymentType = "1"
+                }
+            };
+        }
+
         #endregion
     }
 }
